@@ -1,132 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="88f4b987-f33f-4ec8-a4a1-b00cbaf219b1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.babelrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Todo.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postcss.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/.babelrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/routes/helper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/routes/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/routes/test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/routes/users.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/testdata/image.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/www.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Autocomplete.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/CheckRequestExists.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MainPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/WelcomeScreen.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/DropDown.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ExpandablePanel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FileInput.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/FileInputWithReader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Input.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Label.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ModalContainer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/richinput/CodemirrorInput.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/richinput/codeinput.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/richinput/codemirrormode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/spinner/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/spinner/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/converters/har.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/converters/har/importHar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/converters/utils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/Theme.Light.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/codemirror.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/normalize.src.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/tailwind.src.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/environment/ManageProject.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/environment/notes.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/autocomplete/ad" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/autocomplete/headers-name.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/oAuth/githubOAuth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/oAuth/googleOAuth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/scripts/basfunctions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/scripts/workerbase.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/updateWebworker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/worker/BuildWorkerBlob.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/worker/WorkerHelper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/worker/baseFunctionsJavascript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/worker/test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/worker/workerCoreJavascript.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/networking/executerequest.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/actionCreator.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/body/bodyActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/body/bodyReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/cookiejarReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/group/groupActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/group/groupReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/headers/headerActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/headers/headerReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/history/historyActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/history/historyReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/projectReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/querystring/queryStringActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/querystring/queryStringReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/requestActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/requestReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/rootReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/FormInputLine.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/RequestOptions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/auth/BasicAuth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/auth/TabRequestAuth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/auth/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/auth/oAuth2.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/body/BodyFormInput.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/body/RequestBodyFile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/body/RequestBodyForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/body/RequestBodyJson.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/body/RequestBodyText.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/body/TabRequestBody.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/body/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/documentation/PreviewRequestDoc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/headers/HeaderInput.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/headers/HeaderParent.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/headers/TabRequestHeader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/list/RequestItemOptions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/list/RequestList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/list/RequestListItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/querystring/QueryStringContainer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/querystring/QueryStringInput.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/querystring/TabRequestQueryString.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/url/MethodSelector.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/url/RequestURL.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/request/url/URLInput.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/RequestRunningOverlay.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/info/TabGeneral.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/info/TabRequestHeaders.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/info/TabResponse.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/info/TabResponseHeaders.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/info/TabResponseTiming.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/preview/PreviewIFrame.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/preview/PreviewJson.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/preview/PreviewMedia.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/preview/PreviewSourceHtml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/preview/PreviewText.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/preview/PreviewVisualHtml.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/response/preview/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/storage/localstorage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/storage/syncstorage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/transformers/functions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/transformers/runeval.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/transformers/torequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-    </list>
+    <list default="true" id="88f4b987-f33f-4ec8-a4a1-b00cbaf219b1" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -158,6 +33,7 @@
           <entry key="ad" value="1" />
           <entry key="babelrc" value="2" />
           <entry key="css" value="50" />
+          <entry key="gitignore" value="1" />
           <entry key="html" value="1" />
           <entry key="http" value="1" />
           <entry key="js" value="574" />
@@ -175,7 +51,7 @@
           <entry key="HTML" value="1" />
           <entry key="JSON" value="14" />
           <entry key="JavaScript" value="575" />
-          <entry key="PLAIN_TEXT" value="7" />
+          <entry key="PLAIN_TEXT" value="8" />
           <entry key="SVG" value="2" />
           <entry key="Scratch" value="1" />
           <entry key="SourceMap" value="2" />
@@ -220,13 +96,18 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="219">
               <caret line="77" selection-start-line="77" selection-end-line="77" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -486,12 +367,12 @@
       <workItem from="1546070245776" duration="24045000" />
       <workItem from="1546149487738" duration="24021000" />
       <workItem from="1546234199484" duration="15233000" />
-      <workItem from="1546320285732" duration="7781000" />
+      <workItem from="1546320285732" duration="8007000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="153752000" />
+    <option name="totallyTimeSpent" value="153978000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="198" y="23" width="1227" height="797" extended-state="0" />
@@ -529,7 +410,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/RichInput.js" />
     <entry file="file://$PROJECT_DIR$/src/response/info/TabResponseHeaders.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-43">
@@ -873,6 +753,9 @@
           <caret line="77" selection-start-line="77" selection-end-line="77" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
