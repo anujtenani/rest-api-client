@@ -1,0 +1,10 @@
+.cm-chip {
+    background-color: #0d3331;
+    color:#fff;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+.cm-chip:hover{
+    background-color: #0000cc;
+    cursor:pointer
+}

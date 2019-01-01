@@ -1,0 +1,31 @@
+.main {
+    @apply bg-white text-black font-sans leading-normal
+}
+.primary-bg{
+    @apply bg-grey-lightest
+}
+.secondary-bg{
+    @apply bg-grey-lighter
+}
+.primary-border{
+    @apply border-grey-light
+}
+.primary-button{
+    @apply text-blue-light
+}
+
+.primary-text{
+    @apply text-grey-darkest
+}
+
+.secondary-text{
+    @apply text-grey-dark
+}
+
+select{
+    @apply secondary-bg h-8
+}
+
+.addFieldButton{
+    @apply secondary-bg justify-center p-2 w-full rounded flex flex-row items-center uppercase text-xs
+}
