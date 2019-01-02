@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PreviewVisualHtml from "./PreviewVisualHtml";
-import PreviewText from "./PreviewText";
+import PreviewText from "./PreviewRaw";
 import PreviewJson from "./PreviewJson";
 import PreviewMedia from "./PreviewMedia";
 import {connect} from 'react-redux';

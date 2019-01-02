@@ -27,6 +27,15 @@ const store =  createStore(
 let persistor = persistStore(store);
 persistor.purge();
 
+store.subscribe(()=>{
+    //here you save the state to the localstorage;
+    //cloud storage is setup as redux middleware
+//    const projectId = store.getState().metadata.projectId;
+//    localstorage.setItem(projectId+"-meta", store.getState().metadata);
+//    localstorage.setItem(projectId+"-requests", store.getState().requests);
+});
+
+
 ReactDOM.render(<Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
             <App />

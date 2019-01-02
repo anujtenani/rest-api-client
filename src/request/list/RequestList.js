@@ -8,8 +8,23 @@ import {withRouter} from 'react-router-dom';
 class RequestList extends PureComponent {
 
     state = {
-        focus:0
+        focus:0,
+        filteredIds:undefined
     }
+
+    onFilterInput = (e)=>{
+        this.filter(e.target.value)
+    };
+
+    filter = (kwd)=>{
+        if(kwd.length === 0){
+            this.setState({filteredIds:undefined})
+        }else {
+            const filteredIds = this.props.titles.filter(({title}) => title.toLowerCase().includes(kwd.toLowerCase()))
+                .map(({id}) => id);
+            this.setState({filteredIds});
+        }
+    };
 
 
     onFocus = ()=>{
@@ -33,15 +48,17 @@ class RequestList extends PureComponent {
     }
 
     render() {
+        console.log(this.props.titles);
+        const filteredIds = this.state.filteredIds ? this.state.filteredIds : this.props.ids;
         return <div>
             <div className="flex flex-row items-center p-2">
-                <input type={"text"} className="flex-1 p-1 bg-transparent primary-text rounded border border-grey-darker" placeholder={"filter"} />
+                <input type={"text"} onChange={this.onFilterInput} className="flex-1 p-1 bg-transparent primary-text rounded border border-grey-darker" placeholder={"filter"} />
                 <button className={"px-2 primary-text"} onClick={this.createANewRequest}>
                     <FiPlusCircle className={"w-6 h-6"} />
                 </button>
             </div>
             <div onFocus={this.onFocus} onBlur={this.onBlur}>
-            {this.props.ids.map((requestId)=>{
+            {filteredIds.map((requestId)=>{
                 return <RequestListItem requestId={requestId} key={requestId} />
             })}
             </div>
@@ -49,14 +66,18 @@ class RequestList extends PureComponent {
     }
 }
 
-function NewRequestButton(){
 
-}
 
 
 const mapListStateToProps = (state, props)=>{
+    const titles = state.requests.allIds.map((id)=> {
+        return {
+            title: state.requests.byId[id].title, id
+        }
+    });
     return {
-        ids: state.requests.allIds
+        ids: state.requests.allIds,
+        titles,
     }
 }
 const mapDispatchToProps = (dispatch,props)=>{

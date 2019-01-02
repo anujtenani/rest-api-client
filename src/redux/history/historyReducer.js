@@ -41,7 +41,7 @@ const allIds =  (state = [], action)=>{
             const {historyId} = action;
             return [historyId, ...state];
         }
-        case createActionConstant(methods.delete, types.headers):{
+        case createActionConstant(methods.delete, types.history):{
             const {historyId} = action;
             return state.filter((id)=>id !== historyId)
         }

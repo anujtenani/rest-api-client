@@ -29,3 +29,7 @@ select{
 .addFieldButton{
     @apply secondary-bg justify-center p-2 w-full rounded flex flex-row items-center uppercase text-xs
 }
+
+.error-message{
+    @apply bg-red-lightest p-2 border-red rounded
+}

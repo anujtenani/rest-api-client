@@ -2,6 +2,8 @@ import {combineReducers} from 'redux';
 import {createActionConstant, methods, types} from "./actionCreator";
 import torequest from "../transformers/torequest";
 import {actionCreateResponseHistory, actionDeleteResponseHistory} from "./history/historyActions";
+import {sendRequest} from "../servicehandlers";
+
 const shortId = require('shortid');
 const axios = require('axios');
 
@@ -79,7 +81,22 @@ export const actionExecuteRequest = (requestId)=>{
         dispatch(actionUpdateRequest(requestId, {executing:true}));
         const CancelToken = axios.CancelToken;
         source = CancelToken.source();
-        axios.post('http://localhost:8090/call',torequest(getState().requests.byId[requestId]),{
+        const requestData = await torequest(getState().requests.byId[requestId]);
+        const {url, method, headers, body, qs, auth} = requestData;
+        sendRequest(url, method, headers, body, qs, auth).then((response)=>{
+            console.log(response);
+            const allHistoryIds = getState().requests.byId[requestId].history.allIds;
+            if(allHistoryIds.length > 5){
+                dispatch(actionDeleteResponseHistory(requestId, allHistoryIds[5]))
+            }
+            dispatch(actionCreateResponseHistory(requestId, response));
+            dispatch(actionUpdateRequest(requestId, {executing:false}));
+        }).catch((e)=>{
+            console.log(e);
+            dispatch(actionUpdateRequest(requestId, {executing:false}));
+        });
+        /*
+        axios.post('http://localhost:8090/call',requestData,{
             cancelToken: source.token
         }).then(({data})=>{
             const allHistoryIds = getState().requests.byId[requestId].history.allIds;
@@ -92,6 +109,7 @@ export const actionExecuteRequest = (requestId)=>{
             console.log(e);
             dispatch(actionUpdateRequest(requestId, {executing:false}));
         });
+        */
     }
 };
 

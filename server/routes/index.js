@@ -4,6 +4,11 @@ var router = express.Router();
 const request = require('request');
 const path = require('path');
 const fs = require('fs');
+const URL = require('url').URL;
+const Datauri = require('datauri');
+var mime = require('mime-types')
+var dataUriToBuffer = require('data-uri-to-buffer');
+
 // const {createStore} = require('redux');
 // const rootReducer = require('../../src/redux/rootReducer').default;
 /*
@@ -50,13 +55,33 @@ router.post('/save', function(req, res, next){
 
 //this instance should be protected if flag is remote
 router.post('/call', async (req, res, next)=>{
-   const {url, method, headers, body} = req.body;
+   const {url, method, headers, body, qs} = req.body;
    try {
-       const response = await execute({
-           url, method, headers, body
-       });
-       console.log(response);
-       res.send(response)
+        const requestObject = {url, method};
+        if(headers) requestObject.headers = headers;
+        if(qs) requestObject.qs = qs;
+       //convert body to actual data;
+       //body is an edge case as binary data is submitted as base64 which needs to be converted back
+       const {bodyType, byId, allIds, text} = body;
+       switch (bodyType) {
+           case "text":
+           case "json":
+               requestObject.body = text;
+               break;
+           case "binary":
+               requestObject.body = dataUriToBuffer(text);
+               break;
+           case "form":
+               requestObject.form = createFormFromBody(body);
+               break;
+           case "multipart":
+                requestObject.formData =  createFormDataFromBody(body);
+       }
+       console.log(requestObject);
+       const startTime = new Date().getTime();
+       const response = await execute(requestObject);
+       const endTime = new Date().getTime();
+       res.send({...response, startTime, endTime})
    }catch(e){
        console.log(e);
        res.send({})
@@ -64,17 +89,84 @@ router.post('/call', async (req, res, next)=>{
 
 });
 
+function createFormDataFromBody({byId, allIds}){
+    const formData = {};
+    allIds.forEach((id)=>{
+        const {name, value, inputType, fileName, size, type} = byId[id];
+        const val = inputType === "file" ? {
+                value: dataUriToBuffer(value),
+                options:{
+                    filename: fileName,
+                    knownLength:size,
+                    contentType: type
+                }
+            }: value;
+        if(!formData[name]) formData[name] = [];
+        //create and push in an array so that multiple multipart field with same name can be taken care of
+        formData[name].push(val);
+    });
+    Object.keys(formData).forEach((item)=>{
+        //now create single fields into regular object thereby keeping multiple same name fields as array
+        if(formData[item].length === 1){
+            formData[item] = formData[item][0];
+        }
+    });
+    return formData;
+}
+
+function createFormFromBody({byId, allIds}){
+    const form = {};
+    allIds.forEach((id)=>{
+        const {name, value} = byId[id];
+        form[name] = value;
+    });
+    return form
+}
+
+/*
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        return Buffer.from(dataURI.split(',')[1], 'base64'); //atob is not available in nodejs use native decoding
+//        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], {type:mimeString});
+}
+
+*/
+
 function execute(req){
     //ideally we should be using piping/streaming (study more)
     return new Promise((resolve, reject)=>{
         let requestData = '';
         let remoteAddress, remotePort;
         console.log(req);
-        request({...req, time:true}, (err, httpResponse, body)=>{
-            //console.log(httpResponse);
+        //encoding is null so that returned body is a buffer
+        // buffer is changed to string if charset=UTF-8 or content-type is one of text/* or application/json or application/xml
+        request({...req, time:true, encoding: null}, (err, httpResponse, body)=>{
+            console.log(body);
             if(err){
                 console.log(err);
                 if(err.code){
+                    let {code, errno, syscall, port, hostname, host} = err;
+                    if(!hostname ||!host){
+                        const url = new URL(req.url);
+                        hostname = url.hostname;
+                        host = url.host
+                    }
+                    resolve({err: {code, errno, syscall, port,hostname, host, message:err.toString()}})
                 }
                 return resolve({err: err.toString()});
             }
@@ -91,13 +183,30 @@ function execute(req){
                 requestHeaders,
                 headers, statusCode, httpVersion,
                 remoteAddress, remotePort,
-                err, timingPhases, body
+                err, timingPhases, body: isBodyString(headers) ? body.toString('utf-8') : toDataUri(body, headers)
             })
         }).on('socket', function(socket) {
             remoteAddress=  socket.remoteAddress;
             remotePort = socket.remotePort;
         });
     })
+}
+
+function toDataUri(body, headers){
+    const datauri = new Datauri();
+    const contentTypeHeaderKey = Object.keys(headers).find((header)=>header.toLowerCase() === "content-type");
+    console.log("got key", contentTypeHeaderKey);
+    const contentType = headers[contentTypeHeaderKey];
+    datauri.format('.'+mime.extension(contentType), body);
+    return datauri.content;
+}
+
+function isBodyString(headers){
+    console.log(headers);
+    const contentTypeHeaderKey = Object.keys(headers).find((header)=>header.toLowerCase() === "content-type");
+    console.log("got key", contentTypeHeaderKey);
+    const contentType = headers[contentTypeHeaderKey];
+    return mime.charset(contentType);
 }
 
 

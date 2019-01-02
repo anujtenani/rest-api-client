@@ -33,7 +33,7 @@ function LineItem({title, value}){
 function mapStateToProps(state, props) {
     const {requestId, historyId} = props;
     return {
-            timing :state.requests.byId[requestId].history.byId[historyId].timingPhases
+            timing :state.requests.byId[requestId].history.byId[historyId].timings
     }
 }
 

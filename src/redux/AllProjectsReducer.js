@@ -1,13 +1,11 @@
 const defaultState = {
-    projectTitle:'',
-    maxHistory:5,
-    projectId:undefined,
+    allProjectIds:[],
+    allProjectByIds:{}
 }
-
 
 export default (state = defaultState, action)=>{
     switch (action.type) {
         default:
             return state;
     }
-};
+}

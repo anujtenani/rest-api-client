@@ -42,11 +42,11 @@ class BodyFormInput extends Component {
 
     render() {
         const {docVisible} = this.state;
-        const {multipart, name, value, inputType, fileName} = this.props;
+        const {bodyType, name, value, inputType, fileName} = this.props;
         return (
             <div className={"my-2"}>
                 <div className="flex flex-row items-center">
-                    {multipart ?
+                    {bodyType === "multipart" ?
                     <select className={"mr-2"} defaultValue={inputType} onChange={this.onInputTypeChange}>
                         <option value={"text"}>Text</option>
                         <option value={"file"}>File</option>
@@ -81,6 +81,7 @@ class BodyFormInput extends Component {
 function mapStateToProps(state, props) {
     const {requestId, bodyId} = props;
     return {
+        bodyType: state.requests.byId[requestId].body.bodyType,
         ...state.requests.byId[requestId].body.byId[bodyId]
     };
 }

@@ -3,7 +3,9 @@ import projectReducer from "./projectReducer";
 import requestReducer from "./requestReducer";
 
 
+//this is the complete project project reducer only
 export default combineReducers({
-    project: projectReducer,
+    metadata: projectReducer,
     requests: requestReducer,
+
 });

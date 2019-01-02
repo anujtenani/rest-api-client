@@ -52,6 +52,13 @@ select {
   font-size: .75rem;
 }
 
+.error-message {
+  background-color: #fcebea;
+  padding: .5rem;
+  border-color: #e3342f;
+  border-radius: .25rem;
+}
+
 body {
   font-size: 14px;
 }

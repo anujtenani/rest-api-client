@@ -5,4 +5,6 @@
 3. import/export from HAR
 4. complete the request creation
 5. websocket request to test websocket packet sends
-6. Testing module with
+6. For larger files use object urls, and binary sending for memory and performance concerns (maybe later)
+7. return request body with response if it there is no binary content (for binary content, just display binary)
+8. Assertions for unit testing

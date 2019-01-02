@@ -7,15 +7,19 @@ class TabGeneral extends Component {
 
     render() {
         const {headers} = this.props;
-        return (
-            <ExpandablePanel title={`Request Headers (${Object.keys(headers).length})`}>
-                <div className={"ml-2"}>
-                    {Object.keys(headers).map((item)=>{
-                        return <LineItem title={item} key={item} value={headers[item]} />
-                    })}
-                </div>
-            </ExpandablePanel>
-        );
+        if(headers) {
+            return (
+                <ExpandablePanel title={`Request Headers (${Object.keys(headers).length})`}>
+                    <div className={"ml-2"}>
+                        {Object.keys(headers).map((item) => {
+                            return <LineItem title={item} key={item} value={headers[item]}/>
+                        })}
+                    </div>
+                </ExpandablePanel>
+            );
+        }else{
+            return null;
+        }
     }
 }
 

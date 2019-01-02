@@ -13,7 +13,6 @@ class TabGeneral extends Component {
                         <LineItem title={"Request URL"} value={href} />
                         <LineItem title={"Request Method"} value={method} />
                         <LineItem title={"Status Code"} value={statusCode} />
-                        <LineItem title={"Remote Address"} value={`${remoteAddress}:${remotePort}`} />
                     </div>
                 </ExpandablePanel>
             </div>

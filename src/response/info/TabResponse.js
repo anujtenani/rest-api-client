@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ExpandablePanel from "../../components/ExpandablePanel";
 import PreviewVisualHtml from "../preview/PreviewVisualHtml";
-import PreviewSourceHtml from "../preview/PreviewSourceHtml";
-import PreviewText from "../preview/PreviewText";
-import PreviewJson from "../preview/PreviewJson";
 import PreviewMedia from "../preview/PreviewMedia";
+import PreviewSource from "../preview/PreviewSource";
+import PreviewRaw from "../preview/PreviewRaw";
 
 class TabResponse extends Component {
     state = {
@@ -16,7 +14,11 @@ class TabResponse extends Component {
         const { headers } = this.props;
         const contentType = Object.keys(headers).find((key)=>key.toLowerCase() === "content-type");
         if(headers[contentType] && headers[contentType].indexOf('json') > -1){
-
+            this.setState({previewType:'json'});
+        }else if(headers[contentType] && headers[contentType].indexOf('html') > -1) {
+            this.setState({previewType: 'preview'})
+        } else if(headers[contentType] && headers[contentType].indexOf('image') > -1) {
+            this.setState({previewType:'image'})
         }
     }
 
@@ -26,8 +28,15 @@ class TabResponse extends Component {
 
     render() {
         const {previewType} = this.state;
-        const {responseBody} = this.props;
+        const {responseBody, headers} = this.props;
+        //get conte ntSize;
+       const contentLength = getHeaderVal(headers,'content-length',0);
+       const contentType = getHeaderVal(headers, 'content-type','text/html');
+       console.log(contentType);
 
+        //only 2 types of response views
+        //1. preview (shows formatted html or media element)
+        //2. source (shows the data in a codemirror)
         return (
             <div className={"p-2"}>
                     <select value={previewType} onChange={this.onChange} className={"mb-2"}>
@@ -35,19 +44,39 @@ class TabResponse extends Component {
                         <option value={"html"}>Source Code</option>
                         <option value={"raw"}>Raw</option>
                         <option value={"json"}>JSON</option>
-                        <option value={"text"}>Text</option>
-                        <option value={"image"}>Image</option>
                     </select>
-                    {previewType === "preview" ? <PreviewVisualHtml responseBody={responseBody}/> : null }
-                    {previewType === "html" ? <PreviewSourceHtml responseBody={responseBody}/> : null }
-                    {previewType === "raw" ? <PreviewText responseBody={responseBody}/> : null }
-                    {previewType === "text" ? <PreviewText responseBody={responseBody}/> : null }
-                    {previewType === "json" ? <PreviewJson responseBody={responseBody}/> : null }
-                    {previewType === "image" ? <PreviewMedia responseBody={responseBody}/> : null }
+
+                    {previewType === "preview" ? <RenderContentPreview contentType={contentType} responseBody={responseBody} contentLength={contentLength} /> : null }
+                    {previewType === "html" ? <PreviewSource previewMode={"html"} responseBody={responseBody} contentLength={contentLength} /> : null }
+                    {previewType === "raw" ? <PreviewRaw responseBody={responseBody} contentLength={contentLength} /> : null }
+                    {previewType === "json" ? <PreviewSource previewMode={"json"}  responseBody={responseBody} contentLength={contentLength} /> : null }
             </div>
      );
     }
 }
+
+function RenderContentPreview({contentType, responseBody, contentLength}){
+    if(contentType.startsWith("image")){
+        return <PreviewMedia responseBody={responseBody} contentLength={contentLength} />
+    }else if(contentType.includes('json')) {
+        return <PreviewSource previewMode={"json"} responseBody={responseBody} contentLength={contentLength}/>
+    } else if(contentType.includes('xml')) {
+        return <PreviewSource previewMode={"xml"} responseBody={responseBody} contentLength={contentLength}/>
+    } else{
+        return <PreviewVisualHtml responseBody={responseBody} contentLength={contentLength} />
+    }
+}
+
+
+function getHeaderVal(headers, key, defaultValue=''){
+    const contentLengthKey = Object.keys(headers).find((item)=>{
+        return item.toLowerCase() === key
+    })
+
+    return contentLengthKey ? headers[contentLengthKey] : defaultValue;
+}
+
+
 
 function mapStateToProps(state, props){
     const {requestId, historyId} = props;

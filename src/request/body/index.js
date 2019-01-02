@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import RequestBodyText from "./RequestBodyText";
-import RequestBodyJson from "./RequestBodyJson";
 import RequestBodyForm from "./RequestBodyForm";
 import {connect} from 'react-redux';
 import {actionChangeBodyType} from "../../redux/body/bodyActions";
+import Loadable from 'react-loadable';
+import Spinner from "../../components/spinner";
 import Modal from 'react-modal';
 import ModalContainer from "../../components/ModalContainer";
 Modal.setAppElement('#root');
+
+const RequestBodyJson = Loadable({
+    loader: () => import('./RequestBodyJson'), //why ?  because JSHINT for JSONLinting is a huge dependency
+    loading: ()=><Spinner/>,
+});
 
 class BodyComponent extends Component{
 
@@ -51,7 +57,7 @@ class BodyComponent extends Component{
                 {bodyType === "form" ? <RequestBodyForm requestId={requestId}/> : null }
                 {bodyType === "file" ? <RequestBodyForm requestId={requestId}/> : null }
                 {bodyType === "text" ? <RequestBodyText requestId={requestId}/> : null }
-                {bodyType === "file" ? <RequestBodyForm requestId={requestId} multipart/> : null }
+                {bodyType === "multipart" ? <RequestBodyForm requestId={requestId} /> : null }
             </div>
             <Modal
                 isOpen={this.state.modalIsOpen}
@@ -70,8 +76,11 @@ class BodyComponent extends Component{
                         transform: 'translate(-50%,-50%)',
                         minWidth: '20rem',
                         width: 'auto',
-                        maxWidth: '60rem'
-                    }}}
+                        maxWidth: '60rem',
+                    }, overlay:{
+                        zIndex:2000
+                    }
+                }}
                 onRequestClose={this.closeModal}
                 contentLabel="Change body type ?">
                 <ModalContainer onRequestClose={this.closeModal}>

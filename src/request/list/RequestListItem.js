@@ -81,7 +81,7 @@ class RequestListItem extends PureComponent{
                      onBlur={this.unbindRenameKey}
                      activeClassName={"secondary-bg"}
                      className="flex-1 items-center opacity-75 px-2 py-2 appearance-none no-underline block flex flex-row"
-                     to={`/request/${requestId}`}>
+                     to={this.props.match.url+`/request/${requestId}`}>
             <RenderTag method={method}/>
             {contentEditable ?
                 <input
@@ -105,6 +105,7 @@ function RenderTag({method}){
 }
 
 const mapStateToProps = (state, props)=>{
+    console.log(props);
     const {requestId} = props;
     return {
         ...state.requests.byId[requestId]

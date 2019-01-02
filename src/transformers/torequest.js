@@ -1,8 +1,12 @@
 import {callFunction} from "../helpers/worker/WorkerHelper";
 
-export default (request)=>{
-    const {url, method, headers, body, auth, qs} = request;
+export default async (request)=>{
+    let {url, method, headers, body, auth, qs} = request;
     const h = {};
+
+    url = await substituteValuesInVariables(url);
+
+
     headers.allIds.forEach((id)=>{
         const {name, value} = headers.byId[id];
         h[name] = value;
@@ -10,13 +14,7 @@ export default (request)=>{
     const queryString = {};
     qs.allIds.forEach((id)=>{
         const {name, value} = qs.byId[id];
-        queryString[name] = value;
-    });
-
-    const b = {};
-    body.allIds.forEach((id)=>{
-        const {name, value} = body.byId[id];
-        b[name] = value;
+        return qs[name] = value;
     });
 
     const {authType} = auth;
@@ -33,10 +31,10 @@ export default (request)=>{
     }
 
     const ret =  {
-        url,
+        url: url.startsWith('http') ? url : `http://`+url,
         method,
         headers:h,
-        form:b,
+        body,
         queryString,
         auth:a
     }
@@ -45,3 +43,26 @@ export default (request)=>{
 }
 
 
+
+
+function substituteValuesInVariables(line){
+    const matches = line.match(/{{(.*?)}}/g);
+    if (matches) {
+        const fn = matches.map((item) => {
+            return item.replace("{{", '').replace("}}", '');
+        });
+        console.log(fn);
+        const promises = fn.map((fn) => {
+            return callFunction(fn, '');
+        });
+
+        return Promise.all(promises).then((result) => {
+            result.forEach(({data}, index) => {
+                line = line.replace('{{' + fn[index] + '}}', data);
+            });
+            return line;
+        });
+    } else {
+        return Promise.resolve(line);
+    }
+}

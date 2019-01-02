@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
 import CodeMirror from 'react-codemirror';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/lint/lint';
@@ -16,7 +15,7 @@ import { JSHINT } from 'jshint';
 import {actionUpdateBodyItem} from "../../redux/body/bodyActions";
 
 window.JSHINT = JSHINT
-window.jsonlint = jsonlint
+window.jsonlint = jsonlint;
 
 class RequestBodyJson extends React.Component{
 

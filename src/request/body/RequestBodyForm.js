@@ -14,7 +14,7 @@ class RequestBodyForm extends Component {
         const { requestId } = this.props;
         return <div className="w-full h-full">
             {this.props.allIds.map((item)=>{
-                return <BodyFormInput key={item} bodyId={item} requestId={requestId} multipart />
+                return <BodyFormInput key={item} bodyId={item} requestId={requestId} />
             })}
             <div className={"mt-2"}>
                 <button onClick={this.createBodyItem} className={"addFieldButton"}>

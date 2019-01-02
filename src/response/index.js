@@ -9,44 +9,77 @@ import {actionExecuteRequest} from "../redux/requestActions";
 import TabRequestHeader from "../request/headers/TabRequestHeader";
 import TabRequestHeaders from "./info/TabRequestHeaders";
 import TabResponseTiming from "./info/TabResponseTiming";
+import ResponseSuccess from "./ResponseSuccess";
+import RenderResponsePage from "./RenderResponsePage";
+import {FiChevronLeft, FiChevronRight, FiTrash} from "react-icons/fi";
+import {actionDeleteResponseHistory} from "../redux/history/historyActions";
 
 class Response extends Component {
 
     state = {
         historyIndex:0,
-        showPanel:"response",
     }
+
+    showPrevResponse = ()=>{
+        const {historyIds} = this.props;
+        let {historyIndex} = this.state;
+        console.log(historyIds.length);
+        if(historyIndex < historyIds.length - 1){
+            historyIndex += 1;
+        }
+        console.log(historyIds[historyIndex]);
+        this.setState({historyIndex})
+    }
+
+    showNextResponse = ()=>{
+        let {historyIndex} = this.state;
+        if(historyIndex > 0){
+            historyIndex -= 1;
+        }
+        this.setState({historyIndex})
+    }
+
+    deleteResponse = ()=>{
+        const {historyIds} = this.props;
+        const {historyIndex} = this.state;
+        const historyId = historyIds[historyIndex];
+        this.showNextResponse();
+        this.props.deleteResponseHistoryItem(historyId);
+    }
+
 
     onClickSendRequest = ()=>{
         this.props.executeRequest()
     }
 
     render() {
-        const {showPanel} = this.state;
         const {requestId, historyIds} = this.props;
+        const {historyIndex} = this.state;
         if(this.props.executing){
             return <RequestRunningOverlay requestId={requestId}/>
         }
         if(historyIds.length === 0){
             return <NoResponseAvailable onClickSendRequest={this.onClickSendRequest}/>
         }
+        console.log('showing history index', historyIndex);
         return (
             <div>
-                <ResponseResult url={"https://google.com"} contentLength={254} statusCode={200} timing={430}/>
-                <ResponsePanelHeading onChange={(val)=>this.setState({showPanel:val})}/>
-                {showPanel === "info" ?
+                <div className={"flex flex-row justify-between items-center px-4 h-12 border-b primary-border border-dashed"}>
                     <div>
-                        <TabGeneral requestId={requestId} historyId={historyIds[0]}/>
-                        <TabHeaders requestId={requestId} historyId={historyIds[0]}/>
-                        <TabRequestHeaders requestId={requestId} historyId={historyIds[0]} />
-                        <TabResponseTiming requestId={requestId} historyId={historyIds[0]} />
-                    </div> :
-                    <TabResponse requestId={requestId} historyId={historyIds[0]}/>
-                }
+                        <button onClick={this.showPrevResponse}><FiChevronLeft /></button>
+                        <button onClick={this.showNextResponse}><FiChevronRight /></button>
+                    </div>
+                    <ResponseResult url={"https://google.com"} contentLength={254} statusCode={200} timing={430}/>
+                    <div>
+                        <button onClick={this.deleteResponse}><FiTrash /></button>
+                    </div>
+                </div>
+                <RenderResponsePage requestId={requestId} historyId={historyIds[historyIndex]}/>
             </div>
         );
     }
 }
+
 
 function NoResponseAvailable({onClickSendRequest}){
     return <div className={"my-8 flex flex-col items-center justify-center"}>
@@ -56,17 +89,6 @@ function NoResponseAvailable({onClickSendRequest}){
     </div>
 }
 
-function OptionItem({title, onClick}){
-    return <li className={"flex-1"}>
-        <button onClick={onClick} className={'w-full text-center font-sm py-2 primary-button'}>{title}</button></li>
-}
-
-function ResponsePanelHeading({onChange}){
-    return <ul className="border-t border-b primary-border list-reset flex flex-row justify-around items-center">
-            <OptionItem title={"Response"} requestId={"1"} onClick={()=>onChange('response')}/>
-            <OptionItem title={"Info"} requestId={"1"}  onClick={()=>onChange('info')}/>
-        </ul>
-}
 
 
 function ResponseResult({url, statusCode, contentLength, timing}){
@@ -90,7 +112,8 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch, props){
     const {requestId} = props;
     return {
-        executeRequest: ()=>dispatch(actionExecuteRequest(requestId))
+        executeRequest: ()=>dispatch(actionExecuteRequest(requestId)),
+        deleteResponseHistoryItem:(historyId)=>dispatch(actionDeleteResponseHistory(requestId, historyId))
     }
 }
 export default connect(
