@@ -12,7 +12,7 @@ import 'codemirror/theme/monokai.css';
 import '../../css/codemirror.css';
 import jsonlint from 'jsonlint-mod';
 import { JSHINT } from 'jshint';
-import {actionUpdateBodyItem} from "../../redux/body/bodyActions";
+import {actionUpdateBodyData, actionUpdateBodyItem} from "../../redux/body/bodyActions";
 
 window.JSHINT = JSHINT
 window.jsonlint = jsonlint;
@@ -29,7 +29,7 @@ class RequestBodyJson extends React.Component{
 
     onFocusChange = (focused)=>{
         if(!focused){
-            this.props.updateBodyItem({value:this.state.value})
+            this.props.updateBody(this.state.value)
             console.log('send updates')
         }
     }
@@ -40,7 +40,6 @@ class RequestBodyJson extends React.Component{
         console.log(this.props, this.state);
         return <CodeMirror options={{
             mode:{name:'javascript', mode:'json'},
-            theme:"monokai",
             lineWrapping:true,
             lineNumbers:true,
             autoCloseBrackets:true,
@@ -55,13 +54,13 @@ class RequestBodyJson extends React.Component{
 function mapStateToProps(state, props){
     const {requestId} = props;
     return {
-         value: state.requests.byId[requestId].body.byId['json'].value
+         value: state.requests.byId[requestId].body.data
     }
 }
 function mapDispatchToProps(dispatch, props){
     const {requestId} = props;
     return {
-        updateBodyItem:(change)=>dispatch(actionUpdateBodyItem(requestId, "json", change))
+        updateBody: (data)=> dispatch(actionUpdateBodyData(requestId, data))
     }
 }
 

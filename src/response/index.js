@@ -2,14 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import RequestRunningOverlay from "./RequestRunningOverlay";
-import TabGeneral from "./info/TabGeneral";
-import TabHeaders from "./info/TabResponseHeaders";
-import TabResponse from "./info/TabResponse";
 import {actionExecuteRequest} from "../redux/requestActions";
-import TabRequestHeader from "../request/headers/TabRequestHeader";
-import TabRequestHeaders from "./info/TabRequestHeaders";
-import TabResponseTiming from "./info/TabResponseTiming";
-import ResponseSuccess from "./ResponseSuccess";
 import RenderResponsePage from "./RenderResponsePage";
 import {FiChevronLeft, FiChevronRight, FiTrash} from "react-icons/fi";
 import {actionDeleteResponseHistory} from "../redux/history/historyActions";

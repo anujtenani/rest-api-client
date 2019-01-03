@@ -30,9 +30,11 @@ class TabResponse extends Component {
         const {previewType} = this.state;
         const {responseBody, headers} = this.props;
         //get conte ntSize;
-       const contentLength = getHeaderVal(headers,'content-length',0);
-       const contentType = getHeaderVal(headers, 'content-type','text/html');
-       console.log(contentType);
+
+       const contentLengthHeader = headers.find(({name, value})=> name.toLowerCase() === 'content-length');
+       const contentLength = contentLengthHeader ? contentLengthHeader.value : 0;
+       const contentTypeHeader = headers.find(({name, value})=> name.toLowerCase() === 'content-type');
+       const contentType =  contentTypeHeader ? contentTypeHeader.value : '';
 
         //only 2 types of response views
         //1. preview (shows formatted html or media element)

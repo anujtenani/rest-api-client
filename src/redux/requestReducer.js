@@ -50,6 +50,7 @@ const byId = (state = {}, action)=>{
         case createActionConstant(methods.create, types.body):
         case createActionConstant(methods.update, types.body):
         case createActionConstant(methods.delete, types.body):
+        case createActionConstant(methods.update, types.bodyData):
             const {requestId} = action;
             return {
                 ...state,

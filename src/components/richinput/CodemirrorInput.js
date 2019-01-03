@@ -11,6 +11,7 @@ import '../../css/codemirror.css';
 import './codemirrormode.js';
 import './codeinput.css';
 
+
 class CodemirrorInput extends Component {
 
 
@@ -53,7 +54,7 @@ class CodemirrorInput extends Component {
                     extraKeys: { "Tab": false, "Shift-Tab": false, "Enter": false }
                 }} value={this.state.value}
                             onChange={this.onChange}
-                            defaultValue={value} />z
+                            defaultValue={value} />
             </div>
         );
     }

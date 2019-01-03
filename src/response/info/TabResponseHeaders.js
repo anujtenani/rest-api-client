@@ -2,16 +2,20 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ExpandablePanel from "../../components/ExpandablePanel";
 
-class TabGeneral extends Component {
+
+/**
+ * Response headers are in {name, value} format as there can by multiple set-cookie headers
+ */
+class TabResponseHeaders extends Component {
 
 
     render() {
         const {headers} = this.props;
         return (
-            <ExpandablePanel title={`Response Headers (${Object.keys(headers).length})`}>
+            <ExpandablePanel title={`Response Headers (${headers.length})`}>
                 <div className={"ml-2"}>
-                    {Object.keys(headers).map((item)=>{
-                        return <LineItem title={item} key={item} value={headers[item]} />
+                    {headers.map(({name, value})=>{
+                        return <LineItem title={name} key={value} value={value} />
                     })}
                 </div>
             </ExpandablePanel>
@@ -37,4 +41,4 @@ function mapStateToProps(state, props) {
 
 export default connect(
     mapStateToProps,
-)(TabGeneral);
+)(TabResponseHeaders);

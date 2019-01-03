@@ -14,6 +14,11 @@ const RequestBodyJson = Loadable({
     loading: ()=><Spinner/>,
 });
 
+const RequestBodyGraphQL = Loadable({
+    loader : ()=>import('./RequestBodyGraphql'),
+    loading: ()=><Spinner/>
+})
+
 class BodyComponent extends Component{
 
     state = {
@@ -51,6 +56,8 @@ class BodyComponent extends Component{
                 <option value={"text"}>Text</option>
                 <option value={"json"}>JSON</option>
                 <option value={"binary"}>Binary / File</option>
+                <option value={"graphql"}>GraphQL</option>
+
             </select>
             <div>
                 {bodyType === "json" ? <RequestBodyJson requestId={requestId}/> : null }
@@ -58,6 +65,7 @@ class BodyComponent extends Component{
                 {bodyType === "file" ? <RequestBodyForm requestId={requestId}/> : null }
                 {bodyType === "text" ? <RequestBodyText requestId={requestId}/> : null }
                 {bodyType === "multipart" ? <RequestBodyForm requestId={requestId} /> : null }
+                {bodyType === "graphql" ? <RequestBodyGraphQL requestId={requestId}/> : null }
             </div>
             <Modal
                 isOpen={this.state.modalIsOpen}

@@ -20,7 +20,8 @@ const defaultState = {
     body:{
         byId:{},
         allIds:[],
-        bodyType:'nobody'
+        bodyType:'nobody',
+        data:undefined //data and byId{}, allIds[] fields are mutually excluses as in HAR spec (params and text fields are)
     },
     auth:{
         authType:'none'
@@ -84,12 +85,14 @@ export const actionExecuteRequest = (requestId)=>{
         const requestData = await torequest(getState().requests.byId[requestId]);
         const {url, method, headers, body, qs, auth} = requestData;
         sendRequest(url, method, headers, body, qs, auth).then((response)=>{
-            console.log(response);
-            const allHistoryIds = getState().requests.byId[requestId].history.allIds;
-            if(allHistoryIds.length > 5){
-                dispatch(actionDeleteResponseHistory(requestId, allHistoryIds[5]))
+            console.log('got response',response);
+            if(response) {
+                const allHistoryIds = getState().requests.byId[requestId].history.allIds;
+                if (allHistoryIds.length > 5) {
+                    dispatch(actionDeleteResponseHistory(requestId, allHistoryIds[5]))
+                }
+                dispatch(actionCreateResponseHistory(requestId, response));
             }
-            dispatch(actionCreateResponseHistory(requestId, response));
             dispatch(actionUpdateRequest(requestId, {executing:false}));
         }).catch((e)=>{
             console.log(e);

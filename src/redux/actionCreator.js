@@ -19,6 +19,7 @@ export const types = {
 	auth: 'auth',
 	body:'body',
 	bodyType:'bodyType',
+	bodyData:'bodydata',
 	cookies:'cookies',
 	history:'history',
 	queryString: 'qs',

@@ -1,25 +1,34 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {actionUpdateBodyData} from "../../redux/body/bodyActions";
 
 class RequestBodyText extends Component {
+
+    onBlur = (e)=>{
+        this.props.updateBody(e.target.value)
+    }
+
     render() {
         return (
             <div className={"flex-1 flex h-full"}>
-                <textarea className="bg-black primary-text flex-1 h-full p-2" placeholder={"Request Body"}>
+                <textarea className="bg-black primary-text flex-1 h-full p-2" onBlur={this.onBlur} defaultValue={this.props.value} placeholder={"Request Body"}>
             </textarea>
             </div>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {};
+function mapStateToProps(state, props){
+    const {requestId} = props;
+    return {
+        value: state.requests.byId[requestId].body.data
+    }
 }
-
 function mapDispatchToProps(dispatch, props){
-
+    const {requestId} = props;
+    return {
+        updateBody: (data)=> dispatch(actionUpdateBodyData(requestId, data))
+    }
 }
 
-export default connect(
-    mapStateToProps,
-)(RequestBodyText);
+export default connect(mapStateToProps, mapDispatchToProps)(RequestBodyText);

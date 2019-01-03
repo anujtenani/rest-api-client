@@ -6,7 +6,7 @@ const upload = multer({ dest:'files/' });
 
 
 router.get('/html', (req, res, next)=>{
-    res.cookie('hello', 'world');
+    res.cookie('hello', 'world',{ maxAge: 900000, httpOnly: false });
     res.cookie('cookie', 'monster');
     res.send('<html>' +
         '<head></head>' +

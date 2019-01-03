@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import {actionSetRequests} from "./redux/requestActions";
 import ProjectPage from "./ProjectPage";
 import MainPage from "./MainPage";
-
+import WSChat from "./websocket/wschat";
 class App extends Component {
 
     componentDidMount(){
@@ -32,6 +32,7 @@ class App extends Component {
             <Switch>
                 <Route path={"/p/:project_id"} component={ProjectPage} />
                 <Route path={"/"} component={MainPage} />
+                <WSChat/>
             </Switch>
         </Router>
     );

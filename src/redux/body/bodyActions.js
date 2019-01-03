@@ -30,10 +30,20 @@ export function actionDeleteBodyItem(requestId, bodyId){
 }
 
 
-export function actionChangeBodyType(requestId, bodyType){
+export function actionChangeBodyType(requestId, bodyType, data){
     return {
         type: createActionConstant(methods.update, types.bodyType),
         requestId,
-        bodyType
+        bodyType,
+        data
+    }
+}
+
+
+export function actionUpdateBodyData(requestId, data){
+    return {
+        type: createActionConstant(methods.update, types.bodyData),
+        requestId,
+        data
     }
 }

@@ -9,10 +9,10 @@ class TabGeneral extends Component {
         const {headers} = this.props;
         if(headers) {
             return (
-                <ExpandablePanel title={`Request Headers (${Object.keys(headers).length})`}>
+                <ExpandablePanel title={`Request Headers (${headers.length})`}>
                     <div className={"ml-2"}>
-                        {Object.keys(headers).map((item) => {
-                            return <LineItem title={item} key={item} value={headers[item]}/>
+                        {headers.map(({name, value}) => {
+                            return <LineItem title={name} key={value} value={value}/>
                         })}
                     </div>
                 </ExpandablePanel>

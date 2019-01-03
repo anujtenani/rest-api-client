@@ -1,5 +1,6 @@
 import {callFunction} from "../helpers/worker/WorkerHelper";
-
+import url from 'url';
+import {buildUrlFromRequestState} from "../helpers/func";
 export default async (request)=>{
     let {url, method, headers, body, auth, qs} = request;
     const h = {};
@@ -11,11 +12,10 @@ export default async (request)=>{
         const {name, value} = headers.byId[id];
         h[name] = value;
     });
-    const queryString = {};
-    qs.allIds.forEach((id)=>{
-        const {name, value} = qs.byId[id];
-        return qs[name] = value;
-    });
+
+
+    url = buildUrlFromRequestState(url, qs);
+    console.log(url);
 
     const {authType} = auth;
     let a = {}
@@ -35,7 +35,6 @@ export default async (request)=>{
         method,
         headers:h,
         body,
-        queryString,
         auth:a
     }
     console.log(ret);

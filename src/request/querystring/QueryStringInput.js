@@ -30,7 +30,7 @@ class QueryStringInput extends Component {
         return (
             <div className={"my-2"}>
                 <div className="flex flex-row items-center">
-                    <Input placeholder={"name"} defaultValue={name} onBlur={this.onInputBlur('value')}/>
+                    <Input placeholder={"name"} defaultValue={name} onBlur={this.onInputBlur('name')}/>
                     <Input placeholder={"value"} defaultValue={value} onBlur={this.onInputBlur('value')}/>
                     <button className={"p-2 primary-text"} onClick={this.deleteItem}><FiX/></button>
                     <button className={"p-2 primary-text"} onClick={this.toggleDoc}><FiMenu/></button>
