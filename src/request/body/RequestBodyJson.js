@@ -46,7 +46,7 @@ class RequestBodyJson extends React.Component{
             lint:true,
             gutters: ["CodeMirror-lint-markers"],
             viewportMargin:Infinity
-        }} value={this.state.value} onChange={this.onChange} onFocusChange={this.onFocusChange} defaultValue={value} />
+        }} value={this.state.value} onChange={this.onChange} onFocusChange={this.onFocusChange} defaultValue={value || ''} />
     }
 }
 

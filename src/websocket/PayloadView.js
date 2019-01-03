@@ -8,13 +8,16 @@ import PropTypes from 'prop-types';
 class PayloadView extends Component {
     render() {
         return (
-            <CodeMirror options={{
-                mode:{name:'javascript', mode:'json'},
-                lineWrapping:true,
-                lineNumbers:true,
-                readOnly:true,
-                viewportMargin:Infinity
-            }} defaultValue={this.props.value} />
+            <div className={"bg-grey-lighter rounded my-2 p-2"}>
+                <small>Sent</small>
+                <CodeMirror options={{
+                    mode:{name:'javascript', mode:'json'},
+                    lineWrapping:true,
+                    lineNumbers:true,
+                    readOnly:true,
+                    viewportMargin:Infinity
+                }} defaultValue={this.props.value} />
+            </div>
         );
     }
 }

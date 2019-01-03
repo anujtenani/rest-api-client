@@ -1,6 +1,8 @@
 import {callFunction} from "../helpers/worker/WorkerHelper";
-import url from 'url';
 import {buildUrlFromRequestState} from "../helpers/func";
+import * as basic from '../helpers/auth/basic';
+import * as digest from '../helpers/auth/digest';
+import * as hawk from '../helpers/auth/hawk';
 export default async (request)=>{
     let {url, method, headers, body, auth, qs} = request;
     const h = {};
@@ -13,18 +15,27 @@ export default async (request)=>{
         h[name] = value;
     });
 
-
     url = buildUrlFromRequestState(url, qs);
-    console.log(url);
+
+    const params = body.allIds.map((id)=>{
+        return body.byId[id];
+    });
+    const {bodyType, data} = body;
 
     const {authType} = auth;
     let a = {}
     switch (authType) {
         case "basic":
-            a = {username:auth.username, password:auth.password};
+            headers['Authorization'] = basic.convertAuthToHeader(auth.username, auth.password);
             break;
         case "digest":
-            a = {username:auth.username, password: auth.password, sendImmediately: true};
+            headers['Authorization'] = await digest.convertAuthToHeader(url, method, auth.username, auth.password);
+            break;
+        case "bearer":
+            headers['Authorization'] = `Bearer `+auth.token;
+            break;
+        case "hawk":
+            headers['Authorization'] = hawk.convertAuthToHeader(url, method, auth.id, auth.key, auth.algorithm, auth.ext);
             break;
         default:
             a = undefined
@@ -34,7 +45,7 @@ export default async (request)=>{
         url: url.startsWith('http') ? url : `http://`+url,
         method,
         headers:h,
-        body,
+        body : {params, bodyType, data},
         auth:a
     }
     console.log(ret);

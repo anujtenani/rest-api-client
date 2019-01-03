@@ -62,16 +62,7 @@ class BodyFormInput extends Component {
                 </div>
                 {docVisible ?
                     <div className={"my-2 flex flex-row items-center block"}>
-                        <div className="flex-1 flex flex-row items-center">
-                            <select className={"bg-transparent primary-text"}>
-                                <option>String</option>
-                                <option>Number</option>
-                            </select>
-                            <button className={"mx-2 text-red-lighter p-2 bg-grey-dark rounded"}><FiStar/></button>
-                            <p><FiLink/></p>
-                        </div>
-                        <Textarea placeholder={"Description"} class={"flex-1 py-2 border-b  bg-transparent primary-border primary-text"}/>
-                        <FiX/>
+                        <Textarea placeholder={"Description"} onBlur={this.onInputBlur('comment')} defaultValue={this.props.comment} class={"flex-1 py-2 border-b  bg-transparent primary-border primary-text"}/>
                     </div> : null }
             </div>
         );

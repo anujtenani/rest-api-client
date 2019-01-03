@@ -14,6 +14,8 @@ import {connect} from 'react-redux';
 import {actionSetRequests} from "./redux/requestActions";
 import CheckRequestExists from "./CheckRequestExists";
 import LoadingOverlay from "./components/LoadingOverlay";
+import DropDown from "./components/DropDown";
+import GenerateCode from "./transformers/GenerateCode";
 
 class ProjectPage extends Component {
 
@@ -48,6 +50,7 @@ class ProjectPage extends Component {
                         <OAUTH />
                         <CodemirrorInput/>
                         <RequestList/>
+                        <DropDown />
                     </div>
                     <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll border-0 md:border-l md:border-r primary-border">
                         <Route path={this.props.match.url+"/request/:requestId"} component={RenderRequestCreator} />
@@ -64,6 +67,7 @@ class ProjectPage extends Component {
 function RenderRequestCreator(props){
     const {requestId} = props.match.params;
     return <CheckRequestExists requestId={requestId}>
+        <GenerateCode requestId={requestId} />
         <RequestCreator requestId={requestId}/>
     </CheckRequestExists>
 }

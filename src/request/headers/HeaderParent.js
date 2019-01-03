@@ -20,7 +20,7 @@ class HeaderParent extends Component {
         return (
             <div className={"p-2"}>
                 {headerIds.map((headerId, index, arr)=> {
-                    return <HeaderInput headerId={headerId} requestId={requestId} />
+                    return <HeaderInput key={headerId} headerId={headerId} requestId={requestId} />
                 })}
                 <button onClick={this.createHeader} className={"addFieldButton"}>
                     <FiPlus /><span>Add Header</span>

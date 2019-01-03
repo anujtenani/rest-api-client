@@ -24,3 +24,6 @@ yarn-error.log*
 
 files/
 .idea/
+
+src/css/tailwind.css
+src/css/normalize.css

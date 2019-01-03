@@ -30,7 +30,7 @@ export const convertAuthToHeader = (uri, method, username, password)=>{
         const map = {
             username, realm, nonce, uri: path, qop, nc, cnonce, response, opaque
         }
-        return 'Authorization: Digest '+Object.keys(map).map((key)=>{
+        return 'Digest '+Object.keys(map).map((key)=>{
             return `${key}="${map[key]}"`;
         }).join(",");
     });

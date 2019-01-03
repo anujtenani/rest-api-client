@@ -7,6 +7,7 @@ import Loadable from 'react-loadable';
 import Spinner from "../../components/spinner";
 import Modal from 'react-modal';
 import ModalContainer from "../../components/ModalContainer";
+import RequestBodyFile from "./RequestBodyFile";
 Modal.setAppElement('#root');
 
 const RequestBodyJson = Loadable({
@@ -55,14 +56,14 @@ class BodyComponent extends Component{
                 <option value={"multipart"}>Multipart Form Data</option>
                 <option value={"text"}>Text</option>
                 <option value={"json"}>JSON</option>
-                <option value={"binary"}>Binary / File</option>
+                <option value={"file"}>Binary / File</option>
                 <option value={"graphql"}>GraphQL</option>
 
             </select>
             <div>
                 {bodyType === "json" ? <RequestBodyJson requestId={requestId}/> : null }
                 {bodyType === "form" ? <RequestBodyForm requestId={requestId}/> : null }
-                {bodyType === "file" ? <RequestBodyForm requestId={requestId}/> : null }
+                {bodyType === "file" ? <RequestBodyFile requestId={requestId}/> : null }
                 {bodyType === "text" ? <RequestBodyText requestId={requestId}/> : null }
                 {bodyType === "multipart" ? <RequestBodyForm requestId={requestId} /> : null }
                 {bodyType === "graphql" ? <RequestBodyGraphQL requestId={requestId}/> : null }

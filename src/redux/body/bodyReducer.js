@@ -57,6 +57,9 @@ const data = (state = null, action)=>{
         case createActionConstant(methods.update, types.bodyData):{
             return action.data || null
         }
+        case createActionConstant(methods.update, types.bodyType):{
+            return null;
+        }
         default :
             return state;
     }

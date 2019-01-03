@@ -104,17 +104,21 @@ class WSChat extends Component {
                 break;
         }
         return (
-            <div>
-                <Input placeholder={"Websocket server url"} defaultValue={server} onBlur={this.onBlur('server')} />
-                {btn}
+            <div className={"container mx-auto max-w-md"}>
+                <div className={"flex flex-row"}>
+                    <Input placeholder={"Websocket server url"} defaultValue={server} onBlur={this.onBlur('server')} />
+                    {btn}
+                </div>
+                {connectionState === "open" ? <div className={"flex"}>
+                    <Input placeholder={"data"} defaultValue={data} onBlur={this.onBlur('data')} />
+                    <button className={"primary-button"} onClick={this.sendMessage}>Send</button>
+                </div> : null
+                }
+                <div className={"h-full overflow-y-scroll mb-8"}>
                 {history.map(({mode, data, timestamp, id})=>{
                     return <RenderHistoryView key={id} mode={mode} data={data} timestamp={timestamp} />
                 })}
-                {connectionState === "open" ? <div>
-                        <Input placeholder={"data"} defaultValue={data} onBlur={this.onBlur('data')} />
-                        <button className={"primary-button"} onClick={this.sendMessage}>Send</button>
-                    </div> : null
-                }
+                </div>
             </div>
         );
     }

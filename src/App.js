@@ -31,8 +31,8 @@ class App extends Component {
         <Router>
             <Switch>
                 <Route path={"/p/:project_id"} component={ProjectPage} />
+                <Route path={"/wstest"} component={WSChat} />
                 <Route path={"/"} component={MainPage} />
-                <WSChat/>
             </Switch>
         </Router>
     );

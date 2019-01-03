@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 class SocketResponseView extends Component {
     render() {
         return (
+            <div className={"bg-orange-lighter rounded my-2 p-2"}>
+            <small>Received</small>
             <CodeMirror options={{
                 mode:{name:'javascript', mode:'json'},
                 lineWrapping:true,
@@ -14,6 +16,7 @@ class SocketResponseView extends Component {
                 readOnly:true,
                 viewportMargin:Infinity
             }} defaultValue={this.props.value} />
+            </div>
         );
     }
 }
