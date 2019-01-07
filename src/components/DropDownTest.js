@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import onClickOutside from "react-onclickoutside";
-import { Manager, Reference, Popper } from 'react-popper';
+import {Manager, Popper, Reference} from 'react-popper';
 import {FiCopy, FiEdit, FiInfo, FiTrash} from "react-icons/fi";
-import Popup from "reactjs-popup";
 
-class DropDown extends Component {
+class DropDownTest extends Component {
 
     state = {
         show:false,
@@ -75,4 +74,4 @@ function ConfirmDelete({onCancel, onConfirmed}){
 }
 
 
-export default onClickOutside(DropDown);
+export default onClickOutside(DropDownTest);

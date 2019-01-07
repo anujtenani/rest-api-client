@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {FiChevronRight, FiCopy, FiEdit, FiInfo, FiTrash} from "react-icons/fi";
+import {FiCopy, FiEdit, FiInfo, FiTrash} from "react-icons/fi";
 import {actionDeleteRequest} from "../../redux/requestActions";
-import Popup from "reactjs-popup";
+import Popup from "../../components/Popup";
 
 class RequestItemOptions extends Component {
 
@@ -30,7 +30,7 @@ class RequestItemOptions extends Component {
 
     render() {
         return (
-            <Popup trigger={<button className={"px-2 opacity-50 hover:opacity-100"}><FiInfo /></button>} position="bottom right">
+            <Popup placement={"bottom-start"} trigger={<FiInfo />} position="bottom right">
               <div className={"flex w-full flex-col p-2 primary-text"}>
                 <button className={"text-right py-2 secondary-text"}>
                     <span className={"mx-2"}>Rename</span>

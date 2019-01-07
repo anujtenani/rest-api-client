@@ -1,4 +1,27 @@
 @import './Theme.Light.css';
+@import './modal.css';
 body{
     font-size: 14px;
 }
+
+.markdown{
+    padding:2em
+}
+
+.markdown p, .mardown h1,.mardown h2,  .mardown h3, .mardown h4, .mardown h5, .mardown h6{
+    padding-bottom: 1em;
+}
+
+.markdown table {
+    width:100%;
+}
+
+.markdown table tr:nth-child(even){
+    background-color: #efefef;
+}
+
+.markdown table td{
+    padding:0.5rem;
+    border-bottom: 1px solid #eee;
+}
+

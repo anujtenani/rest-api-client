@@ -4,6 +4,8 @@ import headerReducer from "./headers/headerReducer";
 import bodyReducer from "./body/bodyReducer";
 import historyReducer from "./history/historyReducer";
 import queryStringReducer from "./querystring/queryStringReducer";
+import authReducer from "./auth/authReducer";
+import pathReducer from "./path/pathReducer";
 
 
 const byId = (state = {}, action)=>{
@@ -23,64 +25,53 @@ const byId = (state = {}, action)=>{
             const {requestId} = action;
             return {...state, [requestId]: undefined}
         }
+
         case createActionConstant(methods.update, types.auth):
         case createActionConstant(methods.set, types.auth): {
-            const {requestId} = action;
-            return {...state, [requestId]: {...state[requestId], auth: authReducer(state[requestId].auth, action)}}
+            return updatePartOfRequest(state, action, 'auth', authReducer);
         }
+
         case createActionConstant(methods.create, types.headers):
         case createActionConstant(methods.update, types.headers):
         case createActionConstant(methods.delete, types.headers): {
-            const {requestId} = action;
-            return {
-                ...state,
-                [requestId]: {...state[requestId], headers: headerReducer(state[requestId].headers, action)}
-            }
+            return updatePartOfRequest(state, action, 'headers', headerReducer)
         }
+
         case createActionConstant(methods.create, types.queryString):
         case createActionConstant(methods.update, types.queryString):
         case createActionConstant(methods.delete, types.queryString): {
-            const {requestId} = action;
-            return {
-                ...state,
-                [requestId]: {...state[requestId], qs: queryStringReducer(state[requestId].qs, action)}
-            }
+            return updatePartOfRequest(state, action, 'qs', queryStringReducer)
+        }
+        case createActionConstant(methods.create, types.urlpath):
+        case createActionConstant(methods.update, types.urlpath):
+        case createActionConstant(methods.delete, types.urlpath): {
+            return updatePartOfRequest(state, action, 'path', pathReducer)
         }
         case createActionConstant(methods.update, types.bodyType):
         case createActionConstant(methods.create, types.body):
         case createActionConstant(methods.update, types.body):
         case createActionConstant(methods.delete, types.body):
-        case createActionConstant(methods.update, types.bodyData):
-            const {requestId} = action;
-            return {
-                ...state,
-                [requestId]:{...state[requestId], body: bodyReducer(state[requestId].body, action)}
-            }
+        case createActionConstant(methods.update, types.bodyData): {
+            return updatePartOfRequest(state, action, 'body', bodyReducer)
+        }
+
         case createActionConstant(methods.create, types.history):
         case createActionConstant(methods.delete, types.history):{
-            const {requestId} = action;
-            return {
-                ...state,
-                [requestId]:{...state[requestId], history: historyReducer(state[requestId].history, action)}
-            }
+            return updatePartOfRequest(state, action, 'history', historyReducer)
         }
         default:
             return state;
     }
 }
 
-const authReducer = (state = {}, action)=>{
-        switch (action.type) {
-            case createActionConstant(methods.update, types.auth):{
-                return {...state, ...action.change}
-            }
-            case createActionConstant(methods.set, types.auth):{
-                return action.payload
-            }
-            default:
-                return null;
-        }
+const updatePartOfRequest = (state, action, partToUpdate, reducerFunction)=>{
+    const {requestId} = action;
+    return {
+        ...state,
+        [requestId]:{...state[requestId], [partToUpdate]: reducerFunction(state[requestId][partToUpdate], action)}
+    }
 }
+
 
 
 const allIds = (state = [], action)=>{

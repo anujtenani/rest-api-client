@@ -53,7 +53,7 @@ class RequestListItem extends PureComponent{
             e.preventDefault();
             e.stopPropagation();
         }
-        this.props.updateRequest({title: e.target.value});
+        this.props.updateRequest({name: e.target.value});
         this.onCancel();
     }
 
@@ -70,8 +70,7 @@ class RequestListItem extends PureComponent{
     */
 
     render(){
-        const {requestId, title, method} = this.props;
-        console.log('rerendering', requestId);
+        const {requestId, name, method} = this.props;
         const {contentEditable} = this.state;
         return <div>
             <div className={"flex-row flex items-center"}>
@@ -87,10 +86,10 @@ class RequestListItem extends PureComponent{
                 <input
                     ref={this.inputRef}
                     className={"bg-transparent primary-text italic"}
-                    defaultValue={this.props.title}
+                    defaultValue={name}
                     onFocus={this.onInputFocus}
                     onBlur={this.onBlur}/> :
-                <span className="bg-transparent primary-text">{title}</span>
+                <span className="bg-transparent primary-text">{name}</span>
                 }
                 <RequestItemOptions requestId={requestId}/>
             </NavLink>
@@ -105,7 +104,6 @@ function RenderTag({method}){
 }
 
 const mapStateToProps = (state, props)=>{
-    console.log(props);
     const {requestId} = props;
     return {
         ...state.requests.byId[requestId]

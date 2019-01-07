@@ -1,21 +1,30 @@
-import {callFunction} from "../helpers/worker/WorkerHelper";
 import {buildUrlFromRequestState} from "../helpers/func";
 import * as basic from '../helpers/auth/basic';
 import * as digest from '../helpers/auth/digest';
 import * as hawk from '../helpers/auth/hawk';
-export default async (request)=>{
-    let {url, method, headers, body, auth, qs} = request;
+import WebWorker from "../helpers/worker/WebWorker";
+
+export default async (state, requestId)=>{
+    const varId = state.env.variableAllIds.find((item)=>{
+        return state.env.variableById[item].name === "baseurl";
+    });
+
+    const baseurl = varId ? state.env.envVariableMap[varId][state.env.activeEnv] : '';
+
+    let {url, method, headers, body, auth, qs, path} = state.requests.byId[requestId];
+
     const h = {};
 
-    url = await substituteValuesInVariables(url);
+    const worker = new WebWorker(state);
 
+    url = await substituteValuesInVariables(url, worker, state);
 
     headers.allIds.forEach((id)=>{
         const {name, value} = headers.byId[id];
         h[name] = value;
     });
 
-    url = buildUrlFromRequestState(url, qs);
+    url = baseurl+buildUrlFromRequestState(url, qs, path);
 
     const params = body.allIds.map((id)=>{
         return body.byId[id];
@@ -55,7 +64,7 @@ export default async (request)=>{
 
 
 
-function substituteValuesInVariables(line){
+function substituteValuesInVariables(line, worker, state){
     const matches = line.match(/{{(.*?)}}/g);
     if (matches) {
         const fn = matches.map((item) => {
@@ -63,7 +72,7 @@ function substituteValuesInVariables(line){
         });
         console.log(fn);
         const promises = fn.map((fn) => {
-            return callFunction(fn, '');
+            return worker.callFunction(fn, state);
         });
 
         return Promise.all(promises).then((result) => {

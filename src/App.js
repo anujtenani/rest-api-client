@@ -2,22 +2,15 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './css/tailwind.css';
 import './css/normalize.css';
-import {startWorker} from "./helpers/worker/WorkerHelper";
 import {doImport} from "./converters/har/importHar";
 import {connect} from 'react-redux';
 import {actionSetRequests} from "./redux/requestActions";
 import ProjectPage from "./ProjectPage";
 import MainPage from "./MainPage";
 import WSChat from "./websocket/wschat";
+import ManageProject from "./project/environment/ManageProject";
+
 class App extends Component {
-
-    componentDidMount(){
-        startWorker();
-        // load initial state with regards to the app and hydrate the store
-        // this initial state is the allProjectData along with any requirement such as authentication or such
-        //
-    }
-
 
     handleFileRead = (fileContents)=>{
         const imports = doImport(JSON.parse(fileContents));
@@ -30,7 +23,8 @@ class App extends Component {
     return (
         <Router>
             <Switch>
-                <Route path={"/p/:project_id"} component={ProjectPage} />
+                <Route path={"/manage"} component={ManageProject} />
+                <Route path={"/p/:projectId"} component={ProjectPage} />
                 <Route path={"/wstest"} component={WSChat} />
                 <Route path={"/"} component={MainPage} />
             </Switch>
@@ -40,10 +34,16 @@ class App extends Component {
 }
 
 
+const mapStateToProps = (state)=>{
+    return {
+        state
+    }
+}
+
 const mapDispatchToProps = (dispatch, props)=>{
     return {
         setRequests:(byId, allIds)=>dispatch(actionSetRequests(byId, allIds))
     }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

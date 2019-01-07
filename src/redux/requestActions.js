@@ -1,4 +1,3 @@
-import {combineReducers} from 'redux';
 import {createActionConstant, methods, types} from "./actionCreator";
 import torequest from "../transformers/torequest";
 import {actionCreateResponseHistory, actionDeleteResponseHistory} from "./history/historyActions";
@@ -73,17 +72,22 @@ export const actionDeleteRequest = (requestId)=>{
 }
 
 
-let source;
+// let source;
 export const actionExecuteRequest = (requestId)=>{
     return async (dispatch, getState)=>{
-        if(source){
-            source.cancel();
-        }
+//        if(source){
+//            source.cancel();
+//        }
         dispatch(actionUpdateRequest(requestId, {executing:true}));
-        const CancelToken = axios.CancelToken;
-        source = CancelToken.source();
-        const requestData = await torequest(getState().requests.byId[requestId]);
+//        const CancelToken = axios.CancelToken;
+//        source = CancelToken.source();
+
+        //get special keyword baseurl;
+       const requestData = await torequest(getState(), requestId);
         const {url, method, headers, body, qs, auth} = requestData;
+
+
+
         sendRequest(url, method, headers, body, qs, auth).then((response)=>{
             console.log('got response',response);
             if(response) {
@@ -118,9 +122,9 @@ export const actionExecuteRequest = (requestId)=>{
 
 export const actionCancelRequestExecution = (requestId)=>{
     return (dispatch, getState)=>{
-        if(source) {
-            source.cancel();
-        }
+      //  if(source) {
+      //      source.cancel();
+      //  }
         return dispatch(actionUpdateRequest(requestId, {executing:false}))
     }
 }

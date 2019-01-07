@@ -1,19 +1,18 @@
 import {createActionConstant, methods, types} from "../actionCreator";
 import * as shortId from "shortid";
 
-export function actionUpdateQueryStringItem(requestId, qsId, change){
+export function actionUpdateQueryStringItem(requestId, id, change){
     return {
         type:createActionConstant(methods.update, types.queryString),
-            qsId,
+            id,
             requestId,
             change
     }
 }
-export function actionDeleteQueryStringItem(requestId, qsId){
-    console.log('delete query string called');
+export function actionDeleteQueryStringItem(requestId, id){
     return {
         type:createActionConstant(methods.delete, types.queryString),
-        qsId,
+        id,
         requestId,
     }
 }
@@ -22,7 +21,7 @@ export function actionCreateQueryStringItem(requestId){
     return {
         type:createActionConstant(methods.create, types.queryString),
         payload:{
-            qsId:shortId.generate(),
+            id:shortId.generate(),
             name:'',
             value:'',
         },

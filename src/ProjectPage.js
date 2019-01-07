@@ -1,37 +1,24 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import RequestList from "./request/list/RequestList";
 import RequestCreator from "./request/index";
 import ResponseView from './response';
 import './css/tailwind.css';
 import './css/normalize.css';
-import OAUTH from './request/auth/oAuth2';
-import CodemirrorInput from "./components/richinput/CodemirrorInput";
-import {startWorker} from "./helpers/worker/WorkerHelper";
-import FileInputWithReader from "./components/FileInputWithReader";
 import {doImport} from "./converters/har/importHar";
 import {connect} from 'react-redux';
 import {actionSetRequests} from "./redux/requestActions";
 import CheckRequestExists from "./CheckRequestExists";
 import LoadingOverlay from "./components/LoadingOverlay";
-import DropDown from "./components/DropDown";
-import GenerateCode from "./transformers/GenerateCode";
+import ProjectTitle from "./project/ProjectTitle";
+import ProjectSettings from "./project/ProjectSettings";
+import FunctionBuilder from "./project/functions/FunctionBuilder";
+import EnvironmentVariables from "./project/environment/EnvironmentVariables";
 
 class ProjectPage extends Component {
 
     state = {
         loading: false
-    }
-
-    componentDidMount(){
-        startWorker();
-        //load the project data if store is empty and block the router till then
-        const { project_id } = this.props.match.params;
-        if(project_id !== this.props.projectId){
-            //load the project and set the project request as well as project data
-            console.log('loading project');
-           // this.setState({loading:true});
-        }
     }
 
     handleFileRead = (fileContents)=>{
@@ -42,46 +29,56 @@ class ProjectPage extends Component {
     }
 
     render() {
-        return this.state.loading ?                 <LoadingOverlay/> :
+        const {projectId} = this.props;
+        return this.state.loading ? <LoadingOverlay/> :
             (<div className="main">
                 <div className="flex flex-row flex-wrap relative h-screen overflow-x-hidden">
                     <div className="w-full md:w-1/5 md:min-h-screen">
-                        <FileInputWithReader onFile={this.handleFileRead}/>
-                        <OAUTH />
-                        <CodemirrorInput/>
+                        <ProjectTitle projectId={projectId}/>
                         <RequestList/>
-                        <DropDown />
                     </div>
-                    <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll border-0 md:border-l md:border-r primary-border">
-                        <Route path={this.props.match.url+"/request/:requestId"} component={RenderRequestCreator} />
-                    </div>
-                    <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll">
-                        <Route path={this.props.match.url+"/request/:requestId"} component={RenderResponseView} />
-                    </div>
+                    <Route path={this.props.match.url+"/settings"} component={ProjectSettings} />
+                    <Route path={this.props.match.url+"/functions"} render={()=><FunctionBuilder functionId={"primary"} />} />
+                    <Route path={this.props.match.url+"/environment"} render={()=><EnvironmentVariables />} />
+
+                    <Route path={this.props.match.url+"/request/:requestId"} component={RenderRequest} />
                 </div>
             </div>
         );
     }
 }
 
-function RenderRequestCreator(props){
-    const {requestId} = props.match.params;
+
+
+function RenderRequest(props){
+    return <React.Fragment>
+        <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll border-0 md:border-l md:border-r primary-border">
+            <RenderRequestCreator requestId={props.match.params.requestId}/>
+        </div>
+        <div className="w-full md:w-2/5">
+            <RenderResponseView requestId={props.match.params.requestId}/>
+        </div>
+    </React.Fragment>
+}
+
+function RenderRequestCreator({requestId}){
     return <CheckRequestExists requestId={requestId}>
-        <GenerateCode requestId={requestId} />
         <RequestCreator requestId={requestId}/>
     </CheckRequestExists>
 }
 
-function RenderResponseView(props){
-    const {requestId} = props.match.params;
+function RenderResponseView({requestId}){
     return <CheckRequestExists requestId={requestId}>
         <ResponseView requestId={requestId}/>
     </CheckRequestExists>
 }
 
 const mapStateToProps = (state, props)=>{
+    const {projectId} = props.match.params;
+    console.log(props.match.params);
     return {
-        projectId:state.metadata.projectId
+        //projectId:state.metadata.projectId
+        projectId
     }
 }
 

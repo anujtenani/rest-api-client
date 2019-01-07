@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import TabGeneral from "./info/TabGeneral";
 import TabHeaders from "./info/TabResponseHeaders";
 import TabRequestHeaders from "./info/TabRequestHeaders";
-import TabResponseTiming from "./info/TabResponseTiming";
 import TabResponse from "./info/TabResponse";
 
 class ResponseSuccess extends Component {
@@ -21,7 +20,6 @@ class ResponseSuccess extends Component {
                         <TabGeneral requestId={requestId} historyId={historyId}/>
                         <TabHeaders requestId={requestId} historyId={historyId}/>
                         <TabRequestHeaders requestId={requestId} historyId={historyId} />
-                        <TabResponseTiming requestId={requestId} historyId={historyId} />
                     </div> :
                     <TabResponse requestId={requestId} historyId={historyId}/>
                 }
@@ -30,6 +28,11 @@ class ResponseSuccess extends Component {
     }
 }
 
+/*
+function TabResponseTiming(){
+    return <TabResponseTiming requestId={requestId} historyId={historyId} />
+}
+*/
 
 function ResponsePanelHeading({onChange}){
     return <ul className="list-reset flex flex-row justify-around items-center">

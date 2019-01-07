@@ -14,11 +14,20 @@ function buildUrl(uri, qs = {}){
 
 
 
-export function buildUrlFromRequestState(url, qs){
+export function buildUrlFromRequestState(url, qs = {}, path = {}){
+    let ur = url;
     const qsObject = {};
     qs.allIds.forEach((qsId)=>{
         const {name, value} = qs.byId[qsId];
         qsObject[name] = value;
     });
-    return buildUrl(url, qsObject);
+    if(path.allIds){
+        path.allIds.forEach((pathId)=>{
+            const {name, value} = path.byId[pathId];
+            ur = ur.split(name).join(value);
+        });
+    }
+    return buildUrl(ur, qsObject);
 }
+
+///console.log('url',buildUrl("http://gogole.com",{hello:'what'},'asdasd/asdad'));

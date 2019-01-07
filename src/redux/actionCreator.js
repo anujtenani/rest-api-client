@@ -12,6 +12,7 @@ export const methods = {
 };
 
 export const types = {
+	metadata:'metadata',
 	headers: 'headers',
 	form: 'form',
     request: 'request',
@@ -23,7 +24,11 @@ export const types = {
 	cookies:'cookies',
 	history:'history',
 	queryString: 'qs',
+	urlpath:'path',
 	group:'group',
+	func:'function',
+	variable:'variable',
+	env:'env'
 };
 
 export function createActionConstant(method, type) {

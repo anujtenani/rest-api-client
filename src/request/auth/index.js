@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import BasicAuth from "./BasicAuth";
-import {actionSetAuth} from "../../redux/actions";
+import {actionSetAuth} from "../../redux/auth/authActions";
 
 class AuthComponent extends Component {
 

@@ -2,11 +2,11 @@ import {createActionConstant, methods, types} from "../actionCreator";
 import * as shortId from "shortid";
 
 
-export function actionUpdateBodyItem(requestId, bodyId, change){
+export function actionUpdateBodyItem(requestId, id, change){
     return {
         type: createActionConstant(methods.update, types.body),
         requestId,
-        bodyId,
+        id,
         change
     }
 }
@@ -15,17 +15,17 @@ export function actionCreateBodyItem(requestId){
     return {
         type: createActionConstant(methods.create, types.body),
         payload : {
-            bodyId: shortId.generate(),
+            id: shortId.generate(),
         },
         requestId,
     }
 }
 
-export function actionDeleteBodyItem(requestId, bodyId){
+export function actionDeleteBodyItem(requestId, id){
     return {
         type: createActionConstant(methods.delete, types.body),
         requestId,
-        bodyId,
+        id,
     }
 }
 

@@ -13,6 +13,7 @@ import '../../css/codemirror.css';
 import jsonlint from 'jsonlint-mod';
 import { JSHINT } from 'jshint';
 import {actionUpdateBodyData, actionUpdateBodyItem} from "../../redux/body/bodyActions";
+import JavascriptInput from "../../components/codemirror/JavascriptInput";
 
 window.JSHINT = JSHINT
 window.jsonlint = jsonlint;
@@ -34,19 +35,15 @@ class RequestBodyJson extends React.Component{
         }
     }
 
+    onBlur = (value)=>{
+        this.props.updateBody(value);
+    }
+
 
     render(){
         const {value} = this.props;
         console.log(this.props, this.state);
-        return <CodeMirror options={{
-            mode:{name:'javascript', mode:'json'},
-            lineWrapping:true,
-            lineNumbers:true,
-            autoCloseBrackets:true,
-            lint:true,
-            gutters: ["CodeMirror-lint-markers"],
-            viewportMargin:Infinity
-        }} value={this.state.value} onChange={this.onChange} onFocusChange={this.onFocusChange} defaultValue={value || ''} />
+        return <JavascriptInput onBlur={this.onBlur} defaultValue={value || ''} />
     }
 }
 

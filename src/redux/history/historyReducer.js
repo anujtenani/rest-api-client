@@ -1,71 +1,25 @@
 import {createActionConstant, methods, types} from "../actionCreator";
 import {combineReducers} from 'redux';
-
-export const dummyHistory = {
-    allIds:["qwerty","asdfgh"],
-    byId:{
-        qwerty:{
-            request:{
-
-            },
-            response:{
-
-            }
-        },
-        asdfgh:{
-            request:{
-
-            },
-            response:{
-                headers:{
-
-                },
-                timing:{
-
-                },
-                body:{
-
-                },
-                statusCode:{
-
-                }
-            }
-        }
-    }
-}
+import {byIdReducer} from "../reducerCreator";
 
 
-const allIds =  (state = [], action)=>{
+const allIdsReducer = (state = [], action)=>{
     switch (action.type) {
         case createActionConstant(methods.create, types.history): {
-            const {historyId} = action;
-            return [historyId, ...state];
+            console.log('adding', action);
+            return [action.payload.id, ...state] //important add it to the start
         }
         case createActionConstant(methods.delete, types.history):{
-            const {historyId} = action;
-            return state.filter((id)=>id !== historyId)
+            console.log('deleting', action);
+            return state.filter((id)=>id !== action.id)
         }
         default:
-             return state;
+            return state;
     }
 }
 
-const byId = (state = {}, action)=>{
-    switch (action.type) {
-        case createActionConstant(methods.create, types.history):{
-            const {historyId} = action;
-            return {...state, [historyId]: action.payload}
-        }
-        case createActionConstant(methods.delete, types.history):{
-            const {historyId} = action;
-            return {...state, [historyId]:undefined}
-        }
-        default:
-            return state
-    }
-}
 
 
 export default combineReducers({
-    byId, allIds
+    byId: byIdReducer(types.history), allIds: allIdsReducer
 })

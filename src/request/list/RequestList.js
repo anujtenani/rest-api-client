@@ -20,7 +20,7 @@ class RequestList extends PureComponent {
         if(kwd.length === 0){
             this.setState({filteredIds:undefined})
         }else {
-            const filteredIds = this.props.titles.filter(({title}) => title.toLowerCase().includes(kwd.toLowerCase()))
+            const filteredIds = this.props.names.filter(({name}) => name.toLowerCase().includes(kwd.toLowerCase()))
                 .map(({id}) => id);
             this.setState({filteredIds});
         }
@@ -48,7 +48,7 @@ class RequestList extends PureComponent {
     }
 
     render() {
-        console.log(this.props.titles);
+       // console.log(this.props.titles);
         const filteredIds = this.state.filteredIds ? this.state.filteredIds : this.props.ids;
         return <div>
             <div className="flex flex-row items-center p-2">
@@ -70,19 +70,19 @@ class RequestList extends PureComponent {
 
 
 const mapListStateToProps = (state, props)=>{
-    const titles = state.requests.allIds.map((id)=> {
+    const names = state.requests.allIds.map((id)=> {
         return {
-            title: state.requests.byId[id].title, id
+            name: state.requests.byId[id].name, id
         }
     });
     return {
         ids: state.requests.allIds,
-        titles,
+        names,
     }
 }
 const mapDispatchToProps = (dispatch,props)=>{
     return {
-        createRequest:(title)=>dispatch(actionCreateRequest({title}))
+        createRequest:(name)=>dispatch(actionCreateRequest({name}))
     }
 }
 

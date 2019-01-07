@@ -25,7 +25,7 @@ const store =  createStore(
     composeEnhancers(applyMiddleware(thunk))
 );
 let persistor = persistStore(store);
-// persistor.purge();
+//persistor.purge();
 
 store.subscribe(()=>{
     //here you save the state to the localstorage;

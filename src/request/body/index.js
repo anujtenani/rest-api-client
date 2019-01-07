@@ -6,7 +6,7 @@ import {actionChangeBodyType} from "../../redux/body/bodyActions";
 import Loadable from 'react-loadable';
 import Spinner from "../../components/spinner";
 import Modal from 'react-modal';
-import ModalContainer from "../../components/ModalContainer";
+import ModalContainer from "../../components/modal/ModalContainer";
 import RequestBodyFile from "./RequestBodyFile";
 Modal.setAppElement('#root');
 

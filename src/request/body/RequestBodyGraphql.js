@@ -16,10 +16,9 @@ import 'codemirror-graphql/mode';
 import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/addon/edit/closebrackets';
 import {connect} from 'react-redux';
-import {actionUpdateBodyData, actionUpdateBodyItem} from "../../redux/body/bodyActions";
+import {actionUpdateBodyData} from "../../redux/body/bodyActions";
 import {sendRequest} from "../../servicehandlers";
 import {buildUrlFromRequestState} from "../../helpers/func";
-import debounce from 'lodash.debounce';
 
 class RequestBodyGraphql extends Component {
 

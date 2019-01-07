@@ -1,18 +1,13 @@
 import {createActionConstant, methods, types} from "../actionCreator";
 import {combineReducers} from 'redux';
+import {allIdsReducer, byIdReducer} from "../reducerCreator";
 
 const allIds =  (state = [], action)=>{
     switch (action.type) {
-        case createActionConstant(methods.create, types.body): {
-            const {bodyId} = action.payload;
-            return state.concat(bodyId)
-        }
-        case createActionConstant(methods.delete, types.body):{
-            const { bodyId } = action;
-            return state.filter((id)=>id !== bodyId)
-        }
+        case createActionConstant(methods.create, types.body):
+        case createActionConstant(methods.delete, types.body):
+            return allIdsReducer(types.body)(state, action);
         case createActionConstant(methods.update, types.bodyType):{
-            const {bodyType} = action;
             return [];
         }
         default:
@@ -22,18 +17,10 @@ const allIds =  (state = [], action)=>{
 
 const byId = (state = {}, action)=>{
     switch (action.type) {
-        case createActionConstant(methods.create, types.body):{
-            const {bodyId} = action.payload;
-            return {...state, [bodyId]: action.payload}
-        }
-        case createActionConstant(methods.delete, types.body):{
-            const {bodyId} = action;
-            return {...state, [bodyId]:undefined}
-        }
-        case createActionConstant(methods.update, types.body):{
-            const {bodyId} = action;
-            return {...state, [bodyId]: {...state[bodyId], ...action.change}}
-        }
+        case createActionConstant(methods.create, types.body):
+        case createActionConstant(methods.delete, types.body):
+        case createActionConstant(methods.update, types.body):
+            return byIdReducer(types.body)(state, action);
         case createActionConstant(methods.update, types.bodyType):{
             return {};
         }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {actionUpdateAuth} from "../../redux/actions";
+import {actionUpdateAuth} from "../../redux/auth/authActions";
 import Input from "../../components/Input";
 import PropTypes from 'prop-types';
 import Label from "../../components/Label";

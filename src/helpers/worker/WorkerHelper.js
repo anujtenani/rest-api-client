@@ -30,10 +30,11 @@ export const updateWorker = ()=>{
 var pendingResult = {};
 /**
  * @param fn Function name
+ * @param state
  * @param args - Function args
  * @returns {Promise<void>}
  */
-export const callFunction = async (fn, args)=>{
+export const callFunction = async (fn, state, args)=>{
     if(!worker){
         throw new Error('Worker has not been initialized')
     }
@@ -41,7 +42,7 @@ export const callFunction = async (fn, args)=>{
     const resultPromise = new Promise((resolve, reject)=>{
         pendingResult[key] = {resolve, reject};
     });
-    worker.postMessage({type:'call', fn, args, key});
+    worker.postMessage({type:'call', fn, args, state, key});
     return promiseTimeout(5000, resultPromise)
 };
 
