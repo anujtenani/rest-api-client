@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {buildClientSchema, introspectionQuery} from 'graphql';
-import CodeMirror from "react-codemirror";
+import {UnControlled as CodeMirror} from "react-codemirror2";
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/lib/codemirror';
 import 'codemirror/addon/hint/show-hint';
@@ -64,15 +64,12 @@ class RequestBodyGraphql extends Component {
         this.setState({value})
     }
 
-    onFocusChange = (focused)=>{
-        if(!focused){
-            this.props.updateBody(this.state.value)
-        }
+    onFocusChange = (editor, event)=>{
+        this.props.updateBody(editor.getValue());
     }
 
-    handleRef = (ref)=>{
-        this.cm = ref;
-        this.cm.getCodeMirror().on('inputRead', function onChange(editor, input) {
+    handleRef = (editor)=>{
+        editor.on('inputRead', function onChange(editor, input) {
             if (input.text[0] === ';' || input.text[0] === ' ') { return; }
             editor.execCommand('autocomplete');
         });
@@ -81,7 +78,7 @@ class RequestBodyGraphql extends Component {
     render() {
         const {myGraphQLSchema, value} = this.state;
             return (
-                <CodeMirror  ref={this.handleRef} options={{
+                <CodeMirror options={{
                     mode: 'graphql',
                     lint: {
                         schema: myGraphQLSchema
@@ -102,7 +99,7 @@ class RequestBodyGraphql extends Component {
                     indentWithTabs: true,
                     showCursorWhenSelecting: false,
                     viewportMargin:Infinity
-                }} value={value} onChange={this.onChange} onFocusChange={this.onFocusChange} defaultValue={this.props.value} /> )
+                }} editorDidMount={this.handleRef} value={this.props.value || ''} onBlur={this.onFocusChange} /> )
     }
 }
 

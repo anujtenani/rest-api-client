@@ -28,3 +28,13 @@ function sendMessageToExtension(data){
         });
     })
 }
+
+export function extensionInstalled(){
+    return sendMessageToExtension({type:'ping'})
+}
+
+export function openOauthTab(url, redirectUri){
+    const type = "open.oauth.tab";
+    const payload = {url, redirectUri};
+    return sendMessageToExtension({type, payload});
+}

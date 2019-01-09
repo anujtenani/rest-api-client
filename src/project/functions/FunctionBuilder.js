@@ -5,8 +5,8 @@ import Spinner from "../../components/spinner/index";
 import JavascriptInput from "../../components/codemirror/JavascriptInput";
 import Label from "../../components/Label";
 import Input from "../../components/Input";
-import {FiPlay, FiTerminal, FiZap} from "react-icons/fi";
-import {actionUpdateFunction} from "../../redux/functions/functionActions";
+import {FiPlay} from "react-icons/fi";
+import {actionDeleteFunction, actionUpdateFunction} from "../../redux/functions/functionActions";
 
 class FunctionBuilder extends Component {
     state = {
@@ -48,19 +48,24 @@ class FunctionBuilder extends Component {
                 }
             }
         }).catch((e)=>{
-            console.log('terminating webworker after 5 seconds');
-            this.setState({loading:false, result:'Error. Function took too long to run'});
+            console.log(e);
             if(this.worker) {
+                console.log('terminating webworker after 5 seconds');
+                this.setState({loading:false, result:'Error. Function took too long to run'});
                 this.worker.terminate();
             }
         });
+    }
+
+    deleteFunction = ()=>{
+        this.props.deleteFunction();
     }
 
 
     render() {
         const {name, value} = this.props;
         return (
-            <div className="w-full md:w-4/5 md:min-h-screen  overflow-scroll border-0 md:border-l md:border-r primary-border">
+            <div className="w-full">
             <div className={"flex flex-row flex-1"}>
                 <div className={"flex-1 w-1/2 p-2"}>
                     <div className={"mb-4"}>
@@ -69,33 +74,42 @@ class FunctionBuilder extends Component {
                     </div>
 
                     <Label>Code</Label>
-                    <pre className={"cm-s-default"}>
+                    <pre className={"cm-s-default flex flex-row items-end"}>
                         <span className={"cm-keyword"}>async function</span>
+                        <span className={"cm-def"}> {name}</span>
                         <span>(</span>
-                        <span className={"cm-def"}></span>
                         <span>)</span>
-                        <span>{` {`}</span>
+                        <span>{`{`}</span>
                     </pre>
-                    <JavascriptInput defaultValue={value} onBlur={this.updateFunction} />
+                    <JavascriptInput defaultValue={value} onBlur={this.updateFunction}  />
                     <p className={"cm-s-default"}><span>}</span></p>
-
-                    <div className={"flex flex-row justify-end"}>
-                        <button onClick={this.saveFunction} className={"primary-button"}>
-                            Save Function
-                        </button>
+                    <div className={"flex flex-row justify-between"}>
+                        <button onClick={this.deleteFunction} className={"primary-button text-red"}>Delete</button>
                         <button onClick={()=>this.applyFunction(undefined)} className={"primary-button p-2 flex flex-row justify-end items-center"}><FiPlay />Test run</button>
                     </div>
                 </div>
 
 
-                <div className={"flex-1 w-1/2 h-screen overflow-scroll"}>
-                    <h2>Result Preview</h2>
-                    {this.state.loading ? <Spinner/> : <div className={""}> <pre>{this.state.result}</pre></div> }
+                <div className={"flex-1 w-1/2 overflow-scroll"}>
+                    {this.state.result ? <RenderFunctionResult loading={this.state.loading} result={this.state.result} />
+                        :null
+                    }
+                    {this.state.loading ?  <Spinner/> : null }
                 </div>
             </div>
         </div>
         );
     }
+}
+
+function RenderFunctionResult({loading, result}){
+    return <React.Fragment>
+        <p className={"font-bold"}>Result Preview</p>
+    {
+        <div className={"secondary-bg p-2"}>
+            <pre>{result}</pre>
+        </div>}
+    </React.Fragment>
 }
 
 
@@ -111,7 +125,8 @@ const mapStateToProps = (state, props)=>{
 const mapDispatchToProps = (dispatch, props)=>{
     const {functionId} = props;
     return {
-        updateFunction:(change)=>dispatch(actionUpdateFunction(functionId, change))
+        updateFunction:(change)=>dispatch(actionUpdateFunction(functionId, change)),
+        deleteFunction:()=>dispatch(actionDeleteFunction(functionId)),
     }
 }
 

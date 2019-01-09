@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import MarkdownInput from "../components/codemirror/MarkdownInput";
-import {actionUpdateProjectMetadata} from "../redux/projectActions";
+import {actionUpdateProjectMetadata} from "../redux/project/projectActions";
 import ReactMarkdown from 'react-markdown';
+import ImportExport from "./ImportExport";
+import ProjectDoc from "./ProjectDoc";
+import {Route} from "react-router-dom";
+import FunctionsList from "./functions/FunctionsList";
+import EnvironmentVariables from "./environment/EnvironmentVariables";
 
 class ProjectSettings extends Component {
 
@@ -23,16 +28,12 @@ class ProjectSettings extends Component {
 
     render() {
         return (
-            <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll border-0 md:border-l md:border-r primary-border">
-                <div className={"flex flex-row justify-end"}>
-                    <button onClick={this.changeMode('preview')}>Preview</button>
-                    <button onClick={this.changeMode('edit')}>Edit</button>
+                <div className="w-full md:w-4/5 md:min-h-screen overflow-scroll">
+                    <Route path={this.props.match.url+"/functions"} component={FunctionsList} />
+                    <Route path={this.props.match.url+"/environment"} component={EnvironmentVariables} />
+                    <Route path={this.props.match.url+"/ie"} component={ImportExport} />
+                    <Route path={this.props.match.url+"/doc"} component={ProjectDoc} />
                 </div>
-                {this.state.mode === "edit" ?
-                    <MarkdownInput onBlur={this.updateProjectComment} defaultValue={this.props.comment}/>
-                    : <ReactMarkdown source={this.props.comment} className={"markdown"}/>
-                }
-            </div>
         );
     }
 }

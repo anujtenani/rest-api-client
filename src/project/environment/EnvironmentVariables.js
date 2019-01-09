@@ -18,13 +18,13 @@ class EnvironmentVariables extends Component {
     render() {
         const {envIds, variableIds} =  this.props;
         return (
-            <div className={"flex-1"}>
+            <React.Fragment>
                 <div className={"flex flex-row items-start"}>
                 <div className={"flex overflow-scroll p-2"} style={{maxHeight:"20rem"}}>
                     <div className={"table"}>
                         <div className={"table-row"}>
                             <div className={"table-cell p-1 border primary-border"} style={{minWidth:200}}>
-                                <p>Variables</p>
+                                <p className={"font-bold"}>Variables</p>
                             </div>
                             {envIds.map((envId)=>{
                                 return   <RenderEnvHeader envId={envId} key={envId} />
@@ -50,9 +50,11 @@ class EnvironmentVariables extends Component {
                             <button onClick={this.createNewEnvironment}>New Environment</button>
                         </div>
                     </div>
-                <p>Reserved Variables</p>
-                <p>baseurl - it is a reserved keyword. When this keyword is defined, the url is constructed by prepending baseurl</p>
-            </div>
+                <div className={"p-2 w-1/3"}>
+                <strong>Reserved Variables</strong>
+                <span className={"p-2 border-b primary-border block"}><pre>baseurl</pre>base url for the requests. when set, prepends the baseurl to the request url</span>
+                </div>
+            </React.Fragment>
         );
     }
 }

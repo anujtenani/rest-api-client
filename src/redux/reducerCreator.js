@@ -1,6 +1,6 @@
 import {createActionConstant, methods} from "./actionCreator";
 
-export const byIdReducer = (type) => (state = {}, action)=>{
+export const byIdReducer = (type, defaultState={}) => (state = defaultState, action)=>{
     switch (action.type) {
         case createActionConstant(methods.create, type):{
             const {id} = action.payload;
@@ -19,10 +19,10 @@ export const byIdReducer = (type) => (state = {}, action)=>{
     }
 }
 
-export const allIdsReducer = (type)=> (state = [], action)=>{
+export const allIdsReducer = (type, defaultState=[])=> (state = defaultState, action)=>{
     switch (action.type) {
         case createActionConstant(methods.create, type): {
-            return [...state, action.payload.id]
+            return [action.payload.id, ...state]
         }
         case createActionConstant(methods.delete, type):{
             return state.filter((id)=>id !== action.id)

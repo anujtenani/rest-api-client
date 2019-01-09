@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {FiCopy, FiEdit, FiInfo, FiTrash} from "react-icons/fi";
+import {FiChevronDown, FiCopy, FiEdit, FiInfo, FiTrash} from "react-icons/fi";
 import {actionDeleteRequest} from "../../redux/requestActions";
 import Popup from "../../components/Popup";
 
@@ -24,24 +24,23 @@ class RequestItemOptions extends Component {
     }
 
     actuallyDeleteRequest = ()=>{
-        this.props.history.push('/');
         this.props.deleteRequest();
     }
 
     render() {
         return (
-            <Popup placement={"bottom-start"} trigger={<FiInfo />} position="bottom right">
+            <Popup placement={"bottom-start"} trigger={<FiChevronDown className={"request-item-icon"} />} position="bottom right">
               <div className={"flex w-full flex-col p-2 primary-text"}>
-                <button className={"text-right py-2 secondary-text"}>
+                <button className={"text-right py-2"}>
                     <span className={"mx-2"}>Rename</span>
                     <FiEdit />
                 </button>
-                <button className={"text-right secondary-text py-2"}>
+                <button className={"text-right py-2"}>
                     <span className={"mx-2"}>Duplicate</span>
                     <FiCopy />
                 </button>
                   {!this.state.toggleDeleteConfirm ?
-                      <button onClick={this.toggleDeleteConfirm} className={"text-right py-2 secondary-text"}>
+                      <button onClick={this.toggleDeleteConfirm} className={"text-right py-2"}>
                           <span className={"mx-2"}>Delete</span>
                           <FiTrash/>
                       </button>

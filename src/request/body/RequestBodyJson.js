@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import CodeMirror from 'react-codemirror';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/lint/lint.css';
@@ -11,8 +10,8 @@ import 'codemirror/addon/lint/javascript-lint';
 import 'codemirror/theme/monokai.css';
 import '../../css/codemirror.css';
 import jsonlint from 'jsonlint-mod';
-import { JSHINT } from 'jshint';
-import {actionUpdateBodyData, actionUpdateBodyItem} from "../../redux/body/bodyActions";
+import {JSHINT} from 'jshint';
+import {actionUpdateBodyData} from "../../redux/body/bodyActions";
 import JavascriptInput from "../../components/codemirror/JavascriptInput";
 
 window.JSHINT = JSHINT

@@ -16,11 +16,16 @@ window.jsonlint = jsonlint;
 export default class JavascriptInput extends React.PureComponent{
 
     render(){
-        return  <BaseInput {...this.props} mode={"text/javascript"} options={{lint:true, lineNumbers:true, gutters: ["CodeMirror-lint-markers"]}}/>
+        return  <BaseInput {...this.props} mode={"text/javascript"} options={{lint:true, lineNumbers:true, gutters: ["CodeMirror-lint-markers"], ...this.props.options}}/>
     }
 }
 
 JavascriptInput.propTypes = {
-    onBlur: PropTypes.func.isRequired,
-    defaultValue: PropTypes.string.isRequired
+    onBlur: PropTypes.func,
+    defaultValue: PropTypes.string.isRequired,
+    options: PropTypes.object
+}
+
+JavascriptInput.defaultProps = {
+    options:{}
 }

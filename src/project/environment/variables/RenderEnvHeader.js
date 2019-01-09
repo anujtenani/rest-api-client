@@ -38,7 +38,7 @@ class RenderEnvHeader extends Component {
                     :
                     <div onDoubleClick={this.enterEditMode}
                          className={"py-2 justify-between items-center flex flex-row"}>
-                        <p>{name}</p>
+                        <p className={"font-bold"}>{name}</p>
                         <Popup trigger={<FiChevronDown/>} placement={"bottom-start"} ref={this.handleRef}>
                                 <button className={"p-2 text-right"} onClick={this.enterEditMode}><FiEdit />Rename</button>
                                 <button className={"p-2 text-right"} onClick={this.deleteEnvironment}><FiTrash />Delete</button>

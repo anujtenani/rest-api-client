@@ -1,4 +1,4 @@
-import CodeMirror from "react-codemirror";
+import {Controlled as CodeMirror} from "react-codemirror2";
 import React, {Component} from 'react';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/mode/javascript/javascript';
@@ -23,9 +23,8 @@ class CodemirrorInput extends Component {
         this.setState({value})
     }
 
-    handleRef = (ref)=>{
-        this.codemirror =ref;
-        this.codemirror.getCodeMirror().on("beforeChange", function(instance, change) {
+    handleRef = (editor)=>{
+        editor.on("beforeChange", function(instance, change) {
             var newtext = change.text.join("").replace(/\n/g, ""); // remove ALL \n !
             if(change.update) {
                 change.update(change.from, change.to, [newtext]);
@@ -34,17 +33,18 @@ class CodemirrorInput extends Component {
                 return false;
             }
         });
-        this.codemirror.getCodeMirror().on('mousedown',(instance, event)=>{
+        editor.on('mousedown',(instance, event)=>{
             console.log(event.target.className)
         })
     }
 
+    //TODO fix this
 
     render() {
         const {value}  = this.state;
         return (
             <div>
-                <CodeMirror ref={this.handleRef} options={{
+                <CodeMirror onBeforeChange={this.onChange} options={{
                     mode:'mymode',
                     lineWrapping:false,
                     lineNumbers:false,
@@ -53,8 +53,8 @@ class CodemirrorInput extends Component {
                     viewportMargin:Infinity,
                     extraKeys: { "Tab": false, "Shift-Tab": false, "Enter": false }
                 }} value={this.state.value}
-                            onChange={this.onChange}
-                            defaultValue={value} />
+                    onChange={this.onChange}
+                    defaultValue={value} />
             </div>
         );
     }

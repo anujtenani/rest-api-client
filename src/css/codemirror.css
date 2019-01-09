@@ -2,5 +2,10 @@
     border: 1px solid #eee;
     width: 100%;
     min-height: 4rem;
-    max-height: 100vh;
+    height: auto;
+}
+
+
+.CodeMirror-scroll{
+    max-height: 80vH;
 }

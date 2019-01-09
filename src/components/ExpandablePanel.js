@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FiChevronDown, FiChevronRight} from "react-icons/fi";
+import PropTypes from 'prop-types';
 
 class ExpandablePanel extends Component {
     state = {
@@ -8,9 +9,7 @@ class ExpandablePanel extends Component {
 
     constructor(props){
         super(props);
-        if(props.defaultCollapsed) {
-            this.state.collapsed = props.defaultCollapsed
-        }
+        this.state.collapsed = props.defaultState === "close"
     }
 
     toggleCollapsed = ()=>{
@@ -39,6 +38,15 @@ class ExpandablePanel extends Component {
             </div>
         );
     }
+}
+
+ExpandablePanel.propTypes = {
+    title: PropTypes.any.isRequired,
+    defaultState: PropTypes.oneOf(["open", "close"])
+}
+
+ExpandablePanel.defaultProps = {
+    defaultState: "open"
 }
 
 export default ExpandablePanel;

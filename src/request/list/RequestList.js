@@ -4,7 +4,9 @@ import RequestListItem from "./RequestListItem";
 import {actionCreateRequest} from "../../redux/requestActions";
 import Mousetrap from 'mousetrap';
 import {FiPlusCircle} from "react-icons/fi";
-import {withRouter} from 'react-router-dom';
+import Popup from "../../components/Popup";
+import {Route, withRouter} from "react-router-dom";
+
 class RequestList extends PureComponent {
 
     state = {
@@ -43,33 +45,74 @@ class RequestList extends PureComponent {
     }
 
 
+    createWebsocket = ()=>{
+        this.hidePopper();
+        this.props.createRequest({name:'New Websocket',type:'ws'})
+    }
+
+    createOAuth = ()=>{
+        this.hidePopper();
+        this.props.createRequest({name:'New OAuth2',type:'oauth2'})
+    }
+
+
     createANewRequest = ()=>{
-        this.props.createRequest('New Request')
+        this.hidePopper();
+        this.props.createRequest({name:'New Request',type:'rest'})
+    }
+
+    hidePopper = ()=>{
+        if(this.popper){
+            this.popper.hide();
+        }
+    }
+
+    popperRef = (ref)=>{
+        this.popper = ref
     }
 
     render() {
-       // console.log(this.props.titles);
         const filteredIds = this.state.filteredIds ? this.state.filteredIds : this.props.ids;
         return <div>
             <div className="flex flex-row items-center p-2">
-                <input type={"text"} onChange={this.onFilterInput} className="flex-1 p-1 bg-transparent primary-text rounded border border-grey-darker" placeholder={"filter"} />
-                <button className={"px-2 primary-text"} onClick={this.createANewRequest}>
-                    <FiPlusCircle className={"w-6 h-6"} />
-                </button>
+                <input type={"text"} onChange={this.onFilterInput} className="flex-1 p-1 mx-2 bg-transparent primary-text rounded border border-grey-darker" placeholder={"filter"} />
+                <Popup ref={this.popperRef} trigger={<FiPlusCircle className={"w-6 h-6"} />} placement={"bottom-start"}>
+                    <button className={"p-2 text-right hover:bg-grey-lighter"} onClick={this.createANewRequest}><Tag className={"tag--get"} title={"REST"} />New Request</button>
+                    <button className={"p-2 text-right hover:bg-grey-lighter"} onClick={this.createOAuth}><Tag className={"tag--oauth"} title={"oAuth"} />New oAuth2</button>
+                    <button className={"p-2 text-right hover:bg-grey-lighter"} onClick={this.createWebsocket}><Tag className={"tag--ws"} title={"ws"} />New Websocket</button>
+                </Popup>
             </div>
             <div onFocus={this.onFocus} onBlur={this.onBlur}>
             {filteredIds.map((requestId)=>{
-                return <RequestListItem requestId={requestId} key={requestId} />
+                const { projectId } = this.props;
+                const {name, method, type } = this.props.byId[requestId];
+                const path = `/p/${projectId}/${type || 'request'}/${requestId}`;
+                const isActive = this.props.location.pathname === path;
+                //this is a performance optimization so that RequestListItem is only rendered if location change affects it
+                return <RequestListItem
+                            requestId={requestId}
+                            key={requestId}
+                            name={name}
+                            method={method}
+                            type={type}
+                            path={path}
+                            isActive={isActive}
+                        />
             })}
             </div>
         </div>
     }
 }
 
+function Tag({title, className}){
+    return <span className={`text-xs mx-2 uppercase ${className}`}>{title}</span>
+}
+
 
 
 
 const mapListStateToProps = (state, props)=>{
+
     const names = state.requests.allIds.map((id)=> {
         return {
             name: state.requests.byId[id].name, id
@@ -77,12 +120,13 @@ const mapListStateToProps = (state, props)=>{
     });
     return {
         ids: state.requests.allIds,
+        byId: state.requests.byId,
         names,
     }
 }
 const mapDispatchToProps = (dispatch,props)=>{
     return {
-        createRequest:(name)=>dispatch(actionCreateRequest({name}))
+        createRequest:({name, type})=>dispatch(actionCreateRequest({name, type}))
     }
 }
 

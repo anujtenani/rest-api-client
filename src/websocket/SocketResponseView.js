@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CodeMirror from "react-codemirror";
+import {UnControlled as CodeMirror } from "react-codemirror2";
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ class SocketResponseView extends Component {
                 lineNumbers:true,
                 readOnly:true,
                 viewportMargin:Infinity
-            }} defaultValue={this.props.value} />
+            }} value={this.props.value} />
             </div>
         );
     }

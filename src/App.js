@@ -2,15 +2,20 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './css/tailwind.css';
 import './css/normalize.css';
-import {doImport} from "./converters/har/importHar";
+import {doImport} from "./importexport/har/importHar";
 import {connect} from 'react-redux';
 import {actionSetRequests} from "./redux/requestActions";
 import ProjectPage from "./ProjectPage";
 import MainPage from "./MainPage";
-import WSChat from "./websocket/wschat";
-import ManageProject from "./project/environment/ManageProject";
+import {extensionInstalled} from "./servicehandlers";
 
 class App extends Component {
+
+    componentDidMount(){
+        extensionInstalled().then(()=>{
+            console.log('yes extension is installed, you may hide it now');
+        })
+    }
 
     handleFileRead = (fileContents)=>{
         const imports = doImport(JSON.parse(fileContents));
@@ -23,9 +28,7 @@ class App extends Component {
     return (
         <Router>
             <Switch>
-                <Route path={"/manage"} component={ManageProject} />
                 <Route path={"/p/:projectId"} component={ProjectPage} />
-                <Route path={"/wstest"} component={WSChat} />
                 <Route path={"/"} component={MainPage} />
             </Switch>
         </Router>

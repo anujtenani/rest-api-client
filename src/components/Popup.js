@@ -34,10 +34,10 @@ class Popup extends Component {
                 {this.state.show ?
                     <Popper placement={this.props.placement} eventsEnabled={false} positionFixed={true}>
                         {({ ref, style, placement, arrowProps }) => (
-                            <div ref={ref} style={style} data-placement={placement}>
+                            <div ref={ref} style={style} className={"z-40"} data-placement={placement}>
                                 <div ref={arrowProps.ref} style={arrowProps.style} />
                                 <OutsideWrapper onClickOutside={this.hide}>
-                                <div className={"flex  bg-white shadow-md rounded primary-border flex-col p-2 primary-text"}>
+                                <div className={"flex bg-white shadow-md overflow-hidden rounded primary-border flex-col primary-text"}>
                                     {this.props.children}
                                 </div>
                                 </OutsideWrapper>

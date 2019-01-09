@@ -31,9 +31,9 @@ class TabResponse extends Component {
         const {responseBody, headers} = this.props;
         //get conte ntSize;
 
-       const contentLengthHeader = headers.find(({name, value})=> name.toLowerCase() === 'content-length');
+       const contentLengthHeader = headers && headers.length > 0 ? headers.find(({name, value})=> name.toLowerCase() === 'content-length') : 0;
        const contentLength = contentLengthHeader ? contentLengthHeader.value : 0;
-       const contentTypeHeader = headers.find(({name, value})=> name.toLowerCase() === 'content-type');
+       const contentTypeHeader = headers && headers.length > 0 ? headers.find(({name, value})=> name.toLowerCase() === 'content-type') : '';
        const contentType =  contentTypeHeader ? contentTypeHeader.value : '';
 
         //only 2 types of response views
@@ -60,7 +60,7 @@ class TabResponse extends Component {
 function RenderContentPreview({contentType, responseBody, contentLength}){
     if(contentType.startsWith("image")){
         return <PreviewMedia responseBody={responseBody} contentLength={contentLength} />
-    }else if(contentType.includes('json')) {
+    }else if(contentType.includes('json') || contentType.includes("javascript")) {
         return <PreviewSource previewMode={"json"} responseBody={responseBody} contentLength={contentLength}/>
     } else if(contentType.includes('xml')) {
         return <PreviewSource previewMode={"xml"} responseBody={responseBody} contentLength={contentLength}/>

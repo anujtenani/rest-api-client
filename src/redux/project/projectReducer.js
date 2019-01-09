@@ -1,7 +1,7 @@
-import {createActionConstant, methods, types} from "./actionCreator";
+import {createActionConstant, methods, types} from "../actionCreator";
 
 const defaultState = {
-    projectTitle:'',
+    projectName:'',
     maxHistory:5,
     projectId:undefined,
     comment:'',

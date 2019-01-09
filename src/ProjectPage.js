@@ -5,15 +5,16 @@ import RequestCreator from "./request/index";
 import ResponseView from './response';
 import './css/tailwind.css';
 import './css/normalize.css';
-import {doImport} from "./converters/har/importHar";
+import {doImport} from "./importexport/har/importHar";
 import {connect} from 'react-redux';
 import {actionSetRequests} from "./redux/requestActions";
 import CheckRequestExists from "./CheckRequestExists";
 import LoadingOverlay from "./components/LoadingOverlay";
 import ProjectTitle from "./project/ProjectTitle";
 import ProjectSettings from "./project/ProjectSettings";
-import FunctionBuilder from "./project/functions/FunctionBuilder";
-import EnvironmentVariables from "./project/environment/EnvironmentVariables";
+import BuildOAuth2 from "./oauth2page/BuildOAuth2";
+import OAuth2Result from "./oauth2page/OAuth2Result";
+import WSChat from "./websocket/wschat";
 
 class ProjectPage extends Component {
 
@@ -33,15 +34,14 @@ class ProjectPage extends Component {
         return this.state.loading ? <LoadingOverlay/> :
             (<div className="main">
                 <div className="flex flex-row flex-wrap relative h-screen overflow-x-hidden">
-                    <div className="w-full md:w-1/5 md:min-h-screen">
+                    <div className="w-full md:w-1/5 md:h-screen md:overflow-y-scroll border-0 md:border-l md:border-r primary-border">
                         <ProjectTitle projectId={projectId}/>
                         <RequestList/>
                     </div>
                     <Route path={this.props.match.url+"/settings"} component={ProjectSettings} />
-                    <Route path={this.props.match.url+"/functions"} render={()=><FunctionBuilder functionId={"primary"} />} />
-                    <Route path={this.props.match.url+"/environment"} render={()=><EnvironmentVariables />} />
-
-                    <Route path={this.props.match.url+"/request/:requestId"} component={RenderRequest} />
+                    <Route path={this.props.match.url+"/oauth2/:requestId"} component={RenderOAuth} />
+                    <Route path={this.props.match.url+"/ws/:requestId"} component={WSChat} />
+                    <Route path={this.props.match.url+"/rest/:requestId"} component={RenderRequest} />
                 </div>
             </div>
         );
@@ -49,10 +49,22 @@ class ProjectPage extends Component {
 }
 
 
+function RenderOAuth(props){
+    const {requestId} = props.match.params;
+    return <React.Fragment>
+        <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll border-0 md:border-r primary-border">
+            <BuildOAuth2 requestId={requestId}/>
+        </div>
+        <div className="w-full md:w-2/5">
+            <OAuth2Result requestId={requestId}/>
+        </div>
+    </React.Fragment>
+}
+
 
 function RenderRequest(props){
     return <React.Fragment>
-        <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll border-0 md:border-l md:border-r primary-border">
+        <div className="w-full md:w-2/5 md:min-h-screen  overflow-scroll border-0 md:border-r primary-border">
             <RenderRequestCreator requestId={props.match.params.requestId}/>
         </div>
         <div className="w-full md:w-2/5">

@@ -13,6 +13,9 @@
 .primary-button{
     @apply text-blue-light
 }
+.primary-button:disabled{
+    @apply text-grey cursor-not-allowed
+}
 
 .primary-text{
     @apply text-grey-darkest
@@ -23,7 +26,14 @@
 }
 
 select{
-    @apply secondary-bg h-8
+    @apply secondary-bg h-8 appearance-none rounded-lg px-1
+}
+
+
+select{
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat #eeeeee calc(100% - 6px);
+    background-size: 12px 12px;
+    padding-right: 20px;
 }
 
 .addFieldButton{
@@ -32,4 +42,40 @@ select{
 
 .error-message{
     @apply bg-red-lightest p-2 border-red rounded
+}
+
+.tag--get{
+    @apply text-green
+}
+.tag--post{
+    @apply text-blue
+}
+.tag--put, .tag--option, .tag--head{
+    @apply text-orange
+}
+.tag--delete{
+    @apply text-red
+}
+.tag--oauth{
+    @apply text-blue
+}
+.tag--ws{
+    @apply text-purple
+}
+.tag--counter{
+    @apply secondary-bg text-xs px-1 py-px ml-1 rounded
+}
+
+a{
+    @apply text-blue
+}
+a:visited{
+    @apply text-blue-dark
+}
+
+a svg{
+    @apply text-black
+}
+a:visited svg{
+    @apply text-black
 }

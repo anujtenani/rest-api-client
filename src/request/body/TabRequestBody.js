@@ -5,9 +5,9 @@ import RequestBody from './index'
 class TabRequestBody extends Component {
     render() {
         const {requestId, bodyType, numItems} = this.props;
-
+        const defaultOpen = bodyType !== "nobody" ? "open" : "close";
         return (
-            <ExpandablePanel title={"Body"}>
+            <ExpandablePanel title={<p>Body{numItems ? <span className={"tag--counter"}>{numItems}</span> : null }</p>} defaultState={defaultOpen}>
                 <RequestBody requestId={requestId}/>
             </ExpandablePanel>
         );

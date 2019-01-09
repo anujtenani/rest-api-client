@@ -78,7 +78,7 @@ const allIds = (state = [], action)=>{
     switch (action.type) {
         case createActionConstant(methods.create, types.request): {
             const {requestId} = action.payload;
-            return state.concat(requestId);
+            return [requestId, ...state];
         }
         case createActionConstant(methods.delete, types.request): {
             const {requestId} = action

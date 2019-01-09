@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CodeMirror from "react-codemirror";
+import {UnControlled as CodeMirror } from "react-codemirror2";
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/lint/lint.css';
@@ -17,19 +17,9 @@ window.jsonlint = jsonlint;
 
 class PayloadInput extends Component {
 
-    state = {
-        value:''
-    }
 
-    onChange = (value)=>{
-        this.setState({value})
-    }
-
-    onFocusChange = (focused)=>{
-        if(!focused){
-//            this.props.updateBodyItem({value:this.state.value});
-            console.log('send updates')
-        }
+    onBlur = (editor, event)=>{
+        this.props.updateBodyItem({value:editor.getValue()});
     }
 
     render() {
@@ -43,7 +33,7 @@ class PayloadInput extends Component {
                 lint:true,
                 gutters: ["CodeMirror-lint-markers"],
                 viewportMargin:Infinity
-            }} value={this.state.value} onChange={this.onChange} onFocusChange={this.onFocusChange} defaultValue={value} />
+            }} onBlur={this.onBlur} value={value} />
 
         );
     }

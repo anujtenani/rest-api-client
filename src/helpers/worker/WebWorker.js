@@ -17,8 +17,10 @@ export default class WebWorker{
 
         const activeEnv = state.env.activeEnv;
         state.env.variableAllIds.forEach((varId)=>{
-            fnObject[state.env.variableById[varId].name] = `()=>"${state.env.envVariableMap[varId][activeEnv]}"`;
+//            fnObject[state.env.variableById[varId].name] = `()=>"${state.env.envVariableMap[varId][activeEnv]}"`;
+            fnObject[state.env.variableById[varId].name] = `"${state.env.envVariableMap[varId][activeEnv]}"`;
         });
+
         console.log('functionObject', fnObject);
         this.startWorker(fnObject);
     }
@@ -125,21 +127,31 @@ export default class WebWorker{
         "    const state = this.state;\n" +
         "    if(state.requests.byId[idOrName]) return state.requests.byId[idOrName];\n" +
         "    const id = state.requests.allIds.find((requestId)=>{\n" +
-        "        console.log('matching', state.requests.byId[requestId].name, idOrName);\n" +
         "        return state.requests.byId[requestId].name === idOrName\n" +
         "    });\n" +
         "    if(id) return state.requests.byId[id];\n" +
         "    else throw new Error('Request not found');\n" +
         "}\n" +
-        "getResponseBody = (requestId)=>{\n" +
+        "getResponseBody = (requestId, jsonquery)=>{\n" +
         "    const request =  findRequest(requestId);\n" +
         "    const { history } = request;\n" +
         "    if(history.allIds.length > 0) {\n" +
         "        const {body} = history.byId[history.allIds[0]];\n" +
-        "        //decode if content-type is json\n" +
-        "        const contentType = getResponseHeader(requestId, 'content-type');\n" +
-        "        console.log('got content type', contentType);\n" +
-        "        return contentType.includes(\"application/json\") ? JSON.parse(body) : body;\n" +
+        "        try{\n" +
+        "            const json =  JSON.parse(body);\n" +
+        "            console.log('jsonquery', jsonquery);\n" +
+        "            if(jsonquery){\n" +
+        "                const result = jsonpath.query(json, jsonquery);\n" +
+        "                console.log('returning', result);\n" +
+        "                return result.length === 1 ? result[0] : result;\n" +
+        "            }else{\n" +
+        "                console.log('returning', 'x');\n" +
+        "                return json;\n" +
+        "            }\n" +
+        "        }catch(e){\n" +
+        "            console.log('error',e);\n" +
+        "            return body;\n" +
+        "        }\n" +
         "    }\n" +
         "}\n" +
         "getResponseHeader = (requestId, headerName)=>{\n" +
@@ -190,12 +202,16 @@ export default class WebWorker{
         "\n" +
         "async function callFunction(fn, state,args) {\n" +
         "    try{\n" +
+        "        if(fn.includes(\"(\")){\n" +
+        "            //call it directly\n" +
+        "            return {data : await eval(fn)};\n" +
+        "        }\n" +
         "        const func = fn.split('.').reduce((acc, cur)=>acc ? acc[cur] : undefined, this);\n" +
         "        if(func){\n" +
         "            const data = await func(state,args);\n" +
         "            return {data}\n" +
         "        }else{\n" +
-        "            return {error:\"Undefined function \"+fn}\n" +
+        "            return {error:\"Undefined function \"+fn+\":\"+func}\n" +
         "        }\n" +
         "    }catch(err){\n" +
         "        console.log('got error', err);\n" +

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import HTTPSnippet from 'httpsnippet';
 import {connect} from 'react-redux';
-import {requestToHarObject} from "../converters/har/requestToHar";
+import {requestToHarObject} from "../importexport/har/requestToHar";
 
 class GenerateCode extends Component {
 

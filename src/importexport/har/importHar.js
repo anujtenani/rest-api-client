@@ -1,26 +1,15 @@
 const shortId = require('shortid');
 export function doImport(harObject){
     const {entries} = harObject.log;
-    const requests = entries.map((entry)=>{
+    return entries.map((entry)=>{
         return entryToRequest(entry)
     });
-    console.log('got requests', requests.length);
-    const byId = {};
-    const allIds = [];
-    requests.forEach((request)=>{
-        const requestId = shortId.generate();
-        allIds.unshift(requestId);
-        byId[requestId] = request;
-    })
-    return {
-        byId, allIds
-    }
-
 }
 
 function entryToRequest(entry){
     const requestTemplate = {
-        title:'',
+        name:'',
+        type:'request',
         url:'',
         method:'',
         headers:{
@@ -49,25 +38,24 @@ function entryToRequest(entry){
         }
     }
 
-    requestTemplate.title = entry.comment;
+    requestTemplate.name = entry.comment;
     const {request, response, serverIPAddress, connection, startedDateTime, timings} = entry;
-    if(!request){
-        return ;
-    }
-    const {method, url, httpVersion, cookies, headers, queryString, postData} = request;
-    requestTemplate.method = method;
-    requestTemplate.url = url;
-    if(headers) {
-        requestTemplate.headers = requestHeaders(headers);
-    }
-    if(queryString) {
-        requestTemplate.qs = requestQueryString(queryString);
-    }
-    if(response) {
-        requestTemplate.history = createResponseHistory(response, url, timings, serverIPAddress, headers);
-    }
-    if(postData) {
-        requestTemplate.body = createRequestBody(postData);
+    if(request) {
+        const {method, url, httpVersion, cookies, headers, queryString, postData} = request;
+        requestTemplate.method = method;
+        requestTemplate.url = url;
+        if (headers) {
+            requestTemplate.headers = requestHeaders(headers);
+        }
+        if (queryString) {
+            requestTemplate.qs = requestQueryString(queryString);
+        }
+        if (response) {
+            requestTemplate.history = createResponseHistory(response, url, timings, serverIPAddress, headers);
+        }
+        if (postData) {
+            requestTemplate.body = createRequestBody(postData);
+        }
     }
     return requestTemplate;
 }
@@ -129,29 +117,25 @@ function createResponseHistory(response, url, timings, serverIPAddress, requestH
 }
 
 function requestHeadersForResponse(headers){
-    return headers ?  responseHeaders(headers) : {}
+    return headers ? responseHeaders(headers) : []
 }
 
 
 function responseHeaders(headers){
-    const headerObject = {};
-    headers.forEach((header)=>{
+    return headers.map((header)=>{
         const {name, value} = header;
-        headerObject[name] = value;
+        return {name, value}
     });
-    return headerObject
 }
-
-
 
 function requestQueryString(queryString){
     const allIds = [];
     const byId = {};
     queryString.forEach((header)=>{
         const {name, value, comment} = header;
-        const queryId = shortId.generate();
-        allIds.push(queryId);
-        byId[queryId] = {name, value, queryId, comment}
+        const id = shortId.generate();
+        allIds.push(id);
+        byId[id] = {name, value, id, comment}
     });
     return {
         allIds, byId
@@ -170,9 +154,9 @@ function requestHeaders(headers){
     const byId = {};
     headers.forEach((header)=>{
         const {name, value, comment} = header;
-        const headerId = shortId.generate();
-        allIds.push(headerId);
-        byId[headerId] = {name, value, headerId, comment}
+        const id = shortId.generate();
+        allIds.push(id);
+        byId[id] = {name, value, id, comment}
     });
     return {
         allIds, byId

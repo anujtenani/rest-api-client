@@ -5,27 +5,25 @@ import {types} from '../actionCreator';
 
 const defaultState = {
     variableById:{
-        "2adasd":{
-            name:'VariableName',//without space
-            defaultValue:'',
+        "baseurl":{
+            name:'baseurl',//without space
         }
     },
-    variableAllIds:[],
-    envAllIds:[],
+    variableAllIds:["baseurl"],
+    envAllIds:["default"],
     envById:{
-        "envid":{
-            title:'Production',
+        "default":{
+            name:'Default',
         }
     },
     envVariableMap:{
-        "varid":{
-            "prodid":"value",
-            "env1id":"value"
+        "baseurl":{
+            "default":"",
         }
     }
 }
 
-const envVariableMap = (state = {}, action)=>{
+const envVariableMap = (state = defaultState.envVariableMap, action)=>{
     switch (action.type) {
         case actionTypes.updateValueForEnvironment:
             return {...state, [action.variableId]: {...state[action.variableId], [action.envId]: action.value}}
@@ -64,10 +62,10 @@ const activeEnv = (state=null, action)=>{
 
 
 export default combineReducers({
-    variableAllIds: allIdsReducer(types.variable),
-    variableById: byIdReducer(types.variable),
-    envAllIds: allIdsReducer(types.env),
-    envById: byIdReducer(types.env),
+    variableAllIds: allIdsReducer(types.variable, defaultState.variableAllIds),
+    variableById: byIdReducer(types.variable, defaultState.variableById),
+    envAllIds: allIdsReducer(types.env, defaultState.envAllIds),
+    envById: byIdReducer(types.env, defaultState.envById),
     envVariableMap,
     activeEnv
 })

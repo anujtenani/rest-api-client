@@ -5,17 +5,22 @@ import AuthComponent from "./index";
 
 class TabRequestAuth extends Component {
     render() {
-        const {requestId} = this.props;
+        const {requestId, authType} = this.props;
+        const defaultOpen = authType === "none" ? "close" : "open";
         return (
-            <ExpandablePanel title={"Auth"}>
+            <ExpandablePanel title={"Auth"} defaultState={defaultOpen}>
                 <AuthComponent requestId={requestId}/>
             </ExpandablePanel>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {};
+function mapStateToProps(state, props) {
+    const {requestId} = props;
+    const auth = state.requests.byId[requestId].auth;
+    return {
+        authType: auth ? auth.authType : 'none'
+    };
 }
 
 export default connect(

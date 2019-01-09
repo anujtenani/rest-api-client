@@ -1,6 +1,6 @@
 import {createActionConstant, methods, types} from "./actionCreator";
 import torequest from "../transformers/torequest";
-import {actionCreateResponseHistory, actionDeleteResponseHistory} from "./history/historyActions";
+import {actionCreateResponseHistory} from "./history/historyActions";
 import {sendRequest} from "../servicehandlers";
 
 const shortId = require('shortid');
@@ -59,7 +59,7 @@ export const actionCreateRequest = (payload)=>{
 export const actionUpdateRequest = (requestId, change)=>{
     return {
         type: createActionConstant(methods.update, types.request),
-        requestId:requestId,
+        requestId,
         change
     }
 }
@@ -91,10 +91,6 @@ export const actionExecuteRequest = (requestId)=>{
         sendRequest(url, method, headers, body, qs, auth).then((response)=>{
             console.log('got response',response);
             if(response) {
-                const allHistoryIds = getState().requests.byId[requestId].history.allIds;
-                if (allHistoryIds.length > 5) {
-                    dispatch(actionDeleteResponseHistory(requestId, allHistoryIds[5]))
-                }
                 dispatch(actionCreateResponseHistory(requestId, response));
             }
             dispatch(actionUpdateRequest(requestId, {executing:false}));

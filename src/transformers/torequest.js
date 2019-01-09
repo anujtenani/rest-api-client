@@ -19,65 +19,86 @@ export default async (state, requestId)=>{
 
     url = await substituteValuesInVariables(url, worker, state);
 
-    headers.allIds.forEach((id)=>{
-        const {name, value} = headers.byId[id];
-        h[name] = value;
-    });
-
     url = baseurl+buildUrlFromRequestState(url, qs, path);
 
     const params = body.allIds.map((id)=>{
         return body.byId[id];
     });
     const {bodyType, data} = body;
-
+    const hdrs = await getHeaders(state, requestId, worker);
     const {authType} = auth;
     let a = {}
     switch (authType) {
         case "basic":
-            headers['Authorization'] = basic.convertAuthToHeader(auth.username, auth.password);
+            hdrs['Authorization'] = basic.convertAuthToHeader(auth.username, auth.password);
             break;
         case "digest":
-            headers['Authorization'] = await digest.convertAuthToHeader(url, method, auth.username, auth.password);
+            hdrs['Authorization'] = await digest.convertAuthToHeader(url, method, auth.username, auth.password);
             break;
         case "bearer":
-            headers['Authorization'] = `Bearer `+auth.token;
+            hdrs['Authorization'] = `Bearer `+ await substituteValuesInVariables(auth.bearer, worker, state);
             break;
         case "hawk":
-            headers['Authorization'] = hawk.convertAuthToHeader(url, method, auth.id, auth.key, auth.algorithm, auth.ext);
+            hdrs['Authorization'] = hawk.convertAuthToHeader(url, method, auth.id, auth.key, auth.algorithm, auth.ext);
             break;
         default:
             a = undefined
     }
 
+
+
     const ret =  {
         url: url.startsWith('http') ? url : `http://`+url,
         method,
-        headers:h,
+        headers:hdrs,
         body : {params, bodyType, data},
-        auth:a
     }
     console.log(ret);
     return ret;
 }
 
 
+function getHeaders(state, requestId, worker){
+    const {headers} = state.requests.byId[requestId];
+
+    const hdrs = headers.allIds.map((item)=>{
+        const {name, value} = headers.byId[item];
+        const n = substituteValuesInVariables(name, worker, state);
+        const v = substituteValuesInVariables(value, worker, state);
+        return Promise.all([n,v]);
+    })
+
+    const headerObj = {};
+    return Promise.all(hdrs).then((result)=>{
+        result.forEach((item)=>{
+            const name = item[0];
+            headerObj[name] = item[1];
+        });
+        return headerObj;
+    })
+}
+
 
 
 function substituteValuesInVariables(line, worker, state){
-    const matches = line.match(/{{(.*?)}}/g);
+    const matches = line.match(/```(.*?)```/g);
     if (matches) {
         const fn = matches.map((item) => {
-            return item.replace("{{", '').replace("}}", '');
+            return item.replace("```", '').replace('```','');
         });
         console.log(fn);
         const promises = fn.map((fn) => {
+            if(fn.includes("(")){
+                //TODO make way for on demand functions eg. ```base.timestamp()``` directly in the field
+                //convert this function to
+            }
             return worker.callFunction(fn, state);
         });
 
         return Promise.all(promises).then((result) => {
+            console.log('got sub result', result);
             result.forEach(({data}, index) => {
-                line = line.replace('{{' + fn[index] + '}}', data);
+                line = line.replace('```' + fn[index] + '```', data);
             });
             return line;
         });

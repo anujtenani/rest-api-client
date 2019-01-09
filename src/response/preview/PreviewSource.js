@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CodeMirror from 'react-codemirror';
+import {UnControlled as CodeMirror} from 'react-codemirror2'
 import 'codemirror/mode/htmlembedded/htmlembedded';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/addon/edit/closebrackets';
@@ -16,7 +16,7 @@ import 'codemirror/addon/fold/brace-fold';
 import 'codemirror/addon/fold/foldgutter.js';
 import 'codemirror/addon/fold/foldgutter.css'
 import PropTypes from 'prop-types';
-import AsyncJsonInterface from "../../helpers/AsyncJsonInterface";
+import AsyncJsonInterface from "../../helpers/asyncjson/AsyncJsonInterface";
 
 
 export default class PreviewSource extends Component {
@@ -38,14 +38,17 @@ export default class PreviewSource extends Component {
     }
 
     render() {
-        console.log('rendering');
         let mode = undefined;
         let body = this.props.responseBody;
         const {previewMode} = this.props;
         switch (previewMode) {
             case "json":
                 mode = {name:'javascript', mode:'json'};
-//                body = JSON.stringify(JSON.parse(body), null, 2);
+                try {
+                    body = JSON.stringify(JSON.parse(body), null, 2);
+                }catch(e){
+                    mode = "xml"
+                }
                 break;
             case "xml":
                 mode = "xml";
@@ -56,9 +59,6 @@ export default class PreviewSource extends Component {
             default:
                 mode = undefined
         }
-
-
-        if(this.state.data)
         return (
             <div className={"w-full h-16"}>
                 <CodeMirror options={{
@@ -68,10 +68,9 @@ export default class PreviewSource extends Component {
                     readOnly:true,
                     foldGutter: true,
                     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
-                }} value={this.state.data}  />
+                }} value={body}  />
             </div>
         );
-        else return null;
     }
 }
 

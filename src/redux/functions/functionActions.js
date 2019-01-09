@@ -5,8 +5,10 @@ import shortId from 'shortid';
 export const actionCreateFunction = (payload)=>{
     return {
         type: createActionConstant(methods.create, types.func),
-        id: shortId.generate(),
-        payload
+        payload:{
+            id: shortId.generate(),
+            ...payload
+        }
     }
 };
 

@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import RequestURL from "./url/RequestURL";
-import RequestOptions from "./RequestOptions";
 import TabRequestBody from "./body/TabRequestBody";
 import TabRequestHeader from "./headers/TabRequestHeader";
 import TabRequestAuth from "./auth/TabRequestAuth";
 import TabRequestQueryString from "./querystring/TabRequestQueryString";
-import RequestSettings from "./RequestSettings";
 import RequestDoc from "./RequestDoc";
-import {Link, NavLink, Route, Switch, withRouter} from "react-router-dom";
+import {NavLink, Route, Switch, withRouter} from "react-router-dom";
 
 class Index extends Component {
     render() {

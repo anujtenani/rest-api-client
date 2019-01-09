@@ -1,4 +1,4 @@
-import {createActionConstant, methods, types} from "./actionCreator";
+import {createActionConstant, methods, types} from "../actionCreator";
 
 export const actionUpdateProjectMetadata = (change)=>{
     return {

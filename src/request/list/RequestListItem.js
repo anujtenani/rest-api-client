@@ -1,12 +1,12 @@
-import React, {PureComponent} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {connect} from 'react-redux';
-import {NavLink, withRouter} from 'react-router-dom';
+import {Link, NavLink, withRouter} from 'react-router-dom';
 import Mousetrap from 'mousetrap';
 import {actionUpdateRequest} from "../../redux/requestActions";
 import RequestItemOptions from "./RequestItemOptions";
 
 
-class RequestListItem extends PureComponent{
+class RequestListItem extends Component{
 
     state = {
         contentEditable:false,
@@ -24,6 +24,7 @@ class RequestListItem extends PureComponent{
     bindRenameKey = ()=>{
         Mousetrap.bind('f2', this.handleDoubleClick)
     }
+
 
     unbindRenameKey = ()=>{
         Mousetrap.unbind('f2', this.handleDoubleClick );
@@ -57,56 +58,57 @@ class RequestListItem extends PureComponent{
         this.onCancel();
     }
 
-    toggleOpts = ()=>{
-        this.setState({showOpts:true});
-    }
-    /*
-    openContextMenu = (e)=>{
-        e.preventDefault();
-        e.stopPropagation();
-        console.log(e.clientX, e.clientY);
-        console.log(window.innerWidth, window.innerHeight);
-    }
-    */
-
     render(){
-        const {requestId, name, method} = this.props;
+        const {requestId, name, method, projectId, type, isActive} = this.props;
         const {contentEditable} = this.state;
-        return <div>
-            <div className={"flex-row flex items-center"}>
-            <NavLink onDoubleClick={this.handleDoubleClick}
+        const path = `/p/${projectId}/${type || 'request'}/${requestId}`;
+        return  <div className={`request-item flex-row flex items-center hover:bg-grey-lighter justify-between px-2 ${isActive ? 'shadow-inner secondary-bg' : ''}`}>
+            <Link onDoubleClick={this.handleDoubleClick}
                     onFocus={this.bindRenameKey}
                     // onContextMenu={this.openContextMenu}
                      onBlur={this.unbindRenameKey}
-                     activeClassName={"secondary-bg"}
-                     className="flex-1 items-center opacity-75 px-2 py-2 appearance-none no-underline block flex flex-row"
-                     to={this.props.match.url+`/request/${requestId}`}>
-            <RenderTag method={method}/>
-            {contentEditable ?
-                <input
-                    ref={this.inputRef}
-                    className={"bg-transparent primary-text italic"}
-                    defaultValue={name}
-                    onFocus={this.onInputFocus}
-                    onBlur={this.onBlur}/> :
-                <span className="bg-transparent primary-text">{name}</span>
-                }
+                     // activeClassName={ 'shadow-inner secondary-bg'}
+                     className="flex-1 items-center py-2 appearance-none no-underline block flex flex-row"
+                     to={path}>
+                <RenderTag method={method} type={type}/>
+                {contentEditable ?
+                    <input
+                        ref={this.inputRef}
+                        className={"bg-transparent primary-text italic"}
+                        defaultValue={name}
+                        onFocus={this.onInputFocus}
+                        onBlur={this.onBlur}/> :
+                    <span className="bg-transparent primary-text">{name}</span>
+                    }
+                </Link>
                 <RequestItemOptions requestId={requestId}/>
-            </NavLink>
             </div>
-        </div>
     }
 }
 
 
-function RenderTag({method}){
-    return <span className="text-green px-2 w-16 text-xs">{method}</span>
+function RenderTag({method, type}){
+    let cls = "px-2 w-16 text-xs uppercase "
+    switch (type) {
+        case "oauth2":
+            cls += "tag--oauth";
+            break;
+        case "ws":
+            cls += "tag--ws";
+            break;
+        default:
+            cls += "tag--"+method.toLowerCase();
+    }
+    return <span className={cls}>{type === "rest" ? method : type}</span>
 }
 
 const mapStateToProps = (state, props)=>{
-    const {requestId} = props;
+    const {requestId, projectId} = props;
+    const {name, method, type} = state.requests.byId[requestId];
+    const path = `/p/${projectId}/${type || 'rest'}/${requestId}`;
     return {
-        ...state.requests.byId[requestId]
+        name, method, type, requestId,
+        path
     }
 }
 
@@ -118,4 +120,4 @@ const mapDispatchToProps = (dispatch, props)=>{
 }
 
 
-export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(RequestListItem))
+export default  connect(mapStateToProps, mapDispatchToProps)(RequestListItem)

@@ -11,8 +11,12 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web and AsyncStorage for react-native
 import rootReducer from './redux/rootReducer'
 
+function getProjectName(){
+    return document.location.pathname.split("/")[2];
+}
+
 const persistConfig = {
-    key: 'root',
+    key: getProjectName() || 'root',
     storage,
 }
 const composeEnhancers =

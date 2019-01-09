@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import BasicAuth from "./BasicAuth";
 import {actionSetAuth} from "../../redux/auth/authActions";
+import BearerAuth from "./BearerAuth";
 
 class AuthComponent extends Component {
 
@@ -12,16 +13,26 @@ class AuthComponent extends Component {
 
     render() {
         const {requestId, authType} = this.props
+        let authCmp = null;
+        switch (authType) {
+            case "basic":
+            case "digest":
+                authCmp = <BasicAuth requestId={requestId}/>;
+                break;
+            case "bearer":
+                authCmp = <BearerAuth requestId={requestId}/>
+                break;
+        }
         return (
             <div className={"p-2"}>
-                <select  defaultValue={authType} onChange={this.onChange}>
+                <select value={authType} onChange={this.onChange}>
                     <option value={"noauth"}>No Auth</option>
                     <option value={"basic"}>Basic Auth</option>
                     <option value={"digest"}>Digest Auth</option>
+                    <option value={"bearer"}>Bearer</option>
                 </select>
                 {
-                    authType === "basic" || authType  === "digest" ?
-                        <BasicAuth requestId={requestId}/> : null
+                    authCmp
                 }
             </div>
         );

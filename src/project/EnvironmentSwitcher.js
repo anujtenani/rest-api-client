@@ -15,7 +15,7 @@ class EnvironmentSwitcher extends Component {
             <div>
                 <select defaultValue={this.props.active} onChange={this.updateActiveEnv}>
                     {this.props.envAllIds.map((item)=>{
-                        return <option value={item}>{this.props.envById[item].name}</option>
+                        return <option key={item} value={item}>{this.props.envById[item].name}</option>
                     })}
                 </select>
             </div>
