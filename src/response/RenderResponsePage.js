@@ -5,8 +5,8 @@ import ResponseSuccess from "./ResponseSuccess";
 
 class RenderResponsePage extends Component {
     render() {
-        const {err, requestId, historyId} = this.props;
-        if(err){
+        const {error, requestId, historyId} = this.props;
+        if(error){
             return <ResponseError requestId={requestId} historyId={historyId} />
         }else{
             return <ResponseSuccess requestId={requestId} historyId={historyId} />

@@ -12,6 +12,11 @@ class ProjectTitle extends React.PureComponent{
         titleEditable:false,
     }
 
+    constructor(props){
+        super(props);
+        this.state.showOptions  = document.location.pathname.includes("settings")
+    }
+
     toggleOptions = ()=>{
         this.setState({showOptions:!this.state.showOptions})
     }
@@ -27,20 +32,23 @@ class ProjectTitle extends React.PureComponent{
 
 
 
+
     render(){
         const {projectId, name} = this.props;
         return  <div>
-            <div className={"h-12 p-2 flex flex-row items-center border-b primary-border bg-grey-lighter"}>
-
+            <div className={"h-12 p-2 flex flex-row items-center border-b primary-border secondary-bg"}>
                 {this.state.titleEditable ?
                     <input className={"font-bold text-lg flex-1"} defaultValue={name} placeholder={"Project Name"} onBlur={this.onInputBlur}/>
                     :  <h2 className={"flex-1"} onDoubleClick={this.onDblClick}>{name || 'My Project'}</h2>
                 }
-                <Link to={`/p/${projectId}/settings/`} className={"px-2"}>
+                <button onClick={this.toggleOptions} className={"primary-button flex flex-col items-center px-2"}>
                     <FiSettings className={"w-6 h-6"} />
-                </Link>
+                </button>
             </div>
+            {this.state.showOptions ?
                 <SettingsRoute projectId={projectId}/>
+                : null
+            }
                 <div className={"flex flex-row items-center justify-center my-2 px-2"}>
                 <p className={"mr-2"}>Environment</p>
                 <EnvironmentSwitcher />
@@ -52,19 +60,17 @@ class ProjectTitle extends React.PureComponent{
 
 
 function SettingsRoute({projectId}){
-    return  <Route path={`/p/${projectId}/settings/`} render={()=>{
-        return <ul className={"list-reset ml-4 border-l border-b border-grey-lighter"}>
-            <PLink title={"Functions"} to={`/p/${projectId}/settings/functions`} />
-            <PLink title={"Environment"} to={`/p/${projectId}/settings/environment`} />
-            <PLink title={"Import/Export"} to={`/p/${projectId}/settings/ie`} />
-        </ul>
-    }} />
+    return   <ul className={"list-reset ml-4 border-l border-b shadow-md rounded-bl overflow-none primary-border"}>
+                <PLink title={"Functions"} to={`/p/${projectId}/settings/functions`} />
+                <PLink title={"Environment"} to={`/p/${projectId}/settings/environment`} />
+                <PLink title={"Import/Export"} to={`/p/${projectId}/settings/ie`} />
+            </ul>
 }
 
 function PLink({to, title}){
     return (<li>
-        <NavLink activeClassName={"secondary-bg shadow-inner"}
-                 className={"no-underline appearance-none p-2 block hover:bg-grey-lighter"}
+        <NavLink activeClassName={"list-item-active"}
+                 className={"no-underline appearance-none p-2 block list-item"}
                  to={to}>{title}</NavLink>
     </li>);
 

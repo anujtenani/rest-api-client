@@ -13,7 +13,7 @@ class EnvironmentSwitcher extends Component {
     render() {
         return this.props.envAllIds.length > 0 ? (
             <div>
-                <select defaultValue={this.props.active} onChange={this.updateActiveEnv}>
+                <select defaultValue={this.props.activeEnv} onChange={this.updateActiveEnv}>
                     {this.props.envAllIds.map((item)=>{
                         return <option key={item} value={item}>{this.props.envById[item].name}</option>
                     })}
@@ -27,7 +27,7 @@ function mapStateToProps(state) {
     return {
         envAllIds: state.env.envAllIds,
         envById:state.env.envById,
-        activeEnv: state.activeEnv
+        activeEnv: state.env.activeEnv
     };
 }
 

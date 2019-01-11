@@ -30,7 +30,7 @@ class ExpandablePanel extends Component {
                     <div>{title}</div>
                 </button>
                 {!collapsed ?
-                    <div className={"ml-2 border-dashed border-b "}>
+                    <div className={"ml-2 border-dashed border-b primary-border"}>
                         {children}
                     </div>
                     : null

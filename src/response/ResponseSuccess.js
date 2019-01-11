@@ -16,7 +16,7 @@ class ResponseSuccess extends Component {
             <div>
                 <ResponsePanelHeading onChange={(val)=>this.setState({showPanel:val})}/>
                 {showPanel === "info" ?
-                    <div>
+                    <div className={"preview-height overflow-scroll"}>
                         <TabGeneral requestId={requestId} historyId={historyId}/>
                         <TabHeaders requestId={requestId} historyId={historyId}/>
                         <TabRequestHeaders requestId={requestId} historyId={historyId} />

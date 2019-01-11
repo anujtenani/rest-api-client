@@ -1,7 +1,12 @@
 @import './Theme.Light.css';
+@import './Theme.Common.css';
 @import './modal.css';
 @import './markdown.css';
 
+
 body{
     font-size: 14px;
+}
+.preview-height{
+    height:80vh
 }

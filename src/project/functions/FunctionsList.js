@@ -23,7 +23,7 @@ class FunctionsList extends Component {
                 <div className={"p-2"}>
                     <h3>Functions</h3>
                     <p>Pure javascript functions to dynamically generate data to be used in API requests</p>
-                    <button onClick={this.createNewFunction}>Create a new function</button>
+                    <button  className={"primary-button mt-2"} onClick={this.createNewFunction}>Create a new function</button>
                 </div>
                 {this.props.functionIds.map((functionId)=>{
                     return <FunctionPanel functionId={functionId} key={functionId} defaultState={functionId === this.state.activeFunction ? "open" : "close"} />

@@ -6,7 +6,7 @@ class PreviewVisualHtml extends Component {
 
     render() {
         return (
-            <div className={"h-screen"}>
+            <div className={"preview-height overflow-scroll"}>
                 <PreviewIFrame html={this.props.responseBody} />
             </div>
         );

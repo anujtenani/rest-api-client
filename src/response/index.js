@@ -17,11 +17,17 @@ class Response extends Component {
         const {historyIds} = this.props;
         let {historyIndex} = this.state;
         console.log(historyIds.length);
-        if(historyIndex < historyIds.length - 1){
+        if(historyIds.length > historyIndex + 1){
             historyIndex += 1;
         }
         console.log(historyIds[historyIndex]);
         this.setState({historyIndex})
+    }
+
+    componentDidUpdate(){
+        if(this.props.executing && this.state.historyIndex > 0){
+            this.setState({historyIndex:0})
+        }
     }
 
     showNextResponse = ()=>{
@@ -59,10 +65,10 @@ class Response extends Component {
             <div>
                 <div className={"flex flex-row justify-between items-center px-4 h-12 border-b primary-border border-dashed"}>
                     <div>
-                        <button onClick={this.showPrevResponse}><FiChevronLeft /></button>
-                        <button onClick={this.showNextResponse}><FiChevronRight /></button>
+                        <button onClick={this.showPrevResponse} disabled={historyIds.length <= historyIndex + 1}><FiChevronLeft /></button>
+                        <button onClick={this.showNextResponse} disabled={historyIndex === 0}><FiChevronRight /></button>
                     </div>
-                    <ResponseResult url={"https://google.com"} contentLength={254} statusCode={200} timing={430}/>
+                    <div />
                     <div>
                         <button onClick={this.deleteResponse}><FiTrash /></button>
                     </div>

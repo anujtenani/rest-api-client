@@ -44,10 +44,10 @@ class EnvironmentVariables extends Component {
                 </div>
                     <div className={"table-row"}>
                         <div className={"table-cell p-2"} style={{minWidth:200}}>
-                            <button onClick={this.createNewVariable}>New Variable</button>
+                            <button className={"primary-button"} onClick={this.createNewVariable}>New Variable</button>
                         </div>
                         <div className={"table-cell p-2"} style={{minWidth:200}}>
-                            <button onClick={this.createNewEnvironment}>New Environment</button>
+                            <button className={"primary-button"} onClick={this.createNewEnvironment}>New Environment</button>
                         </div>
                     </div>
                 <div className={"p-2 w-1/3"}>

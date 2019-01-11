@@ -1,56 +1,28 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/lint/lint';
-import 'codemirror/addon/lint/lint.css';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/lint/json-lint';
-import 'codemirror/addon/lint/javascript-lint';
-import 'codemirror/theme/monokai.css';
-import '../../css/codemirror.css';
-import jsonlint from 'jsonlint-mod';
-import {JSHINT} from 'jshint';
 import {actionUpdateBodyData} from "../../redux/body/bodyActions";
-import JavascriptInput from "../../components/codemirror/JavascriptInput";
-
-window.JSHINT = JSHINT
-window.jsonlint = jsonlint;
+import JSONInput from "../../components/codemirror/JSONInput";
 
 class RequestBodyJson extends React.Component{
 
-    state = {
-        value:undefined
-    }
-
-    onChange = (value)=>{
-        this.setState({value})
-    }
-
-    onFocusChange = (focused)=>{
-        if(!focused){
-            this.props.updateBody(this.state.value)
-            console.log('send updates')
-        }
-    }
 
     onBlur = (value)=>{
-        this.props.updateBody(value);
+        this.props.updateBody({value:value});
     }
 
 
     render(){
         const {value} = this.props;
-        console.log(this.props, this.state);
-        return <JavascriptInput onBlur={this.onBlur} defaultValue={value || ''} />
+        return <JSONInput onBlur={this.onBlur} defaultValue={value || ''} />
     }
 }
 
 
 function mapStateToProps(state, props){
     const {requestId} = props;
+    const data = state.requests.byId[requestId].body.data || {}
     return {
-         value: state.requests.byId[requestId].body.data
+         value: data.value
     }
 }
 function mapDispatchToProps(dispatch, props){

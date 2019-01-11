@@ -15,7 +15,7 @@ class RequestBodyFile extends Component {
         const {name, size} = file;
         const freader = new FileReader();
         freader.onloadend = (data)=>{
-            this.props.updateBody({name, size, datauri: freader.result});
+            this.props.updateBody({name, size, uri: freader.result});
         };
         freader.readAsDataURL(file);
     }
@@ -54,8 +54,9 @@ class RequestBodyFile extends Component {
 
 function mapStateToProps(state, props) {
     const {requestId} = props;
+    const data = state.requests.byId[requestId].body.data || {}
     return {
-        data: state.requests.byId[requestId].body.data
+        data: data
     };
 }
 

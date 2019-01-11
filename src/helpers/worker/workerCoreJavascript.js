@@ -84,6 +84,13 @@ onmessage = async (e)=>{
 
 async function callFunction(fn, state,args) {
     try{
+        if(fn.includes("(")){
+            var foo = new Function(fn)();
+            //it is now called like this.
+            //https://stackoverflow.com/a/12208375
+//            var baz = eval('function(){ return 1 + 2 }');
+        }
+
         const func = fn.split('.').reduce((acc, cur)=>acc ? acc[cur] : undefined, this);
         if(func){
             const data = await func(state,args);

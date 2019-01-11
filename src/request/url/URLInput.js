@@ -15,7 +15,7 @@ class URLInput extends Component {
         return (
             <input
                 key={value} //this is required as sometimes react does not update the input value
-                className="flex flex-1 h-full pr-2 sm:px-2"
+                className="flex flex-1 primary-bg primary-text h-full pr-2 sm:px-2"
                 onBlur={this.handleBlur}
                 placeholder={"https://example.com"}
                 defaultValue={value}

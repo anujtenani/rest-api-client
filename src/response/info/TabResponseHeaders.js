@@ -12,7 +12,7 @@ class TabResponseHeaders extends Component {
     render() {
         const {headers} = this.props;
         return (
-            <ExpandablePanel title={`Response Headers (${headers.length})`}>
+            <ExpandablePanel title={<p>Response Headers <span className={"tag--counter"}>{headers.length}</span></p>}>
                 <div className={"ml-2"}>
                     {headers.map(({name, value})=>{
                         return <LineItem title={name} key={value} value={value} />

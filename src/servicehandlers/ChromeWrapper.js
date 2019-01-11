@@ -1,4 +1,4 @@
-export const extensionId = "olgnlmioekgfimpdfalfjbnccaihngec"; //TODO keep this extension updated with chrome extension
+export const extensionId = "ohalacbnhbfllngjcgnejjdgmhbkcnld"; //TODO keep this extension updated with chrome extension
 
 export function setItem(key, value){
     const type = "storage.set";
@@ -12,6 +12,15 @@ export function getItem(key){
     const payload = {key};
     return sendMessageToExtension({type, payload});
 }
+
+
+
+export function removeItem(key){
+    const type = "storage.remove";
+    const payload = {key};
+    return sendMessageToExtension({type, payload});
+}
+
 
 
 export function sendRequest(url, method, headers, body, qs, auth){
@@ -38,3 +47,37 @@ export function openOauthTab(url, redirectUri){
     const payload = {url, redirectUri};
     return sendMessageToExtension({type, payload});
 }
+
+
+export function getInAppPurchases(){
+    return sendMessageToExtension({type:'inapp-sku-details'})
+}
+
+export function getUserPurchases(){
+    return sendMessageToExtension({type:'inapp-get-purchases'});
+}
+export function buyItem(sku){
+    return sendMessageToExtension({type:'inapp-buy', sku});
+}
+/*
+
+buyItem('cloud.sync.basic').then((e)=>{
+    console.log('purchase result',e);
+}).then(()=>{
+    return getUserPurchases().then((result)=>{
+        console.log(result);
+    })
+})
+
+
+getInAppPurchases().then((result)=>{
+    const {response} =result;
+    const {details} = response || {};
+    const {inAppProducts} = details || {};
+    inAppProducts.filter(({state})=>state === "ACTIVE").forEach(({sku, prices, localeData})=>{
+        console.log(sku, prices, localeData);
+    });
+   // console.log(result);
+})
+
+*/

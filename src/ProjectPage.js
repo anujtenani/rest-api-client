@@ -15,6 +15,7 @@ import ProjectSettings from "./project/ProjectSettings";
 import BuildOAuth2 from "./oauth2page/BuildOAuth2";
 import OAuth2Result from "./oauth2page/OAuth2Result";
 import WSChat from "./websocket/wschat";
+import DocumentTitle from 'react-document-title';
 
 class ProjectPage extends Component {
 
@@ -33,16 +34,18 @@ class ProjectPage extends Component {
         const {projectId} = this.props;
         return this.state.loading ? <LoadingOverlay/> :
             (<div className="main">
-                <div className="flex flex-row flex-wrap relative h-screen overflow-x-hidden">
-                    <div className="w-full md:w-1/5 md:h-screen md:overflow-y-scroll border-0 md:border-l md:border-r primary-border">
-                        <ProjectTitle projectId={projectId}/>
-                        <RequestList/>
+                <DocumentTitle title='Project'>
+                    <div className="flex flex-row flex-wrap relative h-screen overflow-x-hidden">
+                        <div className="w-full md:w-1/5 md:h-screen md:overflow-y-scroll border-0 md:border-l md:border-r primary-border">
+                            <ProjectTitle projectId={projectId}/>
+                            <RequestList/>
+                        </div>
+                        <Route path={this.props.match.url+"/settings"} component={ProjectSettings} />
+                        <Route path={this.props.match.url+"/oauth2/:requestId"} component={RenderOAuth} />
+                        <Route path={this.props.match.url+"/ws/:requestId"} component={WSChat} />
+                        <Route path={this.props.match.url+"/rest/:requestId"} component={RenderRequest} />
                     </div>
-                    <Route path={this.props.match.url+"/settings"} component={ProjectSettings} />
-                    <Route path={this.props.match.url+"/oauth2/:requestId"} component={RenderOAuth} />
-                    <Route path={this.props.match.url+"/ws/:requestId"} component={WSChat} />
-                    <Route path={this.props.match.url+"/rest/:requestId"} component={RenderRequest} />
-                </div>
+                </DocumentTitle>
             </div>
         );
     }
@@ -87,10 +90,10 @@ function RenderResponseView({requestId}){
 
 const mapStateToProps = (state, props)=>{
     const {projectId} = props.match.params;
-    console.log(props.match.params);
     return {
         //projectId:state.metadata.projectId
-        projectId
+        projectId,
+        name: state.metadata.name
     }
 }
 

@@ -10,7 +10,7 @@ class CheckRequestExists extends Component {
             </React.Fragment>
         }else {
             return (
-                <div className={"flex items-center justify-center flex-col p-2 border bg-red-lightest rounded border-red m-4"}>
+                <div className={"error-msg-container flex items-center justify-center flex-col p-2 rounded m-4"}>
                     <p className={"text-2xl"}>Request does not exists</p>
                 </div>
             );

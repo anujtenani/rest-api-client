@@ -58,11 +58,19 @@ class RequestListItem extends Component{
         this.onCancel();
     }
 
+    onRename = ()=>{
+        this.setState({contentEditable:true});
+    }
+
+    onDuplicate = ()=>{
+
+    }
+
     render(){
         const {requestId, name, method, projectId, type, isActive} = this.props;
         const {contentEditable} = this.state;
         const path = `/p/${projectId}/${type || 'request'}/${requestId}`;
-        return  <div className={`request-item flex-row flex items-center hover:bg-grey-lighter justify-between px-2 ${isActive ? 'shadow-inner secondary-bg' : ''}`}>
+        return  <div className={`request-item flex-row flex items-center justify-between px-2 ${isActive ? 'shadow-inner secondary-bg' : ''}`}>
             <Link onDoubleClick={this.handleDoubleClick}
                     onFocus={this.bindRenameKey}
                     // onContextMenu={this.openContextMenu}
@@ -81,7 +89,7 @@ class RequestListItem extends Component{
                     <span className="bg-transparent primary-text">{name}</span>
                     }
                 </Link>
-                <RequestItemOptions requestId={requestId}/>
+                <RequestItemOptions requestId={requestId} onRename={this.onRename} onDuplicate={this.onDuplicate}/>
             </div>
     }
 }

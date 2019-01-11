@@ -3,7 +3,7 @@ import ImportPanel from "./ImportPanel";
 import ExportPanel from "./ExportPanel";
 
 export default function(){
-    return  <div className={"w-1/3"}>
+    return  <div className={"md:w-1/2 w-full"}>
         <ImportPanel />
         <ExportPanel/>
     </div>

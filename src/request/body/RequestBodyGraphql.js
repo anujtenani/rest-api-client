@@ -65,7 +65,7 @@ class RequestBodyGraphql extends Component {
     }
 
     onFocusChange = (editor, event)=>{
-        this.props.updateBody(editor.getValue());
+        this.props.updateBody({value:editor.getValue()});
     }
 
     handleRef = (editor)=>{
@@ -106,10 +106,12 @@ class RequestBodyGraphql extends Component {
 function mapStateToProps(state, props) {
     const {requestId} = props;
     const {url, qs, method} = state.requests.byId[requestId];
+    const data = state.requests.byId[requestId].body.data || {}
+
     return {
         url: buildUrlFromRequestState(url, qs),
         method,
-        value: state.requests.byId[requestId].body.data
+        value: data.value
     };
 }
 

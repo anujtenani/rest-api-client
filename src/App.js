@@ -9,6 +9,7 @@ import ProjectPage from "./ProjectPage";
 import MainPage from "./MainPage";
 import {extensionInstalled} from "./servicehandlers";
 
+
 class App extends Component {
 
     componentDidMount(){

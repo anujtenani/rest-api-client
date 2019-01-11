@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import JSONInput from "../components/codemirror/JSONInput";
 
 class OAuth2Result extends Component {
     render() {
         return (
             <div>
-                <pre>
-                    {JSON.stringify(this.props.body, null, 2)}
-                </pre>
+                <JSONInput defaultValue={JSON.stringify(JSON.parse(this.props.body), null, 2)} options={{readOnly:true}}/>
             </div>
         );
     }
@@ -15,7 +14,8 @@ class OAuth2Result extends Component {
 
 function mapStateToProps(state, props) {
     const {requestId} = props;
-    const {allIds, byId} = state.requests.byId[requestId].history || {};
+    const request = state.requests.byId[requestId] || {};
+    const {allIds, byId} = request.history || {};
     const history = allIds && allIds.length > 0 ? byId[allIds[0]] : {}
     return {
         body: history.body

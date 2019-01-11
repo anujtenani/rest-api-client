@@ -7,12 +7,13 @@ import TabRequestAuth from "./auth/TabRequestAuth";
 import TabRequestQueryString from "./querystring/TabRequestQueryString";
 import RequestDoc from "./RequestDoc";
 import {NavLink, Route, Switch, withRouter} from "react-router-dom";
+import DocumentTitle from 'react-document-title';
 
 class Index extends Component {
     render() {
-        const {requestId} = this.props;
+        const {requestId, name} = this.props;
         return (
-            <div>
+            <DocumentTitle title={name}>
                 <React.Fragment>
                     <RequestURL requestId={requestId} />
                     <ReqOpts/>
@@ -23,7 +24,7 @@ class Index extends Component {
                         </Switch>
                     </div>
                 </React.Fragment>
-            </div>
+            </DocumentTitle>
         );
     }
 }
@@ -37,11 +38,15 @@ function RequestBuild({requestId}){
     </React.Fragment>
 }
 const ReqOpts = withRouter((props)=>{
+    //TODO  maybe in the next version documentation will come
+    return null;
+    /*
     return <div className={"flex flex-row justify-end border-b primary-border border-dotted"}>
-        <NavLink to={props.match.url} activeClassName={"opacity-100 font-bold border-b border-blue"} className={"no-underline text-xs opacity-50 hover:opacity-100 p-2"}>Build</NavLink>
-        <NavLink to={props.match.url+"/doc"} activeClassName={"opacity-100 font-bold border-b border-blue"} className={"no-underline  text-xs opacity-50 hover:opacity-100 p-2"}>Description</NavLink>
-        <NavLink to={props.match.url+"/fn"} activeClassName={"opacity-100 font-bold border-b border-blue"} className={"no-underline  text-xs opacity-50 hover:opacity-100 p-2"}>Functions</NavLink>
+        <NavLink to={props.match.url} activeClassName={"font-bold border-b border-blue"} className={"no-underline text-xs primary-button p-2"}>Build</NavLink>
+        <NavLink to={props.match.url+"/doc"} activeClassName={"font-bold border-b border-blue"} className={"no-underline primary-button text-xs p-2"}>Description</NavLink>
+        <NavLink to={props.match.url+"/fn"} activeClassName={"font-bold border-b border-blue"} className={"no-underline primary-button text-xs p-2"}>Functions</NavLink>
     </div>
+    */
 })
 
 
@@ -49,6 +54,7 @@ function mapStateToProps(state, props) {
     const {requestId} = props;
     return {
         requestId,
+        name: state.requests.byId[requestId].name
 //        method: state.requests.byId[requestId].method
     };
 }

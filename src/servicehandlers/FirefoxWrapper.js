@@ -1,7 +1,5 @@
 import * as shortId from "shortid";
 
-export const extensionId = "olgnlmioekgfimpdfalfjbnccaihngec"; //TODO keep this extension updated with chrome extension
-
 export function setItem(key, value){
     const type = "storage.set";
     const payload = {key, value};
@@ -14,6 +12,13 @@ export function getItem(key){
     const payload = {key};
     return sendMessageToExtension({type, payload});
 }
+
+export function removeItem(key){
+    const type = "storage.remove";
+    const payload = {key};
+    return sendMessageToExtension({type, payload});
+}
+
 
 
 export function sendRequest(url, method, headers, body, qs, auth){

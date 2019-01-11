@@ -1,0 +1,3 @@
+.error-msg-container{
+    @apply error-bg border error-border;
+}

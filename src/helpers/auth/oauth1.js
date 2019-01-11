@@ -7,6 +7,11 @@ import CryptoJS from 'crypto-js';
  * @param consumerKey
  * @param consumerSecret
  * @param signatureMethod one of HMAC-SHA1 , HMAC-SHA256, PLAINTEXT
+ * @param url
+ * @param method
+ * @param body
+ * @param tokenKey
+ * @param tokenSecret
  * @returns {*}
  */
 export function convertAuthToHeader(consumerKey, consumerSecret, signatureMethod, url, method, body, tokenKey, tokenSecret) {

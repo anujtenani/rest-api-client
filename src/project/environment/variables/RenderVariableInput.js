@@ -19,7 +19,7 @@ class RenderVariableInput extends Component {
             <div className={"table-cell border-b primary-border border-r p-1 border-l"}>
                 <div className={"flex flex-row items-center"}>
                     <button className={"opacity-50"} onClick={this.onDelete}><FiX /></button>
-                    <input placeholder={"Variable name"} className={"py-2 font-bold"} defaultValue={this.props.value} onBlur={this.onBlur} />
+                    <Input placeholder={"Variable name"} className={"py-2 font-bold"} defaultValue={this.props.value} onBlur={this.onBlur} />
                 </div>
             </div>
         );

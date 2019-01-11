@@ -34,7 +34,7 @@ class RenderEnvHeader extends Component {
         return (
             <div className={"table-cell border-b primary-border border-t border-r p-1"} style={{minWidth:200}}>
                 {this.state.editMode ?
-                    <input className={"py-2"} onSubmit={this.onBlur} defaultValue={this.props.name} autoFocus={true} onBlur={this.onBlur}/>
+                    <Input className={"py-2"} onSubmit={this.onBlur} defaultValue={this.props.name} autoFocus={true} onBlur={this.onBlur}/>
                     :
                     <div onDoubleClick={this.enterEditMode}
                          className={"py-2 justify-between items-center flex flex-row"}>

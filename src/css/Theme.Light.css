@@ -11,7 +11,11 @@
     @apply border-grey-light
 }
 .primary-button{
-    @apply text-blue-light
+    @apply text-blue
+}
+
+.primary-button:hover, .primary-button:focus, .primary-button:active{
+    @apply text-orange
 }
 .primary-button:disabled{
     @apply text-grey cursor-not-allowed
@@ -26,7 +30,7 @@
 }
 
 select{
-    @apply secondary-bg h-8 appearance-none rounded-lg px-1
+    @apply secondary-bg h-8 appearance-none rounded px-1
 }
 
 
@@ -78,4 +82,26 @@ a svg{
 }
 a:visited svg{
     @apply text-black
+}
+
+
+.list-item{
+    @apply primary-bg text-blue-light;
+}
+.list-item:hover, .list-item:focus, .list-item:active, .list-item-active{
+    @apply secondary-bg text-orange !important;
+}
+.request-item:hover, .request-item:focus{
+    @apply secondary-bg
+}
+
+.CodeMirror{
+    border: 1px solid #eee;
+}
+
+.error-bg{
+    @apply bg-red
+}
+.error-border{
+    @apply border-red-light
 }

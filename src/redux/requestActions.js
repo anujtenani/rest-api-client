@@ -4,7 +4,7 @@ import {actionCreateResponseHistory} from "./history/historyActions";
 import {sendRequest} from "../servicehandlers";
 
 const shortId = require('shortid');
-const axios = require('axios');
+//const axios = require('axios');
 
 const defaultState = {
     title:'',

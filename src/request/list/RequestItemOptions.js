@@ -27,41 +27,43 @@ class RequestItemOptions extends Component {
         this.props.deleteRequest();
     }
 
+    handleRename = (e)=>{
+        this.popper.hide();
+        this.props.onRename();
+    }
+
+
+    handleRef = (ref)=>{
+        this.popper = ref
+    }
+
     render() {
         return (
-            <Popup placement={"bottom-start"} trigger={<FiChevronDown className={"request-item-icon"} />} position="bottom right">
-              <div className={"flex w-full flex-col p-2 primary-text"}>
-                <button className={"text-right py-2"}>
+            <Popup ref={this.handleRef} placement="bottom-end" trigger={<FiChevronDown className={"request-item-icon"} />}>
+              <div className={"flex w-48 flex-col primary-text"}>
+                <button className={"list-item text-right p-2"} onClick={this.handleRename}>
                     <span className={"mx-2"}>Rename</span>
                     <FiEdit />
                 </button>
-                <button className={"text-right py-2"}>
+                <button className={"list-item text-right  p-2"}>
                     <span className={"mx-2"}>Duplicate</span>
                     <FiCopy />
                 </button>
                   {!this.state.toggleDeleteConfirm ?
-                      <button onClick={this.toggleDeleteConfirm} className={"text-right py-2"}>
+                      <button onClick={this.toggleDeleteConfirm} className={"list-item text-right  p-2"}>
                           <span className={"mx-2"}>Delete</span>
                           <FiTrash/>
                       </button>
                       :
-                      <ConfirmDelete onConfirmed={this.actuallyDeleteRequest} onCancel={this.toggleDeleteConfirm}/>
+                      <button className={"text-right p-2 list-item"} onClick={this.actuallyDeleteRequest}>
+                          <span className={"text-red mx-2"}>Click to confirm</span>
+                          <FiInfo/>
+                      </button>
                   }
                 </div>
             </Popup>
         );
     }
-}
-
-function ConfirmDelete({onCancel, onConfirmed}){
-    return (<div className={"text-right py-2"}>
-        <span>
-        <span>Confirm Delete</span>
-        <button className={"primary-text mx-2"} onClick={onCancel}>no</button>
-            <span>/</span>
-        <button className={"text-red mx-2"} onClick={onConfirmed}>yes</button>
-        </span>
-    </div>)
 }
 
 function mapStateToProps(state) {

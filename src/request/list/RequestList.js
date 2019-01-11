@@ -76,10 +76,10 @@ class RequestList extends PureComponent {
         return <div>
             <div className="flex flex-row items-center p-2">
                 <input type={"text"} onChange={this.onFilterInput} className="flex-1 p-1 mx-2 bg-transparent primary-text rounded border border-grey-darker" placeholder={"filter"} />
-                <Popup ref={this.popperRef} trigger={<FiPlusCircle className={"w-6 h-6"} />} placement={"bottom-start"}>
-                    <button className={"p-2 text-right hover:bg-grey-lighter"} onClick={this.createANewRequest}><Tag className={"tag--get"} title={"REST"} />New Request</button>
-                    <button className={"p-2 text-right hover:bg-grey-lighter"} onClick={this.createOAuth}><Tag className={"tag--oauth"} title={"oAuth"} />New oAuth2</button>
-                    <button className={"p-2 text-right hover:bg-grey-lighter"} onClick={this.createWebsocket}><Tag className={"tag--ws"} title={"ws"} />New Websocket</button>
+                <Popup ref={this.popperRef} trigger={<FiPlusCircle className={"w-6 h-6"} />} placement={"bottom-end"}>
+                    <button className={"p-2 text-right list-item"} onClick={this.createANewRequest}><Tag className={"tag--get"} title={"REST"} />New Request</button>
+                    <button className={"p-2 text-right list-item"} onClick={this.createOAuth}><Tag className={"tag--oauth"} title={"oAuth"} />New oAuth2</button>
+                    <button className={"p-2 text-right list-item"} onClick={this.createWebsocket}><Tag className={"tag--ws"} title={"ws"} />New Websocket</button>
                 </Popup>
             </div>
             <div onFocus={this.onFocus} onBlur={this.onBlur}>

@@ -48,7 +48,7 @@ const envVariableMap = (state = defaultState.envVariableMap, action)=>{
     }
 }
 
-const activeEnv = (state=null, action)=>{
+const activeEnv = (state="default", action)=>{
     switch (action.type) {
         case actionTypes.createEnvironment:
             return state === null ? action.payload.id : state;

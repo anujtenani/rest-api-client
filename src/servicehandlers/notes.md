@@ -3,8 +3,8 @@
 Service handlers are wrappers which provide a uniform api to frontend with regards to 3 main options
 
 1. Bypassing cors
-2. Storage of items
-3. Retrieval of items
+2. Storage and Retrival of items
+3. CRUD (Create review update and delete) cookies
 
 For eg.
 

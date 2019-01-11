@@ -9,9 +9,12 @@ export const actionCreateResponseHistory = (requestId, payload) => {
         const history = getState().requests.byId[requestId].history;
         const activeEnv = getState().env.activeEnv;
         if(history.allIds.length > maxLength){
-            const toDelete = history.allIds[history.allIds.length-1];
-//            console.log('deleting history', activeEnv);
-//            dispatch(actionDeleteResponseHistory(requestId, toDelete, activeEnv));
+            //delete xtra histories
+            for(let x = history.allIds.length-1; x > maxLength; x--){
+                const toDelete = history.allIds[x];
+                console.log('deleting history', activeEnv);
+                dispatch(actionDeleteResponseHistory(requestId, toDelete, activeEnv));
+            }
         }
         dispatch(createResponseHistory(requestId, payload, activeEnv));
     }

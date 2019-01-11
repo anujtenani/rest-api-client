@@ -48,7 +48,7 @@ class HeaderInput extends Component {
                             placeholder:"name",
                             defaultValue:name,
                             onBlur:this.onInputBlur('name'),
-                            className:"w-full py-2 border-b primary-border primary-text"}}
+                            className:"w-full py-2 border-b primary-border primary-bg primary-text"}}
                         wrapperProps={{className:'flex-1'}}
                         value={autoval !== undefined ? autoval : name}
                         onChange={(e) => this.setState({autoval:e.target.value})}

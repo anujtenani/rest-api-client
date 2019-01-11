@@ -9,7 +9,7 @@ class TabGeneral extends Component {
         const {headers} = this.props;
         if(headers) {
             return (
-                <ExpandablePanel title={`Request Headers (${headers.length})`}>
+                <ExpandablePanel title={<p>Request Headers <span className={"tag--counter"}>{headers.length}</span></p>}>
                     <div className={"ml-2"}>
                         {headers.map(({name, value}) => {
                             return <LineItem title={name} key={value} value={value}/>

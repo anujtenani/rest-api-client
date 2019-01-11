@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ExpandablePanel from "../components/ExpandablePanel";
+import {doExport} from "../importexport";
 
 class ExportPanel extends Component {
     state = {
@@ -17,14 +18,25 @@ class ExportPanel extends Component {
         var blob = new Blob([content], {'type':contentType});
         a.href = window.URL.createObjectURL(blob);
         a.download = filename;
+        console.log(a);
+        document.body.appendChild(a); //required for firefox
         a.click();
+        document.body.removeChild(a); //dont want to keep that a tag in the body
+        window.URL.revokeObjectURL(a.href);
     }
 
     exportData = (e)=>{
         const {state} = this.props;
         const date = new Date().toLocaleString().replace(/[^a-z0-9]/gi, '-').toLowerCase();
 
-        this.download(state, `Export${date}.json`)
+        switch (this.state.exportFormat) {
+            case "native":
+                console.log('downloading native');
+                this.download(doExport(state), `Export${date}.json`);
+                break;
+            case "har":
+                this.download(doExport(state, "har"), `Export${date}.json`)
+        }
     }
 
 

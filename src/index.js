@@ -4,40 +4,9 @@ import App from './App';
 import {Provider} from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { PersistGate } from 'redux-persist/integration/react'
-
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk';
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web and AsyncStorage for react-native
-import rootReducer from './redux/rootReducer'
-
-function getProjectName(){
-    return document.location.pathname.split("/")[2];
-}
-
-const persistConfig = {
-    key: getProjectName() || 'root',
-    storage,
-}
-const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-const store =  createStore(
-    persistedReducer,
-    composeEnhancers(applyMiddleware(thunk))
-);
+import {persistStore} from "redux-persist";
+import store from './redux/store'
 let persistor = persistStore(store);
-//persistor.purge();
-
-store.subscribe(()=>{
-    //here you save the state to the localstorage;
-    //cloud storage is setup as redux middleware
-//    const projectId = store.getState().metadata.projectId;
-//    localstorage.setItem(projectId+"-meta", store.getState().metadata);
-//    localstorage.setItem(projectId+"-requests", store.getState().requests);
-});
 
 
 ReactDOM.render(<Provider store={store}>

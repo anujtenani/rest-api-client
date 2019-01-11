@@ -12,7 +12,7 @@ class MethodSelector extends Component {
     render() {
         return (
             <div>
-                <select className="pl-2 bg-white" onChange={this.onInput} value={this.props.method}>
+                <select className="ml-2" onChange={this.onInput} value={this.props.method}>
                     <option value={"GET"}>GET</option>
                     <option value={"POST"}>POST</option>
                     <option value={"PUT"}>PUT</option>

@@ -1,0 +1,114 @@
+.main {
+    @apply bg-grey-darkest text-grey-lightest font-sans leading-normal
+}
+.primary-bg{
+    @apply bg-grey-darkest
+}
+.secondary-bg{
+    @apply bg-grey-darker
+}
+.primary-border{
+    @apply border-grey-darker
+}
+.primary-button{
+    @apply text-blue-light
+}
+.primary-button:hover, .primary-button:focus, .primary-button:active{
+    @apply text-orange-light
+}
+.primary-button:disabled{
+    @apply text-grey cursor-not-allowed
+}
+
+.primary-text{
+    @apply text-grey-lightest
+}
+
+.secondary-text{
+    @apply text-grey-light
+}
+
+svg {
+    @apply text-grey-light
+}
+
+select{
+    @apply secondary-bg h-8 appearance-none rounded-lg px-1
+}
+
+
+select{
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat #2e2e2e calc(100% - 6px);
+    background-size: 12px 12px;
+    padding-right: 20px;
+}
+
+select{
+    @apply primary-text
+}
+.addFieldButton{
+    @apply secondary-bg primary-text justify-center p-2 w-full flex flex-row items-center uppercase text-xs
+}
+
+.error-message{
+    @apply bg-red-lightest p-2 border-red rounded
+}
+
+.tag--get{
+    @apply text-green
+}
+.tag--post{
+    @apply text-blue
+}
+.tag--put, .tag--option, .tag--head{
+    @apply text-orange
+}
+.tag--delete{
+    @apply text-red
+}
+.tag--oauth{
+    @apply text-blue
+}
+.tag--ws{
+    @apply text-purple
+}
+.tag--counter{
+    @apply secondary-bg text-xs px-1 py-px ml-1 rounded
+}
+
+a{
+    @apply text-blue-light
+}
+a:visited{
+    @apply text-blue
+}
+
+a svg{
+    @apply text-black
+}
+a:visited svg{
+    @apply text-black
+}
+
+.list-item{
+    @apply primary-bg text-blue-light;
+}
+.list-item:hover, .list-item:focus, .list-item:active, .list-item-active{
+    @apply secondary-bg text-orange !important;
+}
+.request-item:hover, .request-item:focus{
+    @apply secondary-bg
+}
+.CodeMirror{
+    background: #272822;
+    color: #f8f8f2;
+    border: 1px solid #222;
+}
+
+.error-bg {
+    @apply bg-red-light
+}
+.error-border{
+    @apply border-red-light
+}
+

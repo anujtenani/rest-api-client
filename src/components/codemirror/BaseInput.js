@@ -3,14 +3,15 @@ import {UnControlled as CodeMirror} from "react-codemirror2";
 import 'codemirror/lib/codemirror';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/display/placeholder'
+import 'codemirror/addon/display/placeholder';
+import 'codemirror/theme/monokai.css';
 import PropTypes from 'prop-types';
 
 
 class BaseInput extends React.PureComponent{
 
     handleBlur = (editor, event)=>{
-        if(editor.getValue() !== undefined) this.props.onBlur(editor.getValue())
+        if(editor.getValue() !== undefined && this.props.onBlur) this.props.onBlur(editor.getValue())
     }
 
 
@@ -32,6 +33,7 @@ class BaseInput extends React.PureComponent{
                     editorDidAttach={this.handleRef}
                     options={
                         {
+                            theme:"default",
                             mode,
                             lineWrapping:true,
                             lineNumbers:false,
@@ -48,7 +50,7 @@ class BaseInput extends React.PureComponent{
 }
 
 BaseInput.propTypes = {
-    onBlur: PropTypes.func.isRequired,
+    onBlur: PropTypes.func,
     defaultValue: PropTypes.string.isRequired,
     options: PropTypes.object,
     mode: PropTypes.string.isRequired,

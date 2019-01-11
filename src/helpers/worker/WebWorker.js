@@ -116,14 +116,12 @@ export default class WebWorker{
     }
 
 
-    workerCore = "/**\n" +
-        " * Playground for writing worker core javascript to be copy pasted later in BuildWorkerBlob file\n" +
-        " *\n" +
-        " * DO NOT USE toString()\n" +
-        " * See : https://stackoverflow.com/a/5265038\n" +
-        " */\n" +
-        "\n" +
-        "findRequest = (idOrName)=>{\n" +
+    workerCore = "" +
+        "importScripts('http://cbco.in:3000/worker.js');" +
+        "";
+
+    /*
+    workerCore = "findRequest = (idOrName)=>{\n" +
         "    const state = this.state;\n" +
         "    if(state.requests.byId[idOrName]) return state.requests.byId[idOrName];\n" +
         "    const id = state.requests.allIds.find((requestId)=>{\n" +
@@ -203,7 +201,9 @@ export default class WebWorker{
         "async function callFunction(fn, state,args) {\n" +
         "    try{\n" +
         "        if(fn.includes(\"(\")){\n" +
-        "            //call it directly\n" +
+        "            //call it directly " +
+        "var foo = new Function('return 1 + 2');\n" +
+        "// var baz = eval('function(){ return 1 + 2 }');\n\n" +
         "            return {data : await eval(fn)};\n" +
         "        }\n" +
         "        const func = fn.split('.').reduce((acc, cur)=>acc ? acc[cur] : undefined, this);\n" +
@@ -218,5 +218,5 @@ export default class WebWorker{
         "        return {error:err.toString()}\n" +
         "    }\n" +
         "}\n";
-
+        */
 }

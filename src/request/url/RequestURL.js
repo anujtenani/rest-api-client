@@ -13,7 +13,7 @@ class RequestURL extends Component{
 
     render(){
         const {requestId} = this.props
-        return <div className="h-12 bg-white flex flex-row items-center border-b border-dashed primary-border">
+        return <div className="h-12 primary-bg flex flex-row items-center border-b border-dashed primary-border">
             <MethodSelector requestId={requestId}/>
             <URLInput requestId={requestId}/>
             <SendButton onClick={this.testSend} />

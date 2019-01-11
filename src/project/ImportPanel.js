@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ExpandablePanel from "../components/ExpandablePanel";
-import doImport from "../importexport/import";
+import {doImport} from "../importexport";
 import {actionCreateRequest} from "../redux/requestActions";
 
 class ImportPanel extends Component {

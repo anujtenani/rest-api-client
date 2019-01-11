@@ -22,27 +22,31 @@ class Popup extends Component {
 
 
     render() {
+        const {placement} = this.props;
+        console.log("placement", placement);
         return (
             <Manager>
                 <Reference>
                     {({ ref }) => (
-                        <button ref={ref} onClick={this.show} className={"opacity-50 hover:opacity-100"}>
+                        <button ref={ref} onClick={this.show} className={"primary-button"}>
                             {this.props.trigger}
                         </button>
                     )}
                 </Reference>
                 {this.state.show ?
-                    <Popper placement={this.props.placement} eventsEnabled={false} positionFixed={true}>
-                        {({ ref, style, placement, arrowProps }) => (
+                    <Popper placement={placement}>
+                        {({ ref, style, placement, arrowProps }) => {
+                            console.log("popper placement", placement);
+                            return (
                             <div ref={ref} style={style} className={"z-40"} data-placement={placement}>
                                 <div ref={arrowProps.ref} style={arrowProps.style} />
                                 <OutsideWrapper onClickOutside={this.hide}>
-                                <div className={"flex bg-white shadow-md overflow-hidden rounded primary-border flex-col primary-text"}>
+                                <div className={"flex primary-bg shadow-md overflow-hidden rounded primary-border flex-col primary-text"}>
                                     {this.props.children}
                                 </div>
                                 </OutsideWrapper>
                             </div>
-                        )}
+                        )}}
                     </Popper> : null
                 }
             </Manager>
@@ -55,12 +59,12 @@ class Popup extends Component {
 
 
 Popup.propTypes = {
-    placement: PropTypes.oneOf(["right","left","top","bottom","right-start","right-end","top-start","top-end","left-start","left-end","bottom-start","bottom-end"]),
+    placement: PropTypes.oneOf(["auto","auto-end","right","left","top","bottom","right-start","right-end","top-start","top-end","left-start","left-end","bottom-start","bottom-end"]),
     trigger: PropTypes.object.isRequired,
 }
 
 Popup.defaultProps = {
-    placement:"bottom-end"
+    placement:"auto"
 }
 
 

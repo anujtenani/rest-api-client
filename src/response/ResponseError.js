@@ -8,14 +8,17 @@ class ResponseError extends Component {
 
 
     render() {
-        const {code, hostname, port, message} = this.props;
+        const {code, hostname, port, message, url, method} = this.props;
         switch (code) {
             case "ENOTFOUND":
                 return <ErrorENOTFOUND hostname={hostname} port={port} />;
             case "ECONNREFUSED":
                 return <ErrorECONNREFUSED hostname={hostname} port={port} />;
             default:
-                return <p>Unkown error : {message}</p>
+                return <p className={"error-message text-center m-4"}>
+                    <p>{message || "Unable to connect to"}</p>
+                    <pre><span className={`tag--${method ? method.toLowerCase() : ''} mr-1`}>{method}</span>{url}</pre>
+                </p>
         }
     }
 }
@@ -35,7 +38,7 @@ function ErrorECONNREFUSED({hostname, port}){
 const mapStateToProps = (state, props)=>{
     const {requestId, historyId} = props;
     return {
-        ...state.requests.byId[requestId].history.byId[historyId].err
+        ...state.requests.byId[requestId].history.byId[historyId].error
     }
 }
 
