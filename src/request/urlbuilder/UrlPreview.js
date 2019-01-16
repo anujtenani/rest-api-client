@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import WebWorker from "../../helpers/worker/WebWorker";
 import store from '../../redux/store';
@@ -23,9 +23,7 @@ class UrlPreview extends PureComponent {
 
 
     componentDidUpdate(prevProps, prevState){
-        console.log('updating cdm', prevProps, prevState, this.props, this.state);
         if(prevProps.url !== this.props.url){
-            console.log('calling function')
             this.refreshUrl();
         }
     }
@@ -40,8 +38,8 @@ class UrlPreview extends PureComponent {
 
     render() {
         return (
-            <div className={"mb-2 border primary-border rounded p-2"}>
-                <p>{this.state.url}</p>
+            <div className={"mb-2 border primary-border rounded px-2 flex flex-row items-center overflow-x-scroll"} style={{minHeight:'32px'}}>
+                <p style={{whiteSpace:'nowrap'}}>{this.state.url || ' '}</p>
             </div>
         );
     }

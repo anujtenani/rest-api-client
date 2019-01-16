@@ -2,7 +2,7 @@ import {FiSettings} from "react-icons/fi";
 import React from "react";
 import {Link, NavLink, Route, withRouter} from 'react-router-dom';
 import EnvironmentSwitcher from "./EnvironmentSwitcher";
-import {actionUpdateProjectMetadata} from "../redux/project/projectActions";
+import {actionUpdateProjectMetadata, actionUpdateProjectName} from "../redux/project/projectActions";
 import {connect} from 'react-redux';
 
 class ProjectTitle extends React.PureComponent{
@@ -25,9 +25,9 @@ class ProjectTitle extends React.PureComponent{
         this.setState({titleEditable:true})
     }
 
-    onInputBlur = (e)=>{
+    onProjectNameChange = (e)=>{
         this.setState({titleEditable:false});
-        this.props.updateProjectMeta({name:e.target.value})
+        this.props.updateProjectName(e.target.value)
     }
 
 
@@ -38,7 +38,7 @@ class ProjectTitle extends React.PureComponent{
         return  <div>
             <div className={"h-12 p-2 flex flex-row items-center border-b primary-border secondary-bg"}>
                 {this.state.titleEditable ?
-                    <input className={"font-bold text-lg flex-1"} defaultValue={name} placeholder={"Project Name"} onBlur={this.onInputBlur}/>
+                    <input className={"font-bold text-lg flex-1"} defaultValue={name} placeholder={"Project Name"} onBlur={this.onProjectNameChange}/>
                     :  <h2 className={"flex-1"} onDoubleClick={this.onDblClick}>{name || 'My Project'}</h2>
                 }
                 <button onClick={this.toggleOptions} className={"primary-button flex flex-col items-center px-2"}>
@@ -64,6 +64,8 @@ function SettingsRoute({projectId}){
                 <PLink title={"Functions"} to={`/p/${projectId}/settings/functions`} />
                 <PLink title={"Environment"} to={`/p/${projectId}/settings/environment`} />
                 <PLink title={"Import/Export"} to={`/p/${projectId}/settings/ie`} />
+                <PLink title={"Settings"} to={`/p/${projectId}/settings/opts`} />
+                <PLink title={"Customer Support"} to={`/p/${projectId}/settings/support`} />
             </ul>
 }
 
@@ -84,7 +86,7 @@ function mapStateToProps(state, props){
 
 function mapDispatchToProps(dispatch, props){
     return {
-        updateProjectMeta:(change)=>dispatch(actionUpdateProjectMetadata(change))
+        updateProjectName:(name)=>dispatch(actionUpdateProjectName(name))
     }
 }
 

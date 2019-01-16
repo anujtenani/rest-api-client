@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Spinner from "./spinner";
 import PropTypes from 'prop-types';
-const axios = require('axios');
 
 class FileInput extends Component {
 

@@ -4,7 +4,7 @@ import PreviewVisualHtml from "../preview/PreviewVisualHtml";
 import PreviewMedia from "../preview/PreviewMedia";
 import PreviewSource from "../preview/PreviewSource";
 import PreviewRaw from "../preview/PreviewRaw";
-
+import prettyBytes from 'pretty-bytes';
 class TabResponse extends Component {
     state = {
         previewType:"preview"
@@ -28,7 +28,7 @@ class TabResponse extends Component {
 
     render() {
         const {previewType} = this.state;
-        const {responseBody, headers} = this.props;
+        const {responseBody, headers, statusCode, bodySize, endTime, startTime} = this.props;
         //get conte ntSize;
 
        const contentLengthHeader = headers && headers.length > 0 ? headers.find(({name, value})=> name.toLowerCase() === 'content-length') : 0;
@@ -41,12 +41,19 @@ class TabResponse extends Component {
         //2. source (shows the data in a codemirror)
         return (
             <div className={"p-2"}>
-                    <select value={previewType} onChange={this.onChange} className={"mb-2"}>
+                <div className={"flex flex-row items-center justify-between"}>
+                    <div className={"flex flex-row items-center"}>
+                    <RenderTag text={statusCode} className={"tag--statuscode-2xx"} />
+                    <RenderTag text={prettyBytes(getHeaderVal(headers, 'content-length', bodySize))} className={"tag--bodysize"} />
+                    <RenderTag text={`${endTime-startTime}ms`}  className={"tag--totaltime"}/>
+                    </div>
+                    <select value={previewType} onChange={this.onChange}>
                         <option value={"preview"}>Preview</option>
                         <option value={"html"}>Source Code</option>
                         <option value={"raw"}>Raw</option>
                         <option value={"json"}>JSON</option>
                     </select>
+                </div>
 
                     {previewType === "preview" ? <RenderContentPreview contentType={contentType} responseBody={responseBody} contentLength={contentLength} /> : null }
                     {previewType === "html" ? <PreviewSource previewMode={"html"} responseBody={responseBody} contentLength={contentLength} /> : null }
@@ -55,6 +62,10 @@ class TabResponse extends Component {
             </div>
      );
     }
+}
+
+function RenderTag({className, text}){
+    return <p className={`ml-2 tag--responsetags ${className}`}>{text}</p>
 }
 
 function RenderContentPreview({contentType, responseBody, contentLength}){
@@ -72,7 +83,7 @@ function RenderContentPreview({contentType, responseBody, contentLength}){
 
 function getHeaderVal(headers, key, defaultValue=''){
     const contentLengthKey = Object.keys(headers).find((item)=>{
-        return item.toLowerCase() === key
+        return item.toLowerCase() === key.toLowerCase()
     })
 
     return contentLengthKey ? headers[contentLengthKey] : defaultValue;
@@ -82,9 +93,14 @@ function getHeaderVal(headers, key, defaultValue=''){
 
 function mapStateToProps(state, props){
     const {requestId, historyId} = props;
+    const history = state.requests.byId[requestId].history.byId[historyId];
     return {
-        responseBody: state.requests.byId[requestId].history.byId[historyId].body,
-        headers: state.requests.byId[requestId].history.byId[historyId].headers
+        responseBody: history.body,
+        headers: history.headers,
+        statusCode: history.statusCode,
+        bodySize: history.bodySize || 0,
+        startTime: history.startTime || 0,
+        endTime: history.endTime || 0,
     }
 }
 

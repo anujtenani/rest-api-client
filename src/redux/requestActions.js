@@ -1,13 +1,13 @@
 import {createActionConstant, methods, types} from "./actionCreator";
-import torequest from "../transformers/torequest";
 import {actionCreateResponseHistory} from "./history/historyActions";
 import {sendRequest} from "../servicehandlers";
+import WebWorker from "../helpers/worker/WebWorker";
 
 const shortId = require('shortid');
 //const axios = require('axios');
 
 const defaultState = {
-    title:'',
+    name:'',
     created:'',
     modified:'',
     url:'',
@@ -83,12 +83,16 @@ export const actionExecuteRequest = (requestId)=>{
 //        source = CancelToken.source();
 
         //get special keyword baseurl;
-       const requestData = await torequest(getState(), requestId);
-        const {url, method, headers, body, qs, auth} = requestData;
+        // const requestData = await torequest(getState(), requestId);
+        // const {url, method, headers, body, qs, auth} = requestData;
 
+        const worker = new WebWorker(getState());
+        const res = await worker.callFunction(`getRequest("${requestId}",false)`,getState());
+        console.log('calling', res);
+        const {url, method, headers, body, bodyType} = JSON.parse(res.data);
+//        console.log("calling", url, method, headers, body);//TODO fix passing of multipart body
 
-
-        sendRequest(url, method, headers, body, qs, auth).then((response)=>{
+        sendRequest(url, method, headers, {data: body, bodyType}).then((response)=>{
             console.log('got response',response);
             if(response) {
                 dispatch(actionCreateResponseHistory(requestId, response));

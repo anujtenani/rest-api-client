@@ -15,10 +15,10 @@ class ResponseError extends Component {
             case "ECONNREFUSED":
                 return <ErrorECONNREFUSED hostname={hostname} port={port} />;
             default:
-                return <p className={"error-message text-center m-4"}>
+                return <div className={"error-message text-center m-4"}>
                     <p>{message || "Unable to connect to"}</p>
                     <pre><span className={`tag--${method ? method.toLowerCase() : ''} mr-1`}>{method}</span>{url}</pre>
-                </p>
+                </div>
         }
     }
 }

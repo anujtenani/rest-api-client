@@ -27,8 +27,8 @@ class BodyFormInput extends Component {
         }
     }
 
-    onFileInput = ({name, size, mimetype, data})=>{
-        this.props.updateBodyItem({value: data, fileName:name, size, contentType:mimetype});
+    onFileInput = ({name, size, type, data})=>{
+        this.props.updateBodyItem({value: data, fileName:name, size, contentType:type});
     }
 
     toggleDoc = (e)=>{

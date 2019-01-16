@@ -23,9 +23,9 @@ export function removeItem(key){
 
 
 
-export function sendRequest(url, method, headers, body, qs, auth){
+export function sendRequest(url, method, headers, body, bodyType){
     const type = "request.send";
-    const payload = {url, method, body, headers, qs, auth};
+    const payload = {url, method, body, bodyType, headers};
     return sendMessageToExtension({type, payload});
 }
 

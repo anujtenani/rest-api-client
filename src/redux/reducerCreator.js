@@ -22,7 +22,7 @@ export const byIdReducer = (type, defaultState={}) => (state = defaultState, act
 export const allIdsReducer = (type, defaultState=[])=> (state = defaultState, action)=>{
     switch (action.type) {
         case createActionConstant(methods.create, type): {
-            return [action.payload.id, ...state]
+            return [...state, action.payload.id]
         }
         case createActionConstant(methods.delete, type):{
             return state.filter((id)=>id !== action.id)

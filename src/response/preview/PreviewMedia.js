@@ -18,7 +18,7 @@ class PreviewMedia extends Component {
         const {contentLength} = this.props;
         return (
             <div>
-                <p className={"mb-2"}>
+                <p className={"mb-2 text-center text-sm secondary-bg"}>
                     {width}x{height} - {prettyBytes(Number(contentLength))}
                  </p>
                 <img src={this.props.responseBody} onLoad={this.showWidthAndHeight} />

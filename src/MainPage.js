@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import shortId from 'shortid';
+import {getItem} from "./servicehandlers";
 
 /**
  * Shows the option to open existing project/import a project/create a new project
  * with a side list of recent projects
  */
 class MainPage extends Component {
+
+    state = {
+        projects:[]
+    }
 
     createProject = ()=>{
         // The ID of the extension we want to talk to.
@@ -15,7 +20,9 @@ class MainPage extends Component {
     }
 
     componentDidMount(){
-
+        getItem('projects').then((res)=>{
+            if(res) this.setState({projects: JSON.parse(res)})
+        })
     }
 
 
@@ -25,11 +32,9 @@ class MainPage extends Component {
                 <div>
                 <div className={"flex primary-bg p-4 shadow-md rounded overflow-hidden"}>
                     <div className={"overflow-scroll w-64 flex-1 border-r primary-border"}>
-                        <ProjectItem />
-                        <ProjectItem />
-                        <ProjectItem />
-                        <ProjectItem />
-                        <button className={"primary-button mb-2 mt-2"} onClick={this.createProject}>Create a new project</button>
+                        {this.state.projects.map((project)=>{
+                            return <ProjectItem {...project} />
+                        })}
                     </div>
                     <div className={"flex-1 w-64 flex p-2 items-center flex-col justify-center"}>
                             <button className={"primary-button mb-2 mt-2"} onClick={this.createProject}>Create a new project</button>
@@ -47,8 +52,8 @@ class MainPage extends Component {
     }
 }
 
-function ProjectItem(){
-    return  <a  href={"/p/cipher"} tabIndex={1} className={"list-item block p-2  no-underline appearance-none"}>Cipher Chat</a>
+function ProjectItem({id, name}){
+    return  <a  href={`/p/${id}`} tabIndex={1} className={"list-item block p-2  no-underline appearance-none"}>{name}</a>
 }
 
 

@@ -16,7 +16,7 @@ window.jsonlint = jsonlint;
 export default class JavascriptInput extends React.PureComponent{
 
     render(){
-        return  <BaseInput {...this.props} mode={{name:'javascript',json:true}} options={{lint:true, lineNumbers:true, gutters: ["CodeMirror-lint-markers"], ...this.props.options}}/>
+        return  <BaseInput {...this.props} mode={"application/json"} options={{lint:true, lineNumbers:true, gutters: ["CodeMirror-lint-markers"], ...this.props.options}}/>
     }
 }
 

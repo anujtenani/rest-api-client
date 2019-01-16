@@ -6,7 +6,6 @@ import {byIdReducer} from "../reducerCreator";
 const allIdsReducer = (state = [], action)=>{
     switch (action.type) {
         case createActionConstant(methods.create, types.history): {
-            console.log('adding', action);
             return [action.payload.id, ...state] //important add it to the start
         }
         case createActionConstant(methods.delete, types.history):{

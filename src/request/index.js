@@ -8,6 +8,7 @@ import TabRequestQueryString from "./querystring/TabRequestQueryString";
 import RequestDoc from "./RequestDoc";
 import {NavLink, Route, Switch, withRouter} from "react-router-dom";
 import DocumentTitle from 'react-document-title';
+import TabRequestComment from "./doc/TabRequestComment";
 
 class Index extends Component {
     render() {
@@ -30,7 +31,8 @@ class Index extends Component {
 }
 
 function RequestBuild({requestId}){
-    return <React.Fragment>
+    return <React.Fragment key={requestId}>
+        <TabRequestComment requestId={requestId} />
         <TabRequestQueryString requestId={requestId} />
         <TabRequestBody requestId={requestId}/>
         <TabRequestHeader requestId={requestId}/>

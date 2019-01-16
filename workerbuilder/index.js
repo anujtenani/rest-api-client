@@ -1,9 +1,14 @@
+const digest = require('./auth/digest');
+const basic = require('./auth/basic');
 JSONPath = require('jsonpath/jsonpath.min');
 UrlParser = require('url');
+const shortid = require('shortid');
+uuid = require('uuid');
+const multipart = require('./MultipartBuilder');
 const formurlencoded = require('form-urlencoded').default;
 CryptoJS = require('crypto-js');
-// var MultipartBody = require('maltypart').RequestBody;
 
+//exported
 findRequest = (idOrName)=>{
     const state = this.state;
     if(state.requests.byId[idOrName]) return state.requests.byId[idOrName];
@@ -11,9 +16,13 @@ findRequest = (idOrName)=>{
         return state.requests.byId[requestId].name === idOrName
     });
     if(id) return state.requests.byId[id];
-    else throw new Error('Request not found');
+    else throw new Error('Request not found '+idOrName);
 }
 
+nonce = ()=>shortid.generate();
+
+
+//exported
 getResponseBody = (requestId, jsonquery)=>{
     const request =  findRequest(requestId);
     const { history } = request;
@@ -36,19 +45,19 @@ getResponseBody = (requestId, jsonquery)=>{
         }
     }
 }
+//exported
 getResponseHeader = (requestId, headerName)=>{
     const { history } = findRequest(requestId);
     if(history.allIds.length > 0) {
         const {headers} = history.byId[history.allIds[0]];
-        console.log(headers);
         const {value} = headers.find(({name, value})=>name.toLowerCase() === headerName.toLowerCase()) || {};
-        console.log('got value', value);
         return value;
     }else{
         return "header not found";
     }
 }
 
+//exported
 env = ()=>{
     const {activeEnv, variableAllIds, variableById, envVariableMap} = this.state.env;
     const varmap = {}
@@ -87,7 +96,7 @@ transformString = (line)=>{
     }
 }
 
-
+//export
 getRequestUrl = async (requestId)=>{
     const {url, path, qs} = findRequest(requestId);
     let ur = url;
@@ -103,8 +112,10 @@ getRequestUrl = async (requestId)=>{
         });
     }
     const varmap = env();
-    const baseurl = varmap['baseurl'] || '';
-    ur = baseurl+ur;
+    if(!ur.startsWith('http')) {
+        const baseurl = varmap['baseurl'] || '';
+        ur = baseurl + ur;
+    }
     ur = ur.startsWith('http') ? ur : `http://${ur}`;
     ur = await transformString(ur);
 
@@ -115,7 +126,8 @@ getRequestUrl = async (requestId)=>{
     return UrlParser.format(parsedUrl);
 }
 
-getRequestBody = (requestId)=>{
+//export
+getRequestBody = (requestId, forPreview = true)=>{
     const {body} = findRequest(requestId);
     const {bodyType, data, params} = body;
     console.log(bodyType, data);
@@ -133,7 +145,11 @@ getRequestBody = (requestId)=>{
             return createFormBody(params);
         case "multipart":
         case "multipart-formbody":
-            return createMultipartBody(getBodyParams(requestId));
+            if(forPreview) {
+                return new multipart().toString(getBodyParams(requestId));
+            }else{
+                return new multipart().toDataUrl(getBodyParams(requestId));
+            }
         case "graphql":
             return JSON.stringify({query:data.value});
         default:
@@ -142,14 +158,46 @@ getRequestBody = (requestId)=>{
 }
 
 
-getBodyParams = (requestId)=>{
+const buildAuthorizationHeader = async (url, method, requestId) => {
+    const {auth} = findRequest(requestId);
+    const {authType} = auth;
+    switch (authType) {
+        case "basic": {
+            const username = await transformString(auth.username);
+            const password = await transformString(auth.password);
+            return {Authorization: basic.convertAuthToHeader(username, password)};
+        }
+        case "digest": {
+            const response = await corsFetch(url, method);
+            const {realm, qop, nonce, opaque} = digest.extractDataFromResponse(response);
+            const username = await transformString(auth.username);
+            const password = await transformString(auth.password);
+            return {Authorization: await digest.convertAuthToHeader(url, method, username, password, {realm, qop, nonce, opaque})}
+        }
+        case "bearer":
+            const bearer = await transformString(auth.bearer);
+            return {Authorization : `Bearer ${bearer}`};
+        case "hawk":
+            //TODO substitute variables
+//                return {Authorization : hawk.convertAuthToHeader(url, method, auth.id, auth.key, auth.algorithm, auth.ext) }
+        default:
+            return {}
+    }
+}
+
+
+const getBodyParams = (requestId)=>{
     const {body} = findRequest(requestId);
     const {byId, allIds} = body;
     return allIds.map((item)=>{
-        const {name, value, inputType, fileName, size, type} = byId[item];
-        return {name, value, inputType, fileName, size, type};
+        const {name, value, inputType, fileName, size, contentType} = byId[item];
+        return {name, value, inputType, fileName, size, contentType};
     });
 }
+
+
+
+
 
 /**
  * Creates multipart body from the body object of the state
@@ -157,39 +205,10 @@ getBodyParams = (requestId)=>{
  * @param params
  */
 function createMultipartBody(params){
-    const form = new FormData();
-    params.forEach((item)=>{
-        const {name, value, inputType, fileName, size, type} = item;
-        if(inputType === "file"){
-            form.append(name, DataUriToBlob(value), fileName)
-        }else{
-            form.append(name, value);
-        }
-    });
-    console.log('got formdata', form);
-    return form;
+    console.log('got params creating body', params);
+    return new multipart().toBlob(params);
 }
 
-
-/**
- * Creates multipart body from the body object of the state
- * @returns {FormData}
- * @param params
- *
- function createMultipartBody(params){
-    const form = new MultipartBody();
-    params.forEach((item)=>{
-        const {name, value, inputType, fileName, size, type} = item;
-        if(inputType === "file"){
-            form.append(name, {contentType:type, data: value, fileName})
-        }else{
-            form.append({name, value});
-        }
-    });
-    console.log('got formdata', form.getData());
-    return form.getData();
-}
- */
 
 /**
  * Creates form-url-encoded body from body object of the state
@@ -239,7 +258,7 @@ function DataUriToBlob(dataURI) {
  * @param headerNames - optionally filter by header name
  */
 getRequestHeaders = async (requestId, headerNames=null)=>{
-    const {headers} = findRequest(requestId);
+    const {headers, method, body} = findRequest(requestId);
     const hdrs = headers.allIds.map((item)=>{
         const {name, value} = headers.byId[item];
         const n = transformString(name);
@@ -255,9 +274,12 @@ getRequestHeaders = async (requestId, headerNames=null)=>{
         });
         return obj;
     })
-    const authHeaders = {};
+    const url = getRequestUrl(requestId);
+    const authHeaders = await buildAuthorizationHeader(url, method, requestId);
 //    const authHeaders = await buildAuthHeaders(state, requestId, worker);
-    const h = {...headerObj, ...authHeaders};
+    const bodyHeaders = await getBodyHeaders(requestId);
+    const h = {...headerObj, ...authHeaders, ...bodyHeaders};
+
     //apply filter;
     if(headerNames) {
         const filter = headerNames instanceof Array ? headerNames : [headerNames];
@@ -269,7 +291,7 @@ getRequestHeaders = async (requestId, headerNames=null)=>{
         keys.forEach((k)=>{
            filteredHeaders[k] = h[k];
         });
-        return filteredHeaders;
+        return filter.length === 1 ? filteredHeaders[keys[0]] : filteredHeaders;
     }else{
         return h;
     }
@@ -286,16 +308,29 @@ base = {
 }
 
 onmessage = async (e)=>{
-    const {type, key} = e.data;
+    const {type, key, truncateLength} = e.data;
     switch (type) {
         case "call":
             const { fn, state, args} = e.data;
             this.state = state;
             console.log("calling", fn, state, args);
             callFunction(fn, state, args).then((result)=>{
-                postMessage({key, result});
+                if(truncateLength > -1 && result.data) {
+                    const data = result.data.length > truncateLength ? result.data.substr(0, truncateLength) : result.data;
+                    postMessage({key, result: {data}});
+                }else{
+                    postMessage({key, result});
+                }
             });
             break;
+        case "sendrequest.response":{
+            const {key, response} = e.data;
+            if(pendingPromises[key]){
+                pendingPromises[key](response);
+                delete pendingPromises[key];
+            }
+            break;
+        }
         case "update.vars":
             const {vars} = e.data;
             Object.keys(vars).forEach((item)=>{
@@ -305,8 +340,77 @@ onmessage = async (e)=>{
             break;
         default:
             postMessage({key, result: {error: "Method type not supported"}})
+    }
+}
 
 
+const pendingPromises = {};
+corsFetch = (url, method, headers, body)=>{
+    console.log("worker", method);
+    const key = nonce();
+    const type = "sendrequest.call";
+    const promise = new Promise((resolve, reject)=>{
+        pendingPromises[key] = resolve;
+    });
+    postMessage({type, key, url, method, headers, body});
+    return promise;
+}
+
+/*
+const promiseTimeout = function(ms, promise){
+    // Create a promise that rejects in <ms> milliseconds
+    let timeout = new Promise((resolve, reject) => {
+        let id = setTimeout(() => {
+            clearTimeout(id);
+            reject('Timed out in '+ ms + 'ms.')
+        }, ms)
+    });
+    return Promise.race([
+        promise,
+        timeout
+    ]);
+}
+*/
+
+getBodyHeaders = (requestId)=>{
+    const {body} = findRequest(requestId);
+    const {bodyType} = body || {};
+    switch (bodyType) {
+        case "form":
+        case "application/x-www-urlformencoded":
+            return {'Content-Type':'application/x-www-urlformencoded'};
+        case "multipart":
+        case "multipart-formbody":
+            return {'Content-Type': 'multipart/form-data; charset=utf-8; boundary=__X__BOUNDARY__'}
+        case "text":
+            return {'Content-Type':'text/plain'};
+        case "json":
+        case "graphql":
+            return {'Content-Type':'application/json'};
+        case "xml":
+            return {'Content-Type':'application/xml'};
+        case "binary":
+            return {'Content-Type':body.contentType};
+        default:
+            return {}
+    }
+}
+
+getRequest = async (requestId, forPreview = true) =>{
+    const {method, body} = findRequest(requestId);
+    const url = await getRequestUrl(requestId);
+    const b = method !== "GET" ? await getRequestBody(requestId, forPreview) : undefined;
+    const headers = await getRequestHeaders(requestId);
+    const bodyType = forPreview ? undefined : body.bodyType;
+    return {url, method, headers, body:b, bodyType};
+}
+
+run = async (requestId)=>{
+    try {
+        const {url, method, headers, body, bodyType} = await getRequest(requestId, false);
+        return await corsFetch(url, method, headers, body, bodyType);
+    }catch (e) {
+        return e.toString();
     }
 }
 

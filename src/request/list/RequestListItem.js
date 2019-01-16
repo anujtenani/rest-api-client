@@ -111,6 +111,7 @@ function RenderTag({method, type}){
 }
 
 const mapStateToProps = (state, props)=>{
+
     const {requestId, projectId} = props;
     const {name, method, type} = state.requests.byId[requestId];
     const path = `/p/${projectId}/${type || 'rest'}/${requestId}`;

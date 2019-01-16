@@ -6,7 +6,10 @@ class OAuth2Result extends Component {
     render() {
         return (
             <div>
+                {this.props.body ?
                 <JSONInput defaultValue={JSON.stringify(JSON.parse(this.props.body), null, 2)} options={{readOnly:true}}/>
+                    : null
+                }
             </div>
         );
     }

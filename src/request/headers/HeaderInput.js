@@ -45,6 +45,7 @@ class HeaderInput extends Component {
                             </p>
                         }
                         inputProps={{
+                            autofocus:true,
                             placeholder:"name",
                             defaultValue:name,
                             onBlur:this.onInputBlur('name'),

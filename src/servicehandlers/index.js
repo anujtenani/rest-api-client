@@ -27,11 +27,11 @@ export function extensionInstalled(){
     })
 }
 
-export function sendRequest(url, method, headers, body, qs, auth) {
+export function sendRequest(url, method, headers, body) {
     if (isChrome) {
-        return chrome.sendRequest(url, method, headers, body, qs, auth);
+        return chrome.sendRequest(url, method, headers, body);
     } else if (isFirefox) {
-        return firefox.sendRequest(url, method, headers, body, qs, auth);
+        return firefox.sendRequest(url, method, headers, body);
     }else {
         throw new Error('No extension found');
     }
@@ -41,7 +41,7 @@ export function sendRequest(url, method, headers, body, qs, auth) {
 
 export function setItem(key, value){
     if (isChrome) {
-        console.log('setting state', key, value);
+      //.  console.log('setting state', key, value);
         return chrome.setItem(key, value);
     } else if (isFirefox) {
         return firefox.setItem(key, value);
@@ -51,7 +51,7 @@ export function setItem(key, value){
 }
 export function getItem(key){
     if (isChrome) {
-        console.log('getting state', key);
+     //   console.log('getting state', key);
         return chrome.getItem(key);
     } else if (isFirefox) {
         return firefox.getItem(key);

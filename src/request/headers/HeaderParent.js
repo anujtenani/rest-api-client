@@ -3,8 +3,19 @@ import {connect} from 'react-redux';
 import HeaderInput from "./HeaderInput";
 import {FiPlus} from "react-icons/fi";
 import {actionCreateHeaderItem} from "../../redux/headers/headerActions";
-
+import Mousetrap from 'mousetrap';
 class HeaderParent extends Component {
+
+
+    componentDidMount() {
+        Mousetrap.bind('command+option+h', this.createHeader)
+    }
+
+
+    componentWillUnmount() {
+        Mousetrap.unbind('command+option+h');
+    }
+
 
     onInputChange = (key)=>(e)=>{
         console.log('input chaned')

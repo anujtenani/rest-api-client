@@ -23,7 +23,7 @@ class Popup extends Component {
 
     render() {
         const {placement} = this.props;
-        console.log("placement", placement);
+        //console.log("placement", placement);
         return (
             <Manager>
                 <Reference>

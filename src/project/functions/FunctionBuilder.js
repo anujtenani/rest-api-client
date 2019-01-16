@@ -34,7 +34,7 @@ class FunctionBuilder extends Component {
         this.worker = new WebWorker(this.props.state);
         //start the worker with this function
         //call the function
-        this.worker.callFunction(this.props.name, this.props.state, '').then((result)=>{
+        this.worker.callFunction(this.props.name, this.props.state, '', 10000).then((result)=>{
             this.setState({loading:false});
             this.worker.terminate();
             this.worker = undefined;
@@ -105,10 +105,9 @@ class FunctionBuilder extends Component {
 function RenderFunctionResult({loading, result}){
     return <React.Fragment>
         <p className={"font-bold"}>Result Preview</p>
-    {
         <div className={"secondary-bg p-2"}>
-            <pre>{result}</pre>
-        </div>}
+            <p className={"font-mono"} style={{whiteSpace:'pre-wrap'}}>{result}</p>
+        </div>
     </React.Fragment>
 }
 

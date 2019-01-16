@@ -1,11 +1,7 @@
 import store from '../redux/store';
-
-import * as basic from '../helpers/auth/basic';
-import * as digest from '../helpers/auth/digest';
-import * as hawk from '../helpers/auth/hawk';
 import WebWorker from "../helpers/worker/WebWorker";
 import url from "url";
-import { substituteValuesInVariables } from "./requestbuilder/func";
+import {substituteValuesInVariables} from "./requestbuilder/func";
 
 export default async (state, requestId)=>{
     const varId = state.env.variableAllIds.find((item)=>{
@@ -20,7 +16,7 @@ export default async (state, requestId)=>{
 
     const worker = new WebWorker(state);
 
-    url = await createUrl(requestId, worker, state);
+    url = await createUrl(requestId, worker);
     console.log('url created', url);
     const params = body.allIds.map((id)=>{
         return body.byId[id];
@@ -40,6 +36,7 @@ export default async (state, requestId)=>{
 
 
 
+//TODO to be replaced with worker code
 export function createUrl(requestId, worker){
     const state = store.getState();
     const request = state.requests.byId[requestId];
@@ -62,7 +59,7 @@ export function createUrl(requestId, worker){
 
 
     const parsedUrl = url.parse(ur, true);
-    parsedUrl.query = {...parsedUrl.query, ...qs};
+    parsedUrl.query = {...parsedUrl.query, ...qsObject};
     parsedUrl.search = undefined;
     return url.format(parsedUrl);
 }

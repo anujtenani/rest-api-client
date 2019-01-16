@@ -48,26 +48,51 @@ select{
     @apply bg-red-lightest p-2 border-red rounded
 }
 
+.helper-card {
+    @apply bg-orange text-white p-2
+}
+
 .tag--get{
-    @apply text-green
+    @apply text-blue font-bold
 }
 .tag--post{
-    @apply text-blue
+    @apply text-green font-bold
 }
 .tag--put, .tag--option, .tag--head{
-    @apply text-orange
+    @apply text-orange font-bold
 }
 .tag--delete{
-    @apply text-red
+    @apply text-red font-bold
 }
 .tag--oauth{
-    @apply text-blue
+    @apply text-purple font-bold
 }
 .tag--ws{
-    @apply text-purple
+    @apply text-orange font-bold
 }
 .tag--counter{
     @apply secondary-bg text-xs px-1 py-px ml-1 rounded
+}
+
+.tag--responsetags{
+    @apply text-white px-2 py-1 rounded text-sm
+}
+
+.tag--statuscode-2xx{
+    @apply bg-green
+}
+.tag--statuscode-4xx{
+    @apply bg-orange
+}
+.tag--statuscode-5xx{
+    @apply bg-red
+}
+
+.tag--totaltime{
+    @apply bg-purple
+}
+.tag--bodysize{
+    @apply bg-orange
 }
 
 a{

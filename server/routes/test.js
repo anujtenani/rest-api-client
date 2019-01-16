@@ -28,9 +28,10 @@ router.get('/jpg', (req, res, next)=>{
 });
 
 
-router.post('/image', upload.array('image', 5), (req, res, next)=>{
-
-    console.log(req.files);
-    res.send(req.files);
+router.post('/image', upload.single('image'), (req, res, next)=>{
+    console.log(req.file.path);
+    res.header({'Content-Type':'image/png'});
+    res.sendFile(path.join(__dirname, '..', '..',req.file.path));
+//    res.send({"hasfile":"f","result":req.file});
 })
 module.exports = router;

@@ -8,6 +8,8 @@ import ProjectDoc from "./ProjectDoc";
 import {Route} from "react-router-dom";
 import FunctionsList from "./functions/FunctionsList";
 import EnvironmentVariables from "./environment/EnvironmentVariables";
+import ProjectOptions from "./ProjectOptions";
+import CustomerSupport from "./CustomerSupport";
 
 class ProjectSettings extends Component {
 
@@ -33,6 +35,9 @@ class ProjectSettings extends Component {
                     <Route path={this.props.match.url+"/environment"} component={EnvironmentVariables} />
                     <Route path={this.props.match.url+"/ie"} component={ImportExport} />
                     <Route path={this.props.match.url+"/doc"} component={ProjectDoc} />
+                    <Route path={this.props.match.url+"/opts"} component={ProjectOptions} />
+                    <Route path={this.props.match.url+"/support"} component={CustomerSupport} />
+
                 </div>
         );
     }

@@ -6,6 +6,10 @@ import Mousetrap from 'mousetrap';
 import {FiPlusCircle} from "react-icons/fi";
 import Popup from "../../components/Popup";
 import {Route, withRouter} from "react-router-dom";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import RenderGroup from "./dnd/RenderGroup";
+import {actionAddToGroup, actionRemoveFromGroup} from "../../redux/group/groupActions";
+
 
 class RequestList extends PureComponent {
 
@@ -27,16 +31,6 @@ class RequestList extends PureComponent {
             this.setState({filteredIds});
         }
     };
-
-
-    componentWillUnmount() {
-        Mousetrap.unbind('option+n', this.createANewRequest)
-    }
-
-
-    componentDidMount() {
-        Mousetrap.bind('option+n', this.createANewRequest)
-    }
 
 
     onFocus = ()=>{
@@ -63,9 +57,9 @@ class RequestList extends PureComponent {
 
     createOAuth = ()=>{
         this.hidePopper();
-        const {payload} = this.props.createRequest({name:'New OAuth2',type:'oauth2'});
-        this.props.history.push(`/p/${this.props.projectId}/oauth2/${payload.requestId}`);
-
+        this.props.createRequest({name:'New OAuth2',type:'oauth2'}).then((r)=>{
+            console.log();
+        })
     }
 
 
@@ -85,6 +79,17 @@ class RequestList extends PureComponent {
         this.popper = ref
     }
 
+    onDragEnd = (result) =>{
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+        console.log("dragend", result);
+        const {source, destination, draggableId} = result;
+//        this.props.removeFromGroup(source.droppableId, draggableId);
+//        this.props.addToGroup(destination.droppableId, draggableId, destination.index);
+    }
+
     render() {
         const filteredIds = this.state.filteredIds ? this.state.filteredIds : this.props.ids;
         return <div>
@@ -98,25 +103,10 @@ class RequestList extends PureComponent {
             </div>
 
             {this.props.ids.length === 0 ? <NoRequestsHereCard /> : null}
-
-            <div onFocus={this.onFocus} onBlur={this.onBlur}>
-            {filteredIds.map((requestId)=>{
-                const { projectId } = this.props;
-                const {name, method, type } = this.props.byId[requestId];
-                const path = `/p/${projectId}/${type || 'request'}/${requestId}`;
-                const isActive = this.props.location.pathname === path;
-                //this is a performance optimization so that RequestListItem is only rendered if location change affects it
-                return <RequestListItem
-                            requestId={requestId}
-                            key={requestId}
-                            name={name}
-                            method={method}
-                            type={type}
-                            path={path}
-                            isActive={isActive}
-                        />
-            })}
-            </div>
+            <DragDropContext onDragEnd={this.onDragEnd}>
+                <RenderGroup groupId={"group1"} groupTitle={"Accounts"} requests={["uAbtHgVo-"]}/>
+                <RenderGroup groupId={"default"} groupTitle={"Default"} requests={filteredIds.filter((id)=> ["uAbtHgVo-"].indexOf(id) < 0)} />
+            </DragDropContext>
         </div>
     }
 }
@@ -146,11 +136,14 @@ const mapListStateToProps = (state, props)=>{
         byId: state.requests.byId,
         names,
         projectId: state.metadata.id,
+        groups: state.groups.allIds,
     }
 }
 const mapDispatchToProps = (dispatch,props)=>{
     return {
-        createRequest:({name, type})=>dispatch(actionCreateRequest({name, type}))
+        createRequest:({name, type})=>dispatch(actionCreateRequest({name, type})),
+        addToGroup:(groupId, requestId, index)=>dispatch(actionAddToGroup(groupId, requestId, index)),
+        removeFromGroup:(groupId, requestId)=>dispatch(actionRemoveFromGroup(groupId, requestId))
     }
 }
 

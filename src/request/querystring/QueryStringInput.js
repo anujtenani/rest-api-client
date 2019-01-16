@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {FiLink, FiMenu, FiStar, FiX} from "react-icons/fi";
+import {FiMenu, FiX} from "react-icons/fi";
 import Textarea from "react-textarea-autosize";
 import Input from "../../components/Input";
 import {actionDeleteQueryStringItem, actionUpdateQueryStringItem} from "../../redux/querystring/queryStringActions";
+import FieldCommentTextArea from "../commons/FieldCommentTextArea";
 
 class QueryStringInput extends Component {
     state = {
         description:'',
-        autoval:undefined,
-        docVisible:false
+        commentState:undefined
     }
+
+
+    componentDidMount() {
+        this.setState({docVisible:this.props.comment && this.props.comment.length > 0});
+    }
+
 
     onInputBlur = (key)=>(e)=>{
         this.props.updateQueryString({[key]: e.target.value})
@@ -26,20 +32,18 @@ class QueryStringInput extends Component {
 
     render() {
         const {name, value} = this.props;
-        const {docVisible, autoval} = this.state;
+        const {docVisible} = this.state;
         return (
-            <div className={"my-2"}>
-                <div className="flex flex-row items-center">
-                    <Input placeholder={"name"} defaultValue={name} onBlur={this.onInputBlur('name')}/>
+            <div>
+                <div className="flex flex-row">
+                    <div className={"flex flex-col items-center justify-center bg-purple"}>
+                        <span className={"px-1 text-white font-mono"}>Q</span>
+                    </div>                    <Input placeholder={"name"} defaultValue={name} onBlur={this.onInputBlur('name')}/>
                     <Input placeholder={"value"} defaultValue={value} onBlur={this.onInputBlur('value')}/>
                     <button className={"p-2 primary-text"} onClick={this.deleteItem}><FiX/></button>
                     <button className={"p-2 primary-text"} onClick={this.toggleDoc}><FiMenu/></button>
                 </div>
-
-                {docVisible ?
-                    <div className={"my-2 flex flex-row items-center block"}>
-                        <Textarea placeholder={"Description"} onBlur={this.onInputBlur('comment')} defaultValue={this.props.comment} class={"flex-1 py-2 border-b  bg-transparent primary-border primary-text"}/>
-                    </div> : null }
+                {docVisible ? <FieldCommentTextArea onBlur={this.onInputBlur('comment')} defaultValue={this.props.comment} /> : null }
             </div>
         );
     }

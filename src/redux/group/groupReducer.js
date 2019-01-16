@@ -24,6 +24,6 @@ const allIds = (state = [], action)=>{
     }
 }
 
-return combineReducers({
+export default combineReducers({
     byId, allIds
 })

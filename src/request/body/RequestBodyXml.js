@@ -13,7 +13,6 @@ class RequestBodyXml extends React.Component{
 
     render(){
         const {value} = this.props;
-        console.log(this.props, this.state);
         return <XmlInput onBlur={this.onBlur} defaultValue={value || ''} />
     }
 }
