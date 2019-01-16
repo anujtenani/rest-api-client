@@ -16,7 +16,7 @@ class MainPage extends Component {
         // The ID of the extension we want to talk to.
         // Make a simple request:
         const id = shortId.generate();
-        document.location = `/p/${id}`;
+        document.location = `#/p/${id}`;
     }
 
     componentDidMount(){

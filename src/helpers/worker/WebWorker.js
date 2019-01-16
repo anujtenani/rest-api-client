@@ -1,4 +1,3 @@
-import {fn} from "./test";
 import shortId from 'shortid';
 import {sendRequest} from "../../servicehandlers";
 export default class WebWorker{
@@ -33,7 +32,7 @@ export default class WebWorker{
      *      importScripts() of any plugins (including the base functions)
      *      custom onmessaging function which responds to commands
      */
-    startWorker = (func = fn) => {
+    startWorker = (func = {}) => {
         const workerUrl = this.getWorkerObjectUrl(func);
         console.log('creating worker', workerUrl);
         this.worker = new Worker(workerUrl);
@@ -114,12 +113,15 @@ export default class WebWorker{
     }
 
     getWorkerObjectUrl(fnObject){
-        const blob = new Blob([this.customFunctions(fnObject), this.workerCore]);
+        const workerCore = "" +
+            `importScripts(${document.location.origin}/worker.js');` +
+            "";
+        const blob = new Blob([this.customFunctions(fnObject), workerCore]);
         return window.URL.createObjectURL(blob);
     }
 
 
-    customFunctions = (fnObject = fn)=>{
+    customFunctions = (fnObject)=>{
         var blobParts = [];
         blobParts.push(Object.keys(fnObject).map((item)=>{
             return `${item} = ${fnObject[item]}`;
@@ -127,111 +129,4 @@ export default class WebWorker{
         blobParts.join(';');
         return blobParts+";";
     }
-
-
-
-    //change this with the real url
-    workerCore = "" +
-        "importScripts('http://cbco.in:3000/worker.js');" +
-        "";
-
-    /*
-    workerCore = "findRequest = (idOrName)=>{\n" +
-        "    const state = this.state;\n" +
-        "    if(state.requests.byId[idOrName]) return state.requests.byId[idOrName];\n" +
-        "    const id = state.requests.allIds.find((requestId)=>{\n" +
-        "        return state.requests.byId[requestId].name === idOrName\n" +
-        "    });\n" +
-        "    if(id) return state.requests.byId[id];\n" +
-        "    else throw new Error('Request not found');\n" +
-        "}\n" +
-        "getResponseBody = (requestId, jsonquery)=>{\n" +
-        "    const request =  findRequest(requestId);\n" +
-        "    const { history } = request;\n" +
-        "    if(history.allIds.length > 0) {\n" +
-        "        const {body} = history.byId[history.allIds[0]];\n" +
-        "        try{\n" +
-        "            const json =  JSON.parse(body);\n" +
-        "            console.log('jsonquery', jsonquery);\n" +
-        "            if(jsonquery){\n" +
-        "                const result = jsonpath.query(json, jsonquery);\n" +
-        "                console.log('returning', result);\n" +
-        "                return result.length === 1 ? result[0] : result;\n" +
-        "            }else{\n" +
-        "                console.log('returning', 'x');\n" +
-        "                return json;\n" +
-        "            }\n" +
-        "        }catch(e){\n" +
-        "            console.log('error',e);\n" +
-        "            return body;\n" +
-        "        }\n" +
-        "    }\n" +
-        "}\n" +
-        "getResponseHeader = (requestId, headerName)=>{\n" +
-        "    const { history } = findRequest(requestId);\n" +
-        "    if(history.allIds.length > 0) {\n" +
-        "        const {headers} = history.byId[history.allIds[0]];\n" +
-        "        const {value} = headers.find(({name, value})=> name.toLowerCase() === headerName) || {};\n" +
-        "        return value;\n" +
-        "    }\n" +
-        "}\n" +
-        "\n" +
-        "\n" +
-        "base = {\n" +
-        "    timestamp:()=>new Date().getTime(),\n" +
-        "    findRequestById:(state, requestId)=>{\n" +
-        "        console.log(state, requestId);\n" +
-        "        return state.requests.byId[requestId]\n" +
-        "    },\n" +
-        "}\n" +
-        "\n" +
-        "importScripts(\"https://cdn.jsdelivr.net/gh/dchester/jsonpath/jsonpath.min.js\");\n" +
-        "\n" +
-        "onmessage = async (e)=>{\n" +
-        "    const {type, key} = e.data;\n" +
-        "    switch (type) {\n" +
-        "        case \"call\":\n" +
-        "            const { fn, state, args} = e.data;\n" +
-        "            this.state = state;\n" +
-        "            console.log(\"calling\", fn, state, args);\n" +
-        "            callFunction(fn, state, args).then((result)=>{\n" +
-        "                postMessage({key, result});\n" +
-        "            });\n" +
-        "            break;\n" +
-        "        case \"update.vars\":\n" +
-        "            const {vars} = e.data;\n" +
-        "            Object.keys(vars).forEach((item)=>{\n" +
-        "                this[item] = vars[item];\n" +
-        "            });\n" +
-        "            postMessage({key, result:{data:\"variables updated\"}});\n" +
-        "        break;\n" +
-        "        default:\n" +
-        "            postMessage({key, result: {error: \"Method type not supported\"}})\n" +
-        "\n" +
-        "\n" +
-        "    }\n" +
-        "}\n" +
-        "\n" +
-        "\n" +
-        "async function callFunction(fn, state,args) {\n" +
-        "    try{\n" +
-        "        if(fn.includes(\"(\")){\n" +
-        "            //call it directly " +
-        "var foo = new Function('return 1 + 2');\n" +
-        "// var baz = eval('function(){ return 1 + 2 }');\n\n" +
-        "            return {data : await eval(fn)};\n" +
-        "        }\n" +
-        "        const func = fn.split('.').reduce((acc, cur)=>acc ? acc[cur] : undefined, this);\n" +
-        "        if(func){\n" +
-        "            const data = await func(state,args);\n" +
-        "            return {data}\n" +
-        "        }else{\n" +
-        "            return {error:\"Undefined function \"+fn+\":\"+func}\n" +
-        "        }\n" +
-        "    }catch(err){\n" +
-        "        console.log('got error', err);\n" +
-        "        return {error:err.toString()}\n" +
-        "    }\n" +
-        "}\n";
-        */
 }

@@ -22,7 +22,9 @@ class CommentContainer extends Component {
     render() {
         const {comment} = this.props;
         return (
+            <div className={"mt-2"}>
                <MarkdownInput onBlur={this.updateComment} defaultValue={comment || ''}/>
+            </div>
         );
     }
 }
