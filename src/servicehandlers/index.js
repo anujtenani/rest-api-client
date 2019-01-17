@@ -1,10 +1,11 @@
 import * as chrome from "./ChromeWrapper";
 import * as firefox from './FirefoxWrapper';
 import {isChrome, isFirefox} from "./BrowserDetector";
+import {promiseTimeout} from "../helpers/func";
 
 
 export function extensionInstalled(){
-    return new Promise((resolve, reject)=>{
+    return promiseTimeout(1000, new Promise((resolve, reject)=>{
         //wait for a few seconds for the extension to become alive so to speak
         setTimeout(()=>{
             if(isChrome){
@@ -23,8 +24,8 @@ export function extensionInstalled(){
                     console.log('got result', e);
                 })
             }
-        }, 2000);
-    })
+        }, 500);
+    }))
 }
 
 export function sendRequest(url, method, headers, body) {
@@ -33,7 +34,8 @@ export function sendRequest(url, method, headers, body) {
     } else if (isFirefox) {
         return firefox.sendRequest(url, method, headers, body);
     }else {
-        throw new Error('No extension found');
+        return Promise.resolve();
+        // throw new Error('No extension found');
     }
 }
 
@@ -46,7 +48,8 @@ export function setItem(key, value){
     } else if (isFirefox) {
         return firefox.setItem(key, value);
     }else {
-        throw new Error('No extension found');
+       return Promise.resolve();
+//        throw new Error('No extension found');
     }
 }
 export function getItem(key){
@@ -56,7 +59,8 @@ export function getItem(key){
     } else if (isFirefox) {
         return firefox.getItem(key);
     }else {
-        throw new Error('No extension found');
+        return Promise.resolve();
+//        throw new Error('No extension found');
     }
 }
 
@@ -66,7 +70,8 @@ export function removeItem(key){
     } else if (isFirefox) {
         return firefox.removeItem(key);
     }else {
-        throw new Error('No extension found');
+        return Promise.resolve();
+//        throw new Error('No extension found');
     }
 }
 

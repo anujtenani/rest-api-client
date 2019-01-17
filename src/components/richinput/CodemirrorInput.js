@@ -7,10 +7,8 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
 import 'codemirror/mode/markdown/markdown';
 import '../../css/codemirror.css';
-
 import './codemirrormode.js';
 import './codeinput.css';
-
 
 class CodemirrorInput extends Component {
 

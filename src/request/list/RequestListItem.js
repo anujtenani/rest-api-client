@@ -67,9 +67,8 @@ class RequestListItem extends Component{
     }
 
     render(){
-        const {requestId, name, method, projectId, type, isActive} = this.props;
+        const {requestId, name, method, path, type, isActive} = this.props;
         const {contentEditable} = this.state;
-        const path = `/p/${projectId}/${type || 'request'}/${requestId}`;
         return  <div className={`request-item flex-row flex items-center justify-between px-2 ${isActive ? 'shadow-inner secondary-bg' : ''}`}>
             <Link onDoubleClick={this.handleDoubleClick}
                     onFocus={this.bindRenameKey}
@@ -112,12 +111,10 @@ function RenderTag({method, type}){
 
 const mapStateToProps = (state, props)=>{
 
-    const {requestId, projectId} = props;
+    const {requestId} = props;
     const {name, method, type} = state.requests.byId[requestId];
-    const path = `/p/${projectId}/${type || 'rest'}/${requestId}`;
     return {
         name, method, type, requestId,
-        path
     }
 }
 

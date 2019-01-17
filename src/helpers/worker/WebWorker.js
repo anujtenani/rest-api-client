@@ -114,7 +114,7 @@ export default class WebWorker{
 
     getWorkerObjectUrl(fnObject){
         const workerCore = "" +
-            `importScripts(${document.location.origin}/worker.js');` +
+            `importScripts("${document.location.origin}/worker.js");` +
             "";
         const blob = new Blob([this.customFunctions(fnObject), workerCore]);
         return window.URL.createObjectURL(blob);

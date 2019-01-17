@@ -5,10 +5,8 @@ import { persistReducer } from 'redux-persist'
 import storage from '../servicehandlers/ReduxPersistStorage';
 
 import rootReducer from './rootReducer'
+import {getProjectName} from "../helpers/func";
 
-function getProjectName(){
-    return document.location.pathname.split("/")[2];
-}
 
 const persistConfig = {
     key: getProjectName() || 'root',

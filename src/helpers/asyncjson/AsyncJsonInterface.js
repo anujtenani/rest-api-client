@@ -41,7 +41,6 @@ export default class AsyncJsonInterface{
     }
 
     promiseTimeout = function(ms, promise){
-
         // Create a promise that rejects in <ms> milliseconds
         let timeout = new Promise((resolve, reject) => {
             let id = setTimeout(() => {

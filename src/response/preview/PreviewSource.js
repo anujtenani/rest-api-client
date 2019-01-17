@@ -3,13 +3,8 @@ import {UnControlled as CodeMirror} from 'react-codemirror2'
 import 'codemirror/mode/htmlembedded/htmlembedded';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/lint/lint';
-import 'codemirror/addon/lint/lint.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/lint/json-lint';
-import 'codemirror/addon/lint/javascript-lint';
-import 'codemirror/theme/monokai.css';
 import '../../css/codemirror.css';
 import 'codemirror/addon/fold/foldcode';
 import 'codemirror/addon/fold/brace-fold';

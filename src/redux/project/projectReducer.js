@@ -1,9 +1,10 @@
 import {createActionConstant, methods, types} from "../actionCreator";
+import {getProjectName} from "../../helpers/func";
 
 const defaultState = {
     projectName:'',
     maxHistory:5,
-    projectId:undefined,
+    id:getProjectName(),
     comment:'',
 }
 

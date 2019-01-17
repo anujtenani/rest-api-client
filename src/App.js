@@ -5,15 +5,25 @@ import './css/normalize.css';
 import {doImport} from "./importexport/har/importHar";
 import {connect} from 'react-redux';
 import {actionSetRequests} from "./redux/requestActions";
-import ProjectPage from "./ProjectPage";
 import MainPage from "./MainPage";
 import {extensionInstalled} from "./servicehandlers";
+import Loadable from "react-loadable";
+import Spinner from "./components/spinner";
+
+const ProjectPage = Loadable({
+    loader: () => import('./ProjectPage'), //why ?  because JSHINT for JSONLinting is a huge dependency
+    loading: ()=><div className={"flex h-screen w-screen flex-row items-center justify-center"}><Spinner/></div>,
+});
+
 
 class App extends Component {
 
     componentDidMount(){
         extensionInstalled().then(()=>{
             console.log('yes extension is installed, you may hide it now');
+        }).catch((e)=>{
+            console.log('redirect to chrome webstore or show a popup');
+//            document.location.href = "https://chrome.webs"
         })
     }
 
@@ -23,6 +33,7 @@ class App extends Component {
         console.log(imports);
         console.log(fileContents)
     }
+
 
   render() {
     return (

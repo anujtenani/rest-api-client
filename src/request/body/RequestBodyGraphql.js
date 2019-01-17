@@ -9,16 +9,13 @@ import 'codemirror/addon/lint/lint';
 import 'codemirror-graphql/hint';
 import 'codemirror-graphql/lint';
 import 'codemirror-graphql/info';
-// import 'codemirror-graphql/jump';
 import 'codemirror-graphql/mode';
-// import 'codemirror-graphql/variables/lint';
-// import 'codemirror-graphql/variables/mode';
 import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/addon/edit/closebrackets';
 import {connect} from 'react-redux';
 import {actionUpdateBodyData} from "../../redux/body/bodyActions";
 import {sendRequest} from "../../servicehandlers";
-import {buildUrlFromRequestState} from "../../helpers/func";
+import {basicUrlBuilder, buildUrlFromRequestState} from "../../helpers/func";
 
 class RequestBodyGraphql extends Component {
 
@@ -105,11 +102,10 @@ class RequestBodyGraphql extends Component {
 
 function mapStateToProps(state, props) {
     const {requestId} = props;
-    const {url, qs, method} = state.requests.byId[requestId];
+    const {method} = state.requests.byId[requestId];
     const data = state.requests.byId[requestId].body.data || {}
-
     return {
-        url: buildUrlFromRequestState(url, qs),
+        url: basicUrlBuilder(state, requestId),
         method,
         value: data.value
     };

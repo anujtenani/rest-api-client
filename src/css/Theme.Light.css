@@ -125,8 +125,8 @@ a:visited svg{
 }
 
 .error-bg{
-    @apply bg-red
+    @apply bg-red-light text-white
 }
 .error-border{
-    @apply border-red-light
+    @apply border-red-lightest
 }
