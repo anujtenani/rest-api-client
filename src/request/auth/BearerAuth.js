@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent as Component} from 'react';
 import {connect} from 'react-redux';
 import Input from "../../components/Input";
 import {actionUpdateAuth} from "../../redux/auth/authActions";

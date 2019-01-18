@@ -72,17 +72,15 @@ env = ()=>{
  * Replaces functions or variables in strings
  */
 transformString = (line)=>{
-    const matches = line.match(/```(.*?)```/g);
+    if(!line) return '';
+//    const matches = line.match(/```(.*?)```/g);
+    const matches = line.match(/{{(.*?)}}/g);
     if (matches) {
         const fn = matches.map((item) => {
             return item.replace("```", '').replace('```','');
         });
         console.log(fn);
         const promises = fn.map((fn) => {
-            if(fn.includes("(")){
-                //TODO make way for on demand functions eg. ```base.timestamp()``` directly in the field
-                //convert this function to
-            }
             return callFunction(fn, this.state);
         });
         return Promise.all(promises).then((result) => {
@@ -101,23 +99,30 @@ getRequestUrl = async (requestId)=>{
     const {url, path, qs} = findRequest(requestId);
     let ur = url;
     const qsObject = {};
-    qs.allIds.forEach((qsId)=>{
+    const qsPromises = qs.allIds.map((qsId)=>{
         const {name, value} = qs.byId[qsId];
-        qsObject[name] = value;
+        return Promise.all([transformString(name), transformString(value)]);
     });
+    const qsdata = await Promise.all(qsPromises);
+    qsdata.forEach((item)=>{
+        qsObject[item[0]] = item[1];
+    })
+
     if(path && path.allIds){
         path.allIds.forEach((pathId)=>{
             const {name, value} = path.byId[pathId];
             ur = ur.split(name).join(value);
         });
     }
+
+    ur = await transformString(ur);
+
     const varmap = env();
     if(!ur.startsWith('http')) {
         const baseurl = varmap['baseurl'] || '';
         ur = baseurl + ur;
     }
     ur = ur.startsWith('http') ? ur : `http://${ur}`;
-    ur = await transformString(ur);
 
     const parsedUrl = UrlParser.parse(ur, true);
     console.log(parsedUrl.query, qsObject);

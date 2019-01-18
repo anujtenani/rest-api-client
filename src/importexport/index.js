@@ -1,10 +1,21 @@
 
 import * as har from './har/index'
 
-export function doImport(data, importFormat="har"){
+export function doImport(data, importFormat){
+    const obj = JSON.parse(data);
+    if(!importFormat){
+        if(obj.log){
+            importFormat = "har";
+        }else if(obj.requests){
+            importFormat = "native";
+        }
+    }
     switch (importFormat) {
         case "har":
-            return har.doImport(JSON.parse(data));
+            return har.doImport(obj);
+        case "native":
+            return obj.requests.allIds.map((id)=>obj.requests.byId[id]);
+            //merge state with this state;
         default:
             return []
     }

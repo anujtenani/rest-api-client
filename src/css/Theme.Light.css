@@ -75,7 +75,7 @@ select{
 }
 
 .tag--responsetags{
-    @apply text-white px-2 py-1 rounded text-sm
+    @apply text-white px-1 py-px rounded text-xs
 }
 
 .tag--statuscode-2xx{

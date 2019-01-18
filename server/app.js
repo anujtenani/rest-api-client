@@ -11,7 +11,7 @@ const test = require('./routes/test');
 const helper = require('./routes/helper');
 
 var app = express();
-// app.use(cors());
+app.use(cors());
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));

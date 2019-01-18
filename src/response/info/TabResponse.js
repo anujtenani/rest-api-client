@@ -40,8 +40,8 @@ class TabResponse extends Component {
         //1. preview (shows formatted html or media element)
         //2. source (shows the data in a codemirror)
         return (
-            <div className={"p-2"}>
-                <div className={"flex flex-row items-center justify-between"}>
+            <div className={"m-px"}>
+                <div className={"flex flex-row items-center justify-between mb-px"}>
                     <div className={"flex flex-row items-center"}>
                     <RenderTag text={statusCode} className={"tag--statuscode-2xx"} />
                     <RenderTag text={prettyBytes(getHeaderVal(headers, 'content-length', bodySize))} className={"tag--bodysize"} />

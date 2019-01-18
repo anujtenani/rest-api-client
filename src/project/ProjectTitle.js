@@ -1,8 +1,8 @@
 import {FiSettings} from "react-icons/fi";
 import React from "react";
-import {Link, NavLink, Route, withRouter} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 import EnvironmentSwitcher from "./EnvironmentSwitcher";
-import {actionUpdateProjectMetadata, actionUpdateProjectName} from "../redux/project/projectActions";
+import {actionUpdateProjectName} from "../redux/project/projectActions";
 import {connect} from 'react-redux';
 
 class ProjectTitle extends React.PureComponent{
@@ -29,7 +29,11 @@ class ProjectTitle extends React.PureComponent{
         this.setState({titleEditable:false});
         this.props.updateProjectName(e.target.value)
     }
-
+    handleSubmit = (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        document.activeElement.blur();
+    }
 
 
 
@@ -38,10 +42,12 @@ class ProjectTitle extends React.PureComponent{
         return  <div>
             <div className={"h-12 p-2 flex flex-row items-center border-b primary-border secondary-bg"}>
                 {this.state.titleEditable ?
-                    <input className={"font-bold text-lg flex-1"} defaultValue={name} placeholder={"Project Name"} onBlur={this.onProjectNameChange}/>
+                    <form onSubmit={this.handleSubmit} className={"flex-1"}>
+                        <input autoFocus={true} className={"font-bold text-lg w-full"} defaultValue={name} placeholder={"Project Name"} onBlur={this.onProjectNameChange}/>
+                    </form>
                     :  <h2 className={"flex-1"} onDoubleClick={this.onDblClick}>{name || 'My Project'}</h2>
                 }
-                <button onClick={this.toggleOptions} className={"primary-button flex flex-col items-center px-2"}>
+                <button onClick={this.toggleOptions} className={"primary-button flex flex-col items-center"}>
                     <FiSettings className={"w-6 h-6"} />
                 </button>
             </div>

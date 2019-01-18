@@ -68,6 +68,7 @@ class Response extends Component {
                         <button onClick={this.showPrevResponse} disabled={historyIds.length <= historyIndex + 1}><FiChevronLeft /></button>
                         <button onClick={this.showNextResponse} disabled={historyIndex === 0}><FiChevronRight /></button>
                     </div>
+
                     <div />
                     <div>
                         <button onClick={this.deleteResponse}><FiTrash /></button>
@@ -88,15 +89,6 @@ function NoResponseAvailable({onClickSendRequest}){
     </div>
 }
 
-
-
-function ResponseResult({url, statusCode, contentLength, timing}){
-    return <div className="flex flex-row flex-wrap items-center p-2 h-10">
-            <p className="bg-green px-2 py-1 mr-2 rounded">{statusCode}</p>
-            <p className="bg-orange px-2 py-1 mr-2 rounded">{contentLength} bytes</p>
-            <p className="bg-purple px-2 py-1 mr-2 rounded">{timing} ms</p>
-    </div>
-}
 
 function mapStateToProps(state, props) {
     const {requestId} = props;

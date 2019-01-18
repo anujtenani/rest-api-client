@@ -60,7 +60,7 @@ class BodyComponent extends Component{
                 <option value={"nobody"}>No Body</option>
                 <option value={"form"}>Form URL-Encoded</option>
                 <option value={"multipart"}>Multipart Form Data</option>
-                <option value={"text"}>Text</option>
+                <option value={"raw"}>Text</option>
                 <option value={"xml"}>XML</option>
                 <option value={"json"}>JSON</option>
                 <option value={"file"}>Binary / File</option>

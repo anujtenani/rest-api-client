@@ -28,11 +28,6 @@ class ResponseSuccess extends Component {
     }
 }
 
-/*
-function TabResponseTiming(){
-    return <TabResponseTiming requestId={requestId} historyId={historyId} />
-}
-*/
 
 function ResponsePanelHeading({onChange}){
     return <ul className="list-reset flex flex-row justify-around items-center">

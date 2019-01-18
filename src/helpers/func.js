@@ -67,5 +67,3 @@ export function promiseTimeout(ms, promise){
 export function getProjectName(){
     return document.location.pathname.split("/")[2];
 }
-
-///console.log('url',buildUrl("http://gogole.com",{hello:'what'},'asdasd/asdad'));

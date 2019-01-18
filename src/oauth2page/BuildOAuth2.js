@@ -49,7 +49,7 @@ class BuildOAuth2 extends Component {
 
         this.oauth = new ClientOAuth2({
             clientId, clientSecret, accessTokenUri, authorizationUri, redirectUri,
-            scopes: scopes.split(",").map((item)=> { item.trim(); return item}).join(" "),
+            scopes: scopes ? scopes.split(",").map((item)=> { item.trim(); return item}).join(" ") : undefined,
         });
 
         try {

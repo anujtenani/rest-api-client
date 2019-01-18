@@ -12,7 +12,7 @@ class RenderEnvInput extends Component {
     render() {
         return (
             <div className={"table-cell border-b primary-border p-1 border-r"}>
-                <Input className={"py-2"} onBlur={this.onBlur} defaultValue={this.props.value} />
+                <Input className={"py-2"} placeholder={"Value"} onBlur={this.onBlur} defaultValue={this.props.value} />
             </div>
         );
     }

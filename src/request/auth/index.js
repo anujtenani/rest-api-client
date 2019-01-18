@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent as Component} from 'react';
 import {connect} from 'react-redux';
 import BasicAuth from "./BasicAuth";
 import {actionSetAuth} from "../../redux/auth/authActions";
@@ -10,6 +10,7 @@ class AuthComponent extends Component {
         // this.setState({selectedValue: e.target.value})
         this.props.updateAuthType(e.target.value);
     }
+
 
     render() {
         const {requestId, authType} = this.props

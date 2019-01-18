@@ -10,15 +10,20 @@ export default class WebWorker{
         const fnObject = {};
         state.func.allIds.forEach((func)=>{
             const {name, value} = state.func.byId[func];
-            fnObject[name] = `async ()=> { 
-            ${value}
-            ;}`;
+            if(name) {
+                fnObject[name] = `async ()=> { 
+                                    ${value}
+                                  ;}`;
+            }
         });
 
         const activeEnv = state.env.activeEnv;
         state.env.variableAllIds.forEach((varId)=>{
-//            fnObject[state.env.variableById[varId].name] = `()=>"${state.env.envVariableMap[varId][activeEnv]}"`;
-            fnObject[state.env.variableById[varId].name] = `"${state.env.envVariableMap[varId][activeEnv]}"`;
+            const name = state.env.variableById[varId].name;
+            const value = state.env.envVariableMap[varId][activeEnv];
+            if(name) {
+                fnObject[state.env.variableById[varId].name] = `"${state.env.envVariableMap[varId][activeEnv]}"`;
+            }
         });
 
         console.log('functionObject', fnObject);

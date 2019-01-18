@@ -1,0 +1,23 @@
+{
+  "name": "syncseerver",
+  "version": "1",
+  "description": "REST API Server to maintain state",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "data-uri-to-buffer": "^2.0.0",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "mime-types": "^2.1.21",
+    "multer": "^1.4.1",
+    "redis": "^2.8.0",
+    "redux": "^4.0.1",
+    "request": "^2.88.0",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "esm": "^3.1.0"
+  }
+}

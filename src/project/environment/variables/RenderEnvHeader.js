@@ -40,9 +40,8 @@ class RenderEnvHeader extends Component {
                          className={"py-2 justify-between items-center flex flex-row"}>
                         <p className={"font-bold"}>{name}</p>
                         <Popup trigger={<FiChevronDown/>} placement={"bottom-start"} ref={this.handleRef}>
-                                <button className={"p-2 text-right"} onClick={this.enterEditMode}><FiEdit />Rename</button>
-                                <button className={"p-2 text-right"} onClick={this.deleteEnvironment}><FiTrash />Delete</button>
-                                <button className={"p-2 text-right"}><FiCopy />Duplicate</button>
+                                <button className={"p-2 text-right list-item"} onClick={this.enterEditMode}>Rename <FiEdit /></button>
+                                <button className={"p-2 text-right list-item"} onClick={this.deleteEnvironment}>Delete <FiTrash /></button>
                         </Popup>
                     </div>
                 }

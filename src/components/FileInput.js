@@ -93,5 +93,5 @@ export default FileInput;
 
 FileInput.propTypes = {
     onChange: PropTypes.func.isRequired,
-    fileName: PropTypes.string.isRequired
+    fileName: PropTypes.string
 }

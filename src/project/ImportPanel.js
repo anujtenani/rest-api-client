@@ -8,6 +8,8 @@ class ImportPanel extends Component {
 
     state = {
         requests:[],
+        env:[],
+        func:[],
         importResult:null,
         files:undefined,
     }
@@ -17,7 +19,7 @@ class ImportPanel extends Component {
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.onloadend = (ev)=>{
-            const requests = doImport(reader.result, "har");
+            const requests = doImport(reader.result);
             console.log(requests);
             this.setState({requests});
         };
@@ -56,7 +58,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch, props){
     return {
-        insertRequest:(payload)=>dispatch(actionCreateRequest(payload))
+        insertRequest:(payload)=>dispatch(actionCreateRequest(payload)),
     }
 }
 

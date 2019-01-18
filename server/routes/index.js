@@ -1,4 +1,4 @@
-require("@babel/register")({});
+import store from '../store';
 var express = require('express');
 var router = express.Router();
 const request = require('request');
@@ -8,6 +8,7 @@ const URL = require('url').URL;
 const Datauri = require('datauri');
 var mime = require('mime-types')
 var dataUriToBuffer = require('data-uri-to-buffer');
+const {applyActionsToStore} = require('../functions');
 
 // const {createStore} = require('redux');
 // const rootReducer = require('../../src/redux/rootReducer').default;
@@ -32,10 +33,22 @@ db.serialize(function() {
 db.close();
 */
 
+
+
+
 router.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '..','..','build','index.html'));
+    // res.sendFile(path.join(__dirname, '..','..','build','index.html'));
     //res.send("ok")
+    res.send('ok');
 });
+
+router.post('/apply_action', async (req, res)=>{
+    const action = req.body;
+    const user_id = req.headers.user;
+    const project_id = req.headers.project;
+    const state = await applyActionsToStore([action], user_id, project_id);
+    res.send(state);
+})
 
 router.get('/save',(req, res)=>{
     res.send('save');
