@@ -8,6 +8,15 @@ import {persistStore} from "redux-persist";
 import store from './redux/store'
 let persistor = persistStore(store);
 
+/**
+ * Remove console statements from production
+ */
+function noop() {}
+if (process.env.NODE_ENV !== 'development') {
+    console.log = noop;
+    console.warn = noop;
+    console.error = noop;
+}
 
 ReactDOM.render(<Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
