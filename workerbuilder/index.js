@@ -75,10 +75,10 @@ transformString = (line)=>{
 
     if(!line) return '';
 //    const matches = line.match(/```(.*?)```/g);
-    const matches = line.match(/```(.*?)```/g);
+    const matches = line.match(/{{(.*?)}}/g);
     if (matches) {
         const fn = matches.map((item) => {
-            return item.replace("```", '').replace('```','');
+            return item.replace("{{", '').replace('}}','');
         });
         console.log(fn);
         const promises = fn.map((fn) => {
@@ -86,7 +86,7 @@ transformString = (line)=>{
         });
         return Promise.all(promises).then((result) => {
             result.forEach(({data}, index) => {
-                line = line.replace('```' + fn[index] + '```', data);
+                line = line.replace('{{' + fn[index] + '}}', data);
             });
             return line;
         });

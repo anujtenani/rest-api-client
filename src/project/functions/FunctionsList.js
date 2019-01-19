@@ -23,6 +23,7 @@ class FunctionsList extends Component {
                 <div className={"p-2"}>
                     <h3>Functions</h3>
                     <p>Pure javascript functions to dynamically generate data to be used in API requests</p>
+                    <p>Documentation - <a href="https://github.com/anujtenani/rest-api-client/wiki/Functions" target="_blank">https://github.com/anujtenani/rest-api-client/wiki/Functions</a></p>
                     <button  className={"primary-button mt-2"} onClick={this.createNewFunction}>Create a new function</button>
                 </div>
                 {this.props.functionIds.map((functionId)=>{
