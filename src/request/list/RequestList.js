@@ -93,7 +93,7 @@ class RequestList extends PureComponent {
                 <Popup ref={this.popperRef} trigger={<FiPlusCircle className={"w-6 h-6"} />} placement={"bottom-end"}>
                     <button className={"p-2 text-right list-item"} onClick={this.createANewRequest}><Tag className={"tag--get"} title={"REST"} />New Request</button>
                     <button className={"p-2 text-right list-item"} onClick={this.createOAuth}><Tag className={"tag--oauth"} title={"oAuth"} />New oAuth2</button>
-                    <button className={"p-2 text-right list-item"} onClick={this.createWebsocket}><Tag className={"tag--ws"} title={"ws"} />New Websocket</button>
+                    <button className={"p-2 text-right list-item hidden"} onClick={this.createWebsocket}><Tag className={"tag--ws"} title={"ws"} />New Websocket</button>
                 </Popup>
             </div>
 
