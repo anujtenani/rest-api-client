@@ -5,7 +5,7 @@ import * as server from './ServerWrapper';
 import {isChrome, isFirefox} from "./BrowserDetector";
 import {promiseTimeout} from "../helpers/func";
 
-var hasExtension = false;
+var hasExtension = true;
 extensionInstalled();
 
 export function extensionInstalled(){
@@ -31,7 +31,10 @@ export function extensionInstalled(){
                 })
             }
         }, 500);
-    }))
+    })).catch((e)=>{
+        hasExtension = false;
+        throw new Error(e)
+    })
 }
 
 export function sendRequest(url, method, headers, body) {
