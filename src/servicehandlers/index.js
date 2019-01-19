@@ -33,7 +33,6 @@ export function extensionInstalled(){
         }, 500);
     })).catch((e)=>{
         hasExtension = false;
-        throw new Error(e)
     })
 }
 
