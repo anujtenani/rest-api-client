@@ -9,6 +9,9 @@ var cors = require('cors');
 var index = require('./routes/index');
 const test = require('./routes/test');
 const helper = require('./routes/helper');
+const proxy = require('./routes/proxy');
+const auth = require('./routes/auth');
+
 
 var app = express();
 app.use(cors());
@@ -28,7 +31,9 @@ app.use(express.static(path.join(__dirname,'..','build')));
 
 app.use('/', index);
 app.use('/test', test);
+app.use('/auth', auth);
 app.use('/helper', helper);
+app.use('/proxy', proxy);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

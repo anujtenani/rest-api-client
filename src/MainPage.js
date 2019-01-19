@@ -17,18 +17,28 @@ class MainPage extends Component {
         // The ID of the extension we want to talk to.
         // Make a simple request:
         const id = shortId.generate();
-        getItem('projects').then((e)=>{
-            if(!e) e = [];
-            else e = JSON.parse(e);
-            e.push({id, name:'My Project'});
-            setItem('projects', e);
+        getItem('projects').then((res)=>{
+            let array;
+            try{
+                if(!res) array = [];
+                else array = JSON.parse(res);
+            }catch(e){
+                array = [];
+            }
+            array.push({id, name:'My Project'});
+            setItem('projects', array);
             document.location = `/p/${id}`;
         });
     }
 
     componentDidMount(){
         getItem('projects').then((res)=>{
-            if(res) this.setState({projects: JSON.parse(res)})
+            try {
+                if (res) this.setState({projects: JSON.parse(res)})
+            }catch(e){
+                console.log(e);
+                //catch json parsing error
+            }
         })
     }
 
@@ -46,10 +56,11 @@ class MainPage extends Component {
                             </div>
                             <div className={"flex-1 w-64 flex p-2 items-center flex-col justify-center"}>
                                     <button className={"primary-button mb-2 mt-2"} onClick={this.createProject}>Create a new project</button>
-
-                                    <p className={"text-lg"}>OR</p>
-                                    <div className={"mb-2 mt-2 text-center flex flex-col items-center"}>
-                                        <button className={"primary-button"}>Open existing project</button>
+                                    <div className={"hidden"}>
+                                        <p className={"text-lg"}>OR</p>
+                                        <div className={"mb-2 mt-2 text-center flex flex-col items-center"}>
+                                            <button className={"primary-button"}>Open existing project</button>
+                                        </div>
                                     </div>
                             </div>
                         </div>

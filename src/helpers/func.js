@@ -65,5 +65,5 @@ export function promiseTimeout(ms, promise){
 
 
 export function getProjectName(){
-    return document.location.pathname.split("/")[2];
+    return document ? document.location.pathname.split("/")[2] : undefined; //fixes when project reducer is used server side
 }

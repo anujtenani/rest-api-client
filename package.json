@@ -5,7 +5,6 @@
   "private": true,
   "dependencies": {
     "aws4": "^1.8.0",
-    "client-oauth2": "^4.2.3",
     "codemirror": "^5.42.2",
     "codemirror-graphql": "^0.8.3",
     "cookie-parser": "^1.4.3",

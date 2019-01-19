@@ -1,27 +1,29 @@
+import {syncUrl} from "../config";
 
 const actionLogs = [];
 
-
 const logger = store => next => action => {
-    console.log('dispatching', action);
+//    console.log('dispatching', action);
     let result = next(action);
 //    action.timestamp = new Date().getTime();
     action.timestamp = new Date().getTime();
+    //TODO fix this soon
     actionLogs.push(action);
-    console.log('next state', store.getState());
-    console.log(actionLogs);
+//    console.log('next state', store.getState());
+//    console.log(actionLogs);
     /*
-    fetch('http://localhost:8090/apply_action',{
+    return fetch(syncUrl,{
         method:'POST',
         body:JSON.stringify(action),
         headers:{
-            'content-type':'application/json'
+            'content-type':'application/json',
+            'Authorization':'',
+            'X_PROJECT_ID':store.metadata.id
         }
     }).then((e)=>{
         console.log('got result', e);
-    })
+    });
     */
-    return result
 };
 
 

@@ -27,3 +27,4 @@ files/
 
 src/css/tailwind.css
 src/css/normalize.css
+aws_credentials.json

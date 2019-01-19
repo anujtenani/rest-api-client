@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Label from "../components/Label";
 import Input from "../components/Input";
-import ClientOAuth2 from "client-oauth2";
+import ClientOAuth2 from "./ClientOAuth2";
 import {openOauthTab} from "../servicehandlers/ChromeWrapper";
 import {actionUpdateRequest} from "../redux/requestActions";
 import {actionCreateResponseHistory} from "../redux/history/historyActions";
@@ -52,7 +52,7 @@ class BuildOAuth2 extends Component {
             scopes: scopes ? scopes.split(",").map((item)=> { item.trim(); return item}).join(" ") : undefined,
         });
 
-        try {
+      //  try {
             switch (authType) {
                 case "implicit": {
                     const uri = this.oauth.token.getUri({query: this.getQueryObject(query, state)});
@@ -87,45 +87,9 @@ class BuildOAuth2 extends Component {
                     break;
                 }
             }
-        }catch(e){
-            console.log(e);
-        }
-
-
-
-        /*
-        const googleQuery = {
-            access_type: 'offline',
-            approval_prompt: "force",
-        };
-        */
-        //window.location = this.googleAuth.token.getUri();
-        /*
-        this.externalWindow = window.open(uri, `width=400,height=600`);
-        this.externalWindow.onbeforeunload = () => {
-            this.onClose();
-            clearInterval(this.codeCheck);
-        };
-        this.codeCheck = setInterval(async () => {
-            try {
-                console.log(this.externalWindow);
-                if(this.externalWindow.closed){
-                    clearInterval(this.codeCheck);
-                    return;
-                }
-                console.log(this.externalWindow.location);
-                const params = new URL(this.externalWindow.location.href).searchParams;
-                const token = await this.googleAuth.code.getToken(this.externalWindow.location.href);
-                if(!token) return;
-                clearInterval(this.codeCheck);
-                this.onCode(token, params);
-                this.externalWindow.close();
-            }
-            catch (e) {
-                console.log(e);
-            }
-        }, 200);
-        */
+       // }catch(e){
+       //     console.log(e);
+       // }
 
     }
 

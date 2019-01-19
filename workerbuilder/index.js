@@ -72,9 +72,10 @@ env = ()=>{
  * Replaces functions or variables in strings
  */
 transformString = (line)=>{
+
     if(!line) return '';
 //    const matches = line.match(/```(.*?)```/g);
-    const matches = line.match(/{{(.*?)}}/g);
+    const matches = line.match(/```(.*?)```/g);
     if (matches) {
         const fn = matches.map((item) => {
             return item.replace("```", '').replace('```','');
@@ -132,7 +133,7 @@ getRequestUrl = async (requestId)=>{
 }
 
 //export
-getRequestBody = (requestId, forPreview = true)=>{
+getRequestBody = async (requestId, forPreview = true)=>{
     const {body} = findRequest(requestId);
     const {bodyType, data, params} = body;
     console.log(bodyType, data);
@@ -145,15 +146,16 @@ getRequestBody = (requestId, forPreview = true)=>{
             return DataUriToBlob(data.uri);
         case "form":
         case "application/x-www-urlformencoded":
-            const params = getBodyParams(requestId);
+            const params = await getBodyParams(requestId);
             console.log(params);
             return createFormBody(params);
         case "multipart":
         case "multipart-formbody":
+            const bodyParams = await getBodyParams(requestId);
             if(forPreview) {
-                return new multipart().toString(getBodyParams(requestId));
+                return new multipart().toString(bodyParams);
             }else{
-                return new multipart().toDataUrl(getBodyParams(requestId));
+                return new multipart().toDataUrl(bodyParams);
             }
         case "graphql":
             return JSON.stringify({query:data.value});
@@ -194,10 +196,24 @@ const buildAuthorizationHeader = async (url, method, requestId) => {
 const getBodyParams = (requestId)=>{
     const {body} = findRequest(requestId);
     const {byId, allIds} = body;
-    return allIds.map((item)=>{
-        const {name, value, inputType, fileName, size, contentType} = byId[item];
-        return {name, value, inputType, fileName, size, contentType};
-    });
+    const promises =  allIds
+        .filter((item)=>{
+            return !!byId[item].name;
+        })
+        .map((item)=>{
+            const {name, value, inputType, fileName, size, contentType} = byId[item];
+            return Promise.all([transformString(name), transformString(value), Promise.resolve({inputType, fileName, size, contentType})]);
+        });
+
+    return Promise.all(promises)
+        .then((items)=>{
+            return items.map((result)=>{
+                const name = result[0];
+                const value = result[1];
+                const obj = result[2];
+                return {name, value, ...obj};
+            })
+    })
 }
 
 
@@ -220,12 +236,12 @@ function createMultipartBody(params){
  * @returns {*}
  * @param params
  */
-function createFormBody(params){
+async function createFormBody(params){
     const map = {};
-    params.forEach((item)=>{
-        const {name, value} = item;
-        map[name] = value
+    params.map(({name, value})=>{
+        return map[name] = value;
     });
+    console.log('complete map', map);
     return formurlencoded(map);
 }
 
@@ -382,8 +398,8 @@ getBodyHeaders = (requestId)=>{
     const {bodyType} = body || {};
     switch (bodyType) {
         case "form":
-        case "application/x-www-urlformencoded":
-            return {'Content-Type':'application/x-www-urlformencoded'};
+        case "application/x-www-form-urlencoded":
+            return {'Content-Type':'application/x-www-form-urlencoded'};
         case "multipart":
         case "multipart-formbody":
             return {'Content-Type': 'multipart/form-data; charset=utf-8; boundary=__X__BOUNDARY__'}
