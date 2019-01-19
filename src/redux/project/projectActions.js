@@ -32,7 +32,7 @@ export const actionUpdateProjectName = (name)=>{
 export const actionDeleteProject = (projectId)=>{
     return (dispatch, getState)=>{
         if(!projectId){
-            projectId = getState().metadata.id;
+            projectId = getState().metadata.id || getProjectName();
         }
         getItem('projects').then((res)=>{
             if(res) {

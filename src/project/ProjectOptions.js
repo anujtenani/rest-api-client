@@ -8,12 +8,12 @@ class ProjectOptions extends Component {
 
     deleteProject = ()=>{
         this.props.deleteProject();
+        document.location = '/';
 
     }
 
     onBlur = (e) => {
         this.props.updateProjectName(e.target.value);
-        document.location = '/';
     }
 
     render() {
